@@ -8,6 +8,24 @@
 
 .tetris-screen {
     width: 50%;
+    align-content: center;
+}
+
+.tetris-screen-display {
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    line-height: 24px;
+    border: 2px;
+    border-style: solid;
+    background-color: black;
+}
+
+.tetris-screen-display td {
+    border: 1px;
+    border-style: solid;
+    padding: 0;
+    background-color: gray;
 }
 
 .next-pieces {
