@@ -24,6 +24,7 @@
 .tetris-screen-display td {
     border: 1px;
     border-style: solid;
+    border-color: gray;
     padding: 0;
     background-color: gray;
     color: gray;

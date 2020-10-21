@@ -1,6 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import  '../styles/tetris.css'
 
+/*
+Row/Col are the top left coordinate of the "coords"
+Size is the side length of the coords's "square"
+The positive integer inside the coords represent color
+
+Tetris Pieces start hidden above the grid and fall down.
+- Grid display is 10 x 20
+- 3 hidden rows above grid 
+*/
+
+const O_piece = {
+    row: 1,
+    col: 4,
+    size: 2,
+    coords : [
+        [1, 1],
+        [1, 1]
+    ]
+};
+const S_piece = {
+    row: 0,
+    col: 3,
+    size: 3,
+    coords : [
+        [0, 0, 0],
+        [0, 2, 2],
+        [2, 2, 0]
+    ]
+};
+const Z_piece = {
+    row: 0,
+    col: 3,
+    size: 3,
+    coords : [
+        [0, 0, 0],
+        [3, 3, 0],
+        [0, 3, 3]
+    ]
+};
+const T_piece = {
+    row: 0,
+    col: 3,
+    size: 3,
+    coords : [
+        [0, 0, 0],
+        [0, 4, 0],
+        [4, 4, 4]
+    ]
+};
+const L_piece = {
+    row: 0,
+    col: 3,
+    size: 3,
+    coords : [
+        [0, 0, 0],
+        [0, 0, 5],
+        [5, 5, 5]
+    ]
+};
+const J_piece = {
+    row: 0,
+    col: 3,
+    size: 3,
+    coords : [
+        [0, 0, 0],
+        [6, 0, 0],
+        [6, 6, 6]
+    ]
+};
+const I_piece = {
+    row: 0,
+    col: 3,
+    size: 4,
+    coords : [
+        [0, 0, 0, 0],
+        [7, 7, 7, 7],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
+};
 
 
 function Tetris() {
@@ -32,32 +112,8 @@ function Tetris() {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-        ]
-        
-    //     { 
-    //     row0 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0
-    //     row1 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 1
-    //     row2 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 2
-    //     row3 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 3
-    //     row4 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 4
-    //     row5 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 5
-    //     row6 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 6
-    //     row7 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 7
-    //     row8 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 8
-    //     row9 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 9
-    //     row10 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 10
-    //     row11 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 11
-    //     row12 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 12
-    //     row13 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 13
-    //     row14 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 14
-    //     row15 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 15
-    //     row16 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 16
-    //     row17 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 17
-    //     row18 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 18
-    //     row19 : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 19
-    // }
-    )
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]);
     
     function alert_play() {
         alert(play)
