@@ -2,12 +2,11 @@ import React, { useState, useEffect, Component } from 'react';
 import  '../styles/tetris.css'
 
 function Tetris() {
-    var [play, setPlay] = useState(false);
-    var [count, setCount] = useState(0);
-    var start = false;
-    var [piece, setPiece] = useState({});
-    var [hold, setHold] = useState({});
-    var [grid, setGrid] = useState(
+    var [play, setPlay] = useState(false);  // Whether game is playing or paused
+    var [count, setCount] = useState(0);    // Timer, 1 second per count
+    var [piece, setPiece] = useState({});   // Current piece being played
+    var [hold, setHold] = useState({});     // Current piece being held
+    var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
         [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -33,6 +32,7 @@ function Tetris() {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ]);
+
     /*
     Row/Col are the top left coordinate of the "coords"
     Size is the side length of the coords's "square"
@@ -113,12 +113,18 @@ function Tetris() {
         ]
     };
 
+    // Switches the piece being played with the piece being held
+    // TODO: Start piece back at the top
+    // TODO: Ensure one one switch is possible per placement
     function switchHold() {
         let temp = Object.assign({}, piece);
         setPiece(hold);
         setHold(temp);
     }
 
+    // Randomly Generates the next piece to play
+    // Runs once at very start
+    // TODO: Have a display of upcoming pieces
     function nextPiece() {
         let temp = 1 + Math.trunc(7 * Math.random())
         switch (temp) {
@@ -147,6 +153,8 @@ function Tetris() {
         console.log(piece.perm)
     }
 
+    // Rotates the current piece held
+    // TODO: Ensure the rotation does not cause collision
     function rotate() {
         let rotated = []
         for (let i = 0; i < piece.size; i++) {
@@ -161,24 +169,24 @@ function Tetris() {
             size : piece.size,
             perm : rotated});
         console.log(piece.perm)
-    }
-    
-    function alert_play() {
-        alert(play)
     };
 
+    // Pauses and unpauses game
     function toggle_play() {
         setPlay(!play)
     };
 
+    // Counts each second and moves piece per 5 seconds
     function counter() {
         if (count % 5 === 0) {
             move_piece();
         } else {
         console.log(count)}
         setCount(count + 1)
-    }
+    };
     
+    // Moves piece
+    // TODO: Move piece and check for collision
     function move_piece() {
         if (play === true) {
             console.log(count, play)
@@ -187,17 +195,18 @@ function Tetris() {
         }
     };
 
-    // Every second, componentDidUpdate counter
+    // Every second, componentDidUpdate counter, piece
     useEffect(() => {
         const timer = setInterval(counter, 1000);
         return () => clearInterval(timer);
-    }, [count, piece]);
+    }, [count]);
 
-    //componentDidMount piece
+    //componentDidMount piece, starts off with a random piece
     useEffect(() => {
         nextPiece();
     }, []);
     
+    // Returns the html component
     return (
         <React.Fragment>
           <div>
