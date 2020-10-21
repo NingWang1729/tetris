@@ -96,7 +96,7 @@ function Tetris() {
             <table className="tetris-page">
             <tr>
                 <td className="">
-                Instructions Page: "{play.toString()}"
+                Instructions Page:
                 </td>
                 <td className="">
                 Tetris
@@ -107,7 +107,8 @@ function Tetris() {
             </tr>
             <tr>
                 <td className="instructions-page">
-                table-stuff
+                    <p>Count: {count}</p>
+                    <p>{play ? "Playing" : "Paused"}</p>
                 </td>
                 <td className="tetris-screen">
                 <table className="tetris-screen-display">
