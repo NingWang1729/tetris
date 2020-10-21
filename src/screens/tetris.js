@@ -107,7 +107,6 @@ function Tetris() {
                 table-stuff
                 </td>
                 <td className="tetris-screen">
-                <p>table-stuff</p>
                 <table className="tetris-screen-display">
                     {grid.map((row) =>
                         <tr className="tetris-row">
