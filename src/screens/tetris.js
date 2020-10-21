@@ -30,6 +30,9 @@ function Tetris() {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
         ]
         
     //     { 
@@ -108,41 +111,11 @@ function Tetris() {
                 </td>
                 <td className="tetris-screen">
                 <table className="tetris-screen-display">
-                    {grid.map((row) =>
+                    {grid.slice(3,23).map((row) =>
                         <tr className="tetris-row">
                             {row.map((col) =>
                                 <td>{col}</td>
                             )}
-                            {/* <td>
-                                {row[0]}
-                            </td>
-                            <td>
-                                {row[1]}
-                            </td>
-                            <td>
-                                {row[2]}
-                            </td>
-                            <td>
-                                {row[3]}
-                            </td>
-                            <td>
-                                {row[4]}
-                            </td>
-                            <td>
-                                {row[5]}
-                            </td>
-                            <td>
-                                {row[6]}
-                            </td>
-                            <td>
-                                {row[7]}
-                            </td>
-                            <td>
-                                {row[8]}
-                            </td>
-                            <td>
-                                {row[9]}
-                            </td> */}
                         </tr>
                     )}
                     <tr>
