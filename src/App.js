@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import {BrowserRouter, Route} from 'react-router-dom';
 import './App.css';
 import Tetris from './screens/tetris';
+import Forum from './screens/forum'
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
       </header>
       <BrowserRouter>
         <Route path="/" exact={true} component={Tetris}/>
+        <Route path="/forum" exact={true} component={Forum}/>
       </BrowserRouter>
       <footer>
         <p>
