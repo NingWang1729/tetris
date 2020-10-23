@@ -194,7 +194,11 @@ function Tetris() {
             console.log(count, "play is not true")
         }
     };
-
+    function color(row_index, col_index) {
+        // alert("HI")
+        var s = {word: "hihi"}
+        return(s)
+    }
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
         const timer = setInterval(counter, 1000);
@@ -229,18 +233,18 @@ function Tetris() {
                     <p>HI {piece.perm}</p>
                 </td>
                 <td className="tetris-screen">
-                <table className="tetris-screen-display">
-                    {grid.slice(3,23).map((row) =>
-                        <tr className="tetris-row">
-                            {row.map((col) =>
-                                <td>{col}</td>
-                            )}
+                    <table className="tetris-screen-display">
+                        {grid.slice(3,23).map((row, row_index) =>
+                            <tr className="tetris-row">
+                                {row.map((col, col_index) =>
+                                    <td className={`${row_index + 3}-${col_index}`}>{col}</td>
+                                )}
+                            </tr>
+                        )}
+                        <tr>
+                            <td className={"{grid[0][0]}"}></td>
                         </tr>
-                    )}
-                    <tr>
-                        <td className={"{grid[0][0]}"}></td>
-                    </tr>
-                </table>
+                    </table>
                 </td>
                 <td className="next-pieces">
                 table-stuff
