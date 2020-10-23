@@ -237,7 +237,7 @@ function Tetris() {
                         {grid.slice(3,23).map((row, row_index) =>
                             <tr className="tetris-row">
                                 {row.map((col, col_index) =>
-                                    <td className={`${row_index + 3}-${col_index}`}>{col}</td>
+                                    <td  id="gray" className={`${row_index + 3}-${col_index}`}>{col}</td>
                                 )}
                             </tr>
                         )}
