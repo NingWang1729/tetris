@@ -137,44 +137,30 @@ function Tetris() {
         let temp = 1 + Math.trunc(7 * Math.random())
         switch (temp) {
             case 1:
-                setPiece(Object.assign({}, O_piece));
+                setPiece(Object.assign(O_piece));
                 break;
             case 2:
-                setPiece(Object.assign({}, S_piece))
+                setPiece(Object.assign(S_piece))
                 break;
             case 3:
-                setPiece(Object.assign({}, Z_piece))
+                setPiece(Object.assign(Z_piece))
                 break;
             case 4:
-                setPiece(Object.assign({}, T_piece))
+                setPiece(Object.assign(T_piece))
                 break;
             case 5:
-                setPiece(Object.assign({}, L_piece))
+                setPiece(Object.assign(L_piece))
                 break;
             case 6:
-                setPiece(Object.assign({}, J_piece))
+                setPiece(Object.assign(J_piece))
                 break;
             default:
-                setPiece(Object.assign({}, I_piece))
+                setPiece(Object.assign(I_piece))
                 break;
         }
-        //TODO: Why is piece.perm undefined???
         console.log(piece.perm)
     }
 
-    function delete_self() {
-        var grid2 = grid;
-        for (let i = piece.row; i < piece.row + piece.size; i++) {
-            for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (piece.perm[i - piece.row][j - piece.col] !== 0) {
-                    grid2[i][j] = piece.perm[i - piece.row][j - piece.col]
-                } else {
-                    grid2[i][j] = 0;
-                }
-            }
-        }
-        setGrid(grid2)
-    }
     // Rotates the current piece held
     // TODO: Ensure the rotation does not cause collision
     function rotate() {
@@ -219,8 +205,32 @@ function Tetris() {
 
     //TODO: Check for collisions
     function move_down() {
-        if (false) {
+        var hit_bottom = false;
+        for (let c = 0; c < piece.size; c++) {
+            for (let r = piece.size - 1; r > -1; r--){
+                if (piece.perm[r][c] > 0) {
+                    console.log("checking for bottom", r, c, piece.perm[r][c])
+                    if (piece.row + r === 22 || grid[piece.row + r + 1][piece.col + c] !== 0) {
+                        hit_bottom = true;
+                        console.log("Reason", piece.row + r, grid[piece.row + r + 1][piece.col + c])
+                    }
+                    break;
+                }
+            }
+        }
+        if (hit_bottom) {
             console.log("Reached bottom, cannot move down right now")
+            // var end_grid = grid;
+            // for (let i = piece.row; i < piece.row + piece.size; i++) {
+            //     for (let j = piece.col; j < piece.col + piece.size; j++) {
+            //         if (end_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+            //             end_grid[i][j] = piece.perm[i - piece.row][j - piece.col]
+            //         }
+            //     }
+            // }
+            // console.log(end_grid)
+            // setGrid(end_grid)
+            nextPiece();
             return(false);
         }
         var next_grid = grid;
@@ -267,14 +277,9 @@ function Tetris() {
             move_piece();
             updateColors();
         }
-        // if (count % 5 === 0) {
-        //     updateColors();
-        // }
-        console.log(count)
+        // console.log(count)
         setCount(count + 1)
     };
-    
-    
 
     // Updates color on client-side using current state of grid
     function updateColors() {
