@@ -381,4 +381,5 @@ function Tetris() {
     
 };
 
+// Default export
 export default Tetris;
