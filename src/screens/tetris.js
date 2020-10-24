@@ -44,12 +44,13 @@ function Tetris() {
     */
     const O_piece = {
         color : "yellow",
-        row : 1,
-        col : 4,
-        size : 2,
+        row : 0,
+        col : 3,
+        size : 3,
         perm : [
-            [1, 1],
-            [1, 1]
+            [0, 0, 0],
+            [0, 1, 1],
+            [0, 1, 1]
         ]
     };
     const S_piece = {
@@ -157,12 +158,43 @@ function Tetris() {
                 setPiece(Object.assign({}, I_piece))
                 break;
         }
+        //TODO: Why is piece.perm undefined???
         console.log(piece.perm)
     }
 
+    function delete_self() {
+        var grid2 = grid;
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col; j < piece.col + piece.size; j++) {
+                if (piece.perm[i - piece.row][j - piece.col] !== 0) {
+                    grid2[i][j] = piece.perm[i - piece.row][j - piece.col]
+                } else {
+                    grid2[i][j] = 0;
+                }
+            }
+        }
+        setGrid(grid2)
+    }
     // Rotates the current piece held
     // TODO: Ensure the rotation does not cause collision
     function rotate() {
+        if (piece.perm[1][1] === 1 || false) {
+            console.log("Cannot rotate here!")
+            return
+        }
+
+        //Deletes old piece
+        var cleaned_grid = grid;
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col; j < piece.col + piece.size; j++) {
+                if (cleaned_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                    cleaned_grid[i][j] = 0
+                }
+            }
+        }
+        setGrid(cleaned_grid)
+        
+        //Rotates old piece
         let rotated = []
         for (let i = 0; i < piece.size; i++) {
             let temp = []
@@ -171,10 +203,12 @@ function Tetris() {
             }
             rotated.push(temp)
         }
+
         setPiece({row : piece.row,
             col : piece.col,
             size : piece.size,
             perm : rotated});
+        
         console.log(piece.perm)
     };
 
@@ -183,25 +217,64 @@ function Tetris() {
         setPlay(!play)
     };
 
-    // Counts each second and moves piece per 5 seconds
-    function counter() {
-        if (count % 5 === 0 && play) {
-            move_piece();
-            updateColors();
-        } else {
-        console.log(count)}
-        setCount(count + 1)
-    };
-    
+    //TODO: Check for collisions
+    function move_down() {
+        if (false) {
+            console.log("Reached bottom, cannot move down right now")
+            return(false);
+        }
+        var next_grid = grid;
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col; j < piece.col + piece.size; j++) {
+                if (next_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                    next_grid[i][j] = 0
+                }
+            }
+        }
+        for (let i = piece.row + 1; i < piece.row + piece.size + 1; i++) {
+            for (let j = piece.col; j < piece.col + piece.size; j++) {
+                if (next_grid[i][j] === 0) {
+                    next_grid[i][j] = piece.perm[i - piece.row - 1][j - piece.col]
+                }
+            }
+        }
+        setPiece({
+            color : piece.color,
+            row : piece.row + 1,
+            col : piece.col,
+            size : piece.size,
+            perm : piece.perm
+        });
+        setGrid(next_grid);
+        console.log(piece);
+        console.log(grid)
+    }
+
     // Moves piece
     // TODO: Move piece and check for collision
     function move_piece() {
         if (play === true) {
             console.log(count, play);
+            move_down(1);
         } else {
             console.log(count, "play is not true");
         }
     };
+
+    // Counts each second and moves piece per 5 seconds
+    function counter() {
+        if (count % 10 === 0 && play) {
+            move_piece();
+            updateColors();
+        }
+        // if (count % 5 === 0) {
+        //     updateColors();
+        // }
+        console.log(count)
+        setCount(count + 1)
+    };
+    
+    
 
     // Updates color on client-side using current state of grid
     function updateColors() {
@@ -247,7 +320,7 @@ function Tetris() {
 
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
-        const timer = setInterval(counter, 1000);
+        const timer = setInterval(counter, 100);
         return () => clearInterval(timer);
     }, [count]);
 
