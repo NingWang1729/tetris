@@ -30,6 +30,53 @@
     color: gray;
 }
 
+#gray {
+    background-color: gray;
+    color: gray;
+}
+
+#yellow {
+    background-color: yellow;
+    color: yellow;
+    border-color: yellow;
+}
+
+#green {
+    background-color: lime;
+    color: lime;
+    border-color: lime;
+}
+
+#red {
+    background-color: red;
+    color: red;
+    border-color: red;
+}
+
+#purple {
+    background-color: blueviolet;
+    color: blueviolet;
+    border-color: blueviolet;
+}
+
+#orange {
+    background-color: orange;
+    color: orange;
+    border-color: orange;
+}
+
+#blue {
+    background-color: blue;
+    color: blue;
+    border-color: blue;
+}
+
+#cyan {
+    background-color: cyan;
+    color: cyan;
+    border-color: cyan;
+}
+
 .next-pieces {
     width: 25%;
 }
