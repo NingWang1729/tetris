@@ -202,6 +202,8 @@ function Tetris() {
             console.log(count, "play is not true");
         }
     };
+
+    // Updates color on client-side using current state of grid
     function updateColors() {
         console.log("Updating colors")
         let tetris_grid = document.getElementsByClassName("tetris-screen-display").item(0).childNodes;
