@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, cloneElement } from 'react';
 import  '../styles/tetris.css'
 
 function Tetris() {
@@ -27,10 +27,10 @@ function Tetris() {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+            [5, 0, 0, 0, 0, 0, 6, 6, 6, 7], //Row 20
+            [5, 3, 3, 0, 0, 2, 2, 4, 6, 7],
+            [5, 5, 3, 3, 2, 2, 4, 4, 4, 7]
         ]);
 
     /*
@@ -43,18 +43,20 @@ function Tetris() {
     - 3 hidden rows above grid 
     */
     const O_piece = {
-    row: 1,
-    col: 4,
-    size: 2,
-    perm : [
-        [1, 1],
-        [1, 1]
-    ]
+        color : "yellow",
+        row : 1,
+        col : 4,
+        size : 2,
+        perm : [
+            [1, 1],
+            [1, 1]
+        ]
     };
     const S_piece = {
-        row: 0,
-        col: 3,
-        size: 3,
+        color : "green",
+        row : 0,
+        col : 3,
+        size : 3,
         perm : [
             [0, 0, 0],
             [0, 2, 2],
@@ -62,9 +64,10 @@ function Tetris() {
         ]
     };
     const Z_piece = {
-        row: 0,
-        col: 3,
-        size: 3,
+        color : "red",
+        row : 0,
+        col : 3,
+        size : 3,
         perm : [
             [0, 0, 0],
             [3, 3, 0],
@@ -72,9 +75,10 @@ function Tetris() {
         ]
     };
     const T_piece = {
-        row: 0,
-        col: 3,
-        size: 3,
+        color : "purple",
+        row : 0,
+        col : 3,
+        size : 3,
         perm : [
             [0, 0, 0],
             [0, 4, 0],
@@ -82,9 +86,10 @@ function Tetris() {
         ]
     };
     const L_piece = {
-        row: 0,
-        col: 3,
-        size: 3,
+        color : "orange",
+        row : 0,
+        col : 3,
+        size : 3,
         perm : [
             [0, 0, 0],
             [0, 0, 5],
@@ -92,9 +97,10 @@ function Tetris() {
         ]
     };
     const J_piece = {
-        row: 0,
-        col: 3,
-        size: 3,
+        color : "blue",
+        row : 0,
+        col : 3,
+        size : 3,
         perm : [
             [0, 0, 0],
             [6, 0, 0],
@@ -102,9 +108,10 @@ function Tetris() {
         ]
     };
     const I_piece = {
-        row: 0,
-        col: 3,
-        size: 4,
+        color : "cyan",
+        row : 0,
+        col : 3,
+        size : 4,
         perm : [
             [0, 0, 0, 0],
             [7, 7, 7, 7],
@@ -178,8 +185,9 @@ function Tetris() {
 
     // Counts each second and moves piece per 5 seconds
     function counter() {
-        if (count % 5 === 0) {
+        if (count % 5 === 0 && play) {
             move_piece();
+            updateColors();
         } else {
         console.log(count)}
         setCount(count + 1)
@@ -189,16 +197,52 @@ function Tetris() {
     // TODO: Move piece and check for collision
     function move_piece() {
         if (play === true) {
-            console.log(count, play)
+            console.log(count, play);
         } else {
-            console.log(count, "play is not true")
+            console.log(count, "play is not true");
         }
     };
-    function color(row_index, col_index) {
-        // alert("HI")
-        var s = {word: "hihi"}
-        return(s)
-    }
+    function updateColors() {
+        console.log("Updating colors")
+        let tetris_grid = document.getElementsByClassName("tetris-screen-display").item(0).childNodes;
+        for (let i = 0; i < tetris_grid.length; i++) {
+            // Checks each row, from row 0 to 19
+            let row = tetris_grid.item(i).childNodes;
+            // console.log(i, row)
+            for (let j = 0; j < row.length; j++) {
+                let col = row.item(j)
+                switch (grid[i + 3][j]) {
+                    case 0:
+                        col.id = "gray";
+                        break;
+                    case 1:
+                        col.id = "yellow";
+                        break;
+                    case 2:
+                        col.id = "green";
+                        break;
+                    case 3:
+                        col.id = "red";
+                        break;
+                    case 4:
+                        col.id = "purple";
+                        break;
+                    case 5:
+                        col.id = "orange";
+                        break;
+                    case 6:
+                        col.id = "blue";
+                        break;
+                    case 7:
+                        col.id = "cyan";
+                        break;
+                    default:
+                        col.id = "gray"
+                }
+            }
+        }
+    };
+
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
         const timer = setInterval(counter, 1000);
@@ -237,13 +281,13 @@ function Tetris() {
                         {grid.slice(3,23).map((row, row_index) =>
                             <tr className="tetris-row">
                                 {row.map((col, col_index) =>
-                                    <td  id="gray" className={`${row_index + 3}-${col_index}`}>{col}</td>
+                                    <td  id={`${col}`} className={`${row_index + 3}-${col_index}`}>{col}</td>
                                 )}
                             </tr>
                         )}
-                        <tr>
+                        {/* <tr>
                             <td className={"{grid[0][0]}"}></td>
-                        </tr>
+                        </tr> */}
                     </table>
                 </td>
                 <td className="next-pieces">
