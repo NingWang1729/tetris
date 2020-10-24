@@ -32,6 +32,36 @@ function Tetris() {
             [5, 3, 3, 0, 0, 2, 2, 4, 6, 7],
             [5, 5, 3, 3, 2, 2, 4, 4, 4, 7]
         ]);
+    var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 5
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 10
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 15
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], 
+            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], //Row 25 Serves To Act As Lower Bound
+            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+        ]);
 
     /*
     Row/Col are the top left coordinate of the "coords"
@@ -158,7 +188,6 @@ function Tetris() {
                 setPiece(Object.assign(I_piece))
                 break;
         }
-        console.log(piece.perm)
     }
 
     // Rotates the current piece held
@@ -209,8 +238,8 @@ function Tetris() {
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
                 if (piece.perm[r][c] > 0) {
-                    console.log("checking for bottom", r, c, piece.perm[r][c])
-                    if (piece.row + r === 22 || grid[piece.row + r + 1][piece.col + c] !== 0) {
+                    console.log("checking for bottom", r, c, piece.perm[r][c], piece.row)
+                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
                         hit_bottom = true;
                         console.log("Reason", piece.row + r, grid[piece.row + r + 1][piece.col + c])
                     }
@@ -264,10 +293,10 @@ function Tetris() {
     // TODO: Move piece and check for collision
     function move_piece() {
         if (play === true) {
-            console.log(count, play);
-            move_down(1);
+            console.log(count/10, play);
+            move_down();
         } else {
-            console.log(count, "play is not true");
+            console.log(count/10, "play is not true");
         }
     };
 
@@ -352,7 +381,7 @@ function Tetris() {
             </tr>
             <tr>
                 <td className="instructions-page">
-                    <p>Count: {count}</p>
+                    <p>Seconds: {count/10}</p>
                     <p>{play ? "Playing" : "Paused"}</p>
                     <p>HI {piece.perm}</p>
                 </td>
