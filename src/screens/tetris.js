@@ -27,32 +27,6 @@ function Tetris() {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 7],
-            [5, 0, 0, 0, 0, 0, 6, 6, 6, 7], //Row 20
-            [5, 3, 3, 0, 0, 2, 2, 4, 6, 7],
-            [5, 5, 3, 3, 2, 2, 4, 4, 4, 7]
-        ]);
-    var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
-        [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 5
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 10
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 15
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -68,7 +42,7 @@ function Tetris() {
     Size is the side length of the coords's "square"
     The positive integer inside the coords represent color
 
-    Tetris Pieces start hidden above the grid and fall down.
+    Tetris Pieces start hidden above the grid and fall down
     - Grid display is 10 x 20
     - 3 hidden rows above grid 
     */
@@ -232,8 +206,9 @@ function Tetris() {
         setPlay(!play)
     };
 
-    //TODO: Check for collisions
+    // Moves piece downwards by one
     function move_down() {
+        // Checks if there is a block in the way
         var hit_bottom = false;
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
@@ -248,20 +223,12 @@ function Tetris() {
             }
         }
         if (hit_bottom) {
-            console.log("Reached bottom, cannot move down right now")
-            // var end_grid = grid;
-            // for (let i = piece.row; i < piece.row + piece.size; i++) {
-            //     for (let j = piece.col; j < piece.col + piece.size; j++) {
-            //         if (end_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
-            //             end_grid[i][j] = piece.perm[i - piece.row][j - piece.col]
-            //         }
-            //     }
-            // }
-            // console.log(end_grid)
-            // setGrid(end_grid)
+            console.log("Reached bottom; cannot move down")
             nextPiece();
             return(false);
         }
+
+        // Moves piece downwards on grid
         var next_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
@@ -290,7 +257,6 @@ function Tetris() {
     }
 
     // Moves piece
-    // TODO: Move piece and check for collision
     function move_piece() {
         if (play === true) {
             console.log(count/10, play);
@@ -300,7 +266,7 @@ function Tetris() {
         }
     };
 
-    // Counts each second and moves piece per 5 seconds
+    // Counter for the game
     function counter() {
         if (count % 10 === 0 && play) {
             move_piece();
@@ -394,9 +360,6 @@ function Tetris() {
                                 )}
                             </tr>
                         )}
-                        {/* <tr>
-                            <td className={"{grid[0][0]}"}></td>
-                        </tr> */}
                     </table>
                 </td>
                 <td className="next-pieces">
