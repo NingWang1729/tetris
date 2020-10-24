@@ -8,7 +8,7 @@ function Tetris() {
     var [hold, setHold] = useState({});     // Current piece being held
     var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
         [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
