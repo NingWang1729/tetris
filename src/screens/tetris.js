@@ -256,6 +256,104 @@ function Tetris() {
         console.log(grid)
     }
 
+    // Moves piece rightwards by one
+    function move_right() {
+        // Checks if there is a block in the way
+        var hit_right = false;
+        for (let r = 0; r < piece.size; r++) {
+            for (let c = piece.size - 1; c > -1; c--){
+                if (piece.perm[r][c] > 0) {
+                    console.log("checking for right", r, c, piece.perm[r][c], piece.col + c)
+                    if (piece.col + c === 9 || grid[piece.row + r][piece.col + c + 1] !== 0) {
+                        hit_right = true;
+                        console.log("Reason", piece.col + c, grid[piece.row + r][piece.col + c + 1])
+                    }
+                    break;
+                }
+            }
+        }
+        if (hit_right) {
+            console.log("Reached right; cannot move right")
+            return(false);
+        }
+
+        // Moves piece rightwards on grid
+        var right_grid = grid;
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col; j < piece.col + piece.size; j++) {
+                if (right_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                    right_grid[i][j] = 0
+                }
+            }
+        }
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col + 1; j < piece.col + piece.size + 1; j++) {
+                if (right_grid[i][j] === 0) {
+                    right_grid[i][j] = piece.perm[i - piece.row][j - piece.col - 1]
+                }
+            }
+        }
+        setPiece({
+            color : piece.color,
+            row : piece.row,
+            col : piece.col + 1,
+            size : piece.size,
+            perm : piece.perm
+        });
+        setGrid(right_grid);
+        console.log(piece);
+        console.log(grid)
+    };
+
+    // Moves piece leftwards by one
+    function move_left() {
+        // Checks if there is a block in the way
+        var hit_left = false;
+        for (let r = 0; r < piece.size; r++) {
+            for (let c = 0; c < piece.size; c++){
+                if (piece.perm[r][c] > 0) {
+                    console.log("checking for left", r, c, piece.perm[r][c], piece.col + c)
+                    if (piece.col + c === 0 || grid[piece.row + r][piece.col + c - 1] !== 0) {
+                        hit_left = true;
+                        console.log("Reason", piece.col, grid[piece.row + r][piece.col + c - 1])
+                    }
+                    break;
+                }
+            }
+        }
+        if (hit_left) {
+            console.log("Reached right; cannot move right")
+            return(false);
+        }
+
+        // Moves piece leftwards on grid
+        var left_grid = grid;
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col; j < piece.col + piece.size; j++) {
+                if (left_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                    left_grid[i][j] = 0
+                }
+            }
+        }
+        for (let i = piece.row; i < piece.row + piece.size; i++) {
+            for (let j = piece.col - 1; j < piece.col + piece.size - 1; j++) {
+                if (left_grid[i][j] === 0) {
+                    left_grid[i][j] = piece.perm[i - piece.row][j - piece.col + 1]
+                }
+            }
+        }
+        setPiece({
+            color : piece.color,
+            row : piece.row,
+            col : piece.col - 1,
+            size : piece.size,
+            perm : piece.perm
+        });
+        setGrid(left_grid);
+        console.log(piece);
+        console.log(grid);
+    };
+
     // Moves piece
     function move_piece() {
         if (play === true) {
@@ -268,10 +366,14 @@ function Tetris() {
 
     // Counter for the game
     function counter() {
-        if (count % 10 === 0 && play) {
+        if (count % 100 === 0 && play) {
             move_piece();
             updateColors();
         }
+        if (count % 2 == 0 && play) {
+            updateColors();
+        }
+        // updateColors();
         // console.log(count)
         setCount(count + 1)
     };
@@ -320,7 +422,7 @@ function Tetris() {
 
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
-        const timer = setInterval(counter, 100);
+        const timer = setInterval(counter, 10);
         return () => clearInterval(timer);
     }, [count]);
 
@@ -367,11 +469,17 @@ function Tetris() {
                 </td>
             </tr>
             </table>
+            <button onClick={move_left}>
+                Move Left
+            </button>
             <button onClick={rotate}>
-                Click me!
+                Rotate
             </button>
             <button onClick={toggle_play}>
-                Toggle Play
+                Play/Pause
+            </button>
+            <button onClick={move_right}>
+                Move Right
             </button>
             {/* <button onClick={start_game}>
                 Start Game
