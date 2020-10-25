@@ -85,9 +85,9 @@ function Tetris() {
         col : 3,
         size : 3,
         perm : [
-            [0, 0, 0],
             [0, 4, 0],
-            [4, 4, 4]
+            [4, 4, 4],
+            [0, 0, 0]
         ]
     };
     const L_piece = {
@@ -159,7 +159,7 @@ function Tetris() {
                 setPiece(Object.assign(J_piece));
                 break;
             default:
-                setPiece(Object.assign(I_piece));
+                setPiece(Object.assign(T_piece));
                 break;
         };
     };
@@ -184,6 +184,14 @@ function Tetris() {
             };
         };
         if (hit_bottom) {
+            if (piece.perm[1][1] === 4 && piece.perm[1][0] === 0) {
+                piece.perm[1][0] = 4;
+                piece.perm[0][1] = 0;
+                let t_grid = grid;
+                t_grid[piece.row + 1][piece.col] = 4;
+                t_grid[piece.row][piece.col + 1] = 0;
+                setGrid(t_grid)
+            }
             nextPiece();
             return(false);
         };
@@ -389,7 +397,7 @@ function Tetris() {
 
     // Counter for the game
     function counter() {
-        if (count % 100 === 0 && play) {
+        if (count % 200 === 0 && play) {
             move_piece();
         };
         updateColors();
@@ -438,7 +446,7 @@ function Tetris() {
 
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
-        const timer = setTimeout(counter, 5);
+        const timer = setTimeout(counter, 0.1);
         // const timer = setInterval(counter, 5);
         // return () => clearInterval(timer);
     }, [count]);
@@ -466,7 +474,7 @@ function Tetris() {
             </tr>
             <tr>
                 <td className="instructions-page">
-                    <p>Seconds: {Math.floor(count/100)}</p>
+                    <p>Seconds: {Math.floor(count/420)}</p>
                     <p>{play ? "Playing" : "Paused"}</p>
                     <p>HI {piece.perm}</p>
                 </td>
