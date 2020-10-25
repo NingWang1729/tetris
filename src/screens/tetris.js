@@ -466,7 +466,7 @@ function Tetris() {
             </tr>
             <tr>
                 <td className="instructions-page">
-                    <p>Seconds: {count/10}</p>
+                    <p>Seconds: {Math.floor(count/100)}</p>
                     <p>{play ? "Playing" : "Paused"}</p>
                     <p>HI {piece.perm}</p>
                 </td>
