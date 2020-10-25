@@ -2,6 +2,7 @@ import React, { useState, useEffect, cloneElement } from 'react';
 import  '../styles/tetris.css';
 
 function Tetris() {
+    var [order, setOrder] = useState([1, 2, 3, 4, 5, 6, 7]);
     var [play, setPlay] = useState(false);  // Whether game is playing or paused
     var [count, setCount] = useState(0);    // Timer, 1 second per count
     var [piece, setPiece] = useState({});   // Current piece being played
@@ -155,7 +156,10 @@ function Tetris() {
     // Runs once at very start
     // TODO: Have a display of upcoming pieces
     function nextPiece() {
-        let temp = 1 + Math.trunc(7 * Math.random());
+        let temp = order.splice(Math.floor(order.length * Math.random()), 1)[0];
+        if (order.length === 0) {
+            setOrder([1, 2, 3, 4, 5, 6, 7]);
+        }
         switch (temp) {
             case 1:
                 setPiece(Object.assign(O_piece));
@@ -176,7 +180,7 @@ function Tetris() {
                 setPiece(Object.assign(J_piece));
                 break;
             default:
-                setPiece(Object.assign(T_piece));
+                setPiece(Object.assign(I_piece));
                 break;
         };
         checkRows();
