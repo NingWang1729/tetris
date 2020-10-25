@@ -134,6 +134,23 @@ function Tetris() {
         setHold(temp);
     };
 
+    function checkRows() {
+        var check_grid = grid;
+        console.log(check_grid);
+        for (let r = 0; r < 23; r++) {
+            let product = 1;
+            for (let c = 0; c < 10; c++) {
+                product *= check_grid[r][c];
+            }
+            if (product !== 0) {
+                console.log(r, check_grid[r], product)
+                check_grid.splice(r, 1);
+                check_grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            }
+        }
+        setGrid(check_grid);
+    }
+
     // Randomly Generates the next piece to play
     // Runs once at very start
     // TODO: Have a display of upcoming pieces
@@ -162,6 +179,7 @@ function Tetris() {
                 setPiece(Object.assign(T_piece));
                 break;
         };
+        checkRows();
     };
 
     // Rotates the current piece held
@@ -399,6 +417,7 @@ function Tetris() {
     function counter() {
         if (count % 200 === 0 && play) {
             move_piece();
+            // checkRows();
         };
         updateColors();
         setCount(count + 1);
