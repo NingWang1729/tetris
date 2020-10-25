@@ -239,6 +239,7 @@ function Tetris() {
                 perm : piece.perm});
             console.log("CAN NOT ROTATE");
         };
+        updateColors();
     };
 
     // Pauses and unpauses game
@@ -390,11 +391,8 @@ function Tetris() {
     function counter() {
         if (count % 100 === 0 && play) {
             move_piece();
-            updateColors();
         };
-        if (count % 2 == 0 && play) {
-            updateColors();
-        };
+        updateColors();
         setCount(count + 1);
     };
 
