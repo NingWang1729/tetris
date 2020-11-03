@@ -1,4 +1,4 @@
-import React, { useState, useEffect, cloneElement } from 'react';
+import React, { useState, useEffect } from 'react';
 import  '../styles/tetris.css';
 
 function Tetris() {
@@ -137,20 +137,18 @@ function Tetris() {
 
     function checkRows() {
         var check_grid = grid;
-        console.log(check_grid);
         for (let r = 0; r < 23; r++) {
             let product = 1;
             for (let c = 0; c < 10; c++) {
                 product *= check_grid[r][c];
-            }
+            };
             if (product !== 0) {
-                console.log(r, check_grid[r], product)
                 check_grid.splice(r, 1);
                 check_grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-            }
-        }
+            };
+        };
         setGrid(check_grid);
-    }
+    };
 
     // Randomly Generates the next piece to play
     // Runs once at very start
@@ -159,7 +157,7 @@ function Tetris() {
         let temp = order.splice(Math.floor(order.length * Math.random()), 1)[0];
         if (order.length === 0) {
             setOrder([1, 2, 3, 4, 5, 6, 7]);
-        }
+        };
         switch (temp) {
             case 1:
                 setPiece(Object.assign(O_piece));
@@ -179,9 +177,11 @@ function Tetris() {
             case 6:
                 setPiece(Object.assign(J_piece));
                 break;
-            default:
+            case 7:
                 setPiece(Object.assign(I_piece));
                 break;
+            default:
+                setPiece(Object.assign(T_piece));
         };
         checkRows();
     };
@@ -190,11 +190,11 @@ function Tetris() {
     // TODO: Ensure the rotation does not cause collision
     function rotate() {
         // O piece cannot rotate
-        if (piece.perm[1][1] === 1 || false) {
+        if (piece.perm[1][1] === 1 || !play) {
             return(false);
         };
 
-        var hit_bottom = false;
+        let hit_bottom = false;
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
                 if (piece.perm[r][c] > 0) {
@@ -206,18 +206,19 @@ function Tetris() {
             };
         };
         if (hit_bottom) {
-            if (piece.perm[1][1] === 4 && piece.perm[1][0] === 0) {
+            let tspin_grid = grid;
+            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && tspin_grid[piece.row + 1][piece.col] === 0) {
                 piece.perm[1][0] = 4;
                 piece.perm[0][1] = 0;
                 let t_grid = grid;
                 t_grid[piece.row + 1][piece.col] = 4;
                 t_grid[piece.row][piece.col + 1] = 0;
-                setGrid(t_grid)
-            }
+                setGrid(t_grid);
+            };
             nextPiece();
             return(false);
         };
-        
+
         //Deletes old piece
         var cleaned_grid = grid;
         for (let i = 0; i < piece.size; i++) {
@@ -227,7 +228,6 @@ function Tetris() {
                 };
             };
         };
-        console.log("cleaned grid is",cleaned_grid);
 
         //Rotates old piece
         let rotated = [];
@@ -238,8 +238,8 @@ function Tetris() {
             };
             rotated.push(temp);
         };
-        
-        var can_rotate = true;
+
+        let can_rotate = true;
         if (piece.col < 0) {
             can_rotate = false;
         } else if (piece.col + piece.size > 10) {
@@ -253,23 +253,20 @@ function Tetris() {
                 };
             };
         };
-        
+
         if (can_rotate) {
-            setGrid(cleaned_grid);
             setPiece({row : piece.row,
                 col : piece.col,
                 size : piece.size,
                 perm : rotated});
-            console.log("CAN ROTATE");
+            setGrid(cleaned_grid);
         } else {
-            setGrid(grid);
             setPiece({row : piece.row,
                 col : piece.col,
                 size : piece.size,
                 perm : piece.perm});
-            console.log("CAN NOT ROTATE");
+            setGrid(grid);
         };
-        updateColors();
     };
 
     // Pauses and unpauses game
@@ -294,7 +291,7 @@ function Tetris() {
         if (hit_bottom) {
             nextPiece();
             return(false);
-        }
+        };
         // Moves piece downwards on grid
         var next_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
@@ -323,6 +320,9 @@ function Tetris() {
 
     // Moves piece rightwards by one
     function move_right() {
+        if (!play) {
+            return false;
+        };
         // Checks if there is a block in the way
         var hit_right = false;
         for (let r = 0; r < piece.size; r++) {
@@ -367,6 +367,9 @@ function Tetris() {
 
     // Moves piece leftwards by one
     function move_left() {
+        if (!play) {
+            return false;
+        };
         // Checks if there is a block in the way
         var hit_left = false;
         for (let r = 0; r < piece.size; r++) {
@@ -421,7 +424,6 @@ function Tetris() {
     function counter() {
         if (count % 200 === 0 && play) {
             move_piece();
-            // checkRows();
         };
         updateColors();
         setCount(count + 1);
