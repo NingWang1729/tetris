@@ -32,10 +32,10 @@ function Tetris() {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], //Row 25 Serves To Act As Lower Bound
-            [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            [7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+            [7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+            [7, 7, 7, 7, 7, 7, 7, 7, 7, 7], //Row 25 Serves To Act As Lower Bound
+            [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
         ]);
 
     /*
@@ -124,6 +124,39 @@ function Tetris() {
             [0, 0, 0, 0],
             [0, 0, 0, 0]
         ]
+    };
+
+    document.onkeydown = function(e) {
+        switch(e.which) {
+            case 37: // Left
+            case 65: // A
+                move_left();
+                break;
+            case 38: // up
+            case 82: // R
+            case 87: // W
+                rotate();
+                break;
+            case 39: // Right
+            case 68: // D
+                move_right();
+                break;
+            case 40: // Down
+            case 83: // S
+                fast_drop();
+                break;
+            case 32: // Space
+            case 80: // P
+                let sound = document.getElementById("tetris-theme");
+                if (play) {
+                    sound.pause();
+                } else {
+                    sound.play();
+                };
+                setPlay(!play);
+            default: return; // exit this handler for other keys
+        }
+        // e.preventDefault(); // prevent the default action (scroll / move caret)
     };
 
     // Switches the piece being played with the piece being held
@@ -271,6 +304,12 @@ function Tetris() {
 
     // Pauses and unpauses game
     function toggle_play() {
+        let sound = document.getElementById("tetris-theme");
+        if (play) {
+            sound.pause();
+        } else {
+            sound.play();
+        };
         setPlay(!play);
     };
 
@@ -289,6 +328,43 @@ function Tetris() {
             };
         };
         if (hit_bottom) {
+            if (piece.row === 0) {
+                alert("GAME OVER!");
+                setGrid([
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 5
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 10
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 15
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 20
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                    [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                    [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], //Row 25 Serves To Act As Lower Bound
+                    [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+                ]);
+                toggle_play();
+                let sound = document.getElementById("tetris-theme");
+                sound.load();
+                sound.pause();
+                return(false);
+            }
             nextPiece();
             return(false);
         };
@@ -316,6 +392,25 @@ function Tetris() {
             perm : piece.perm
         });
         setGrid(next_grid);
+        return(true);
+    };
+
+    function fast_drop() {
+        var hit_bottom = false;
+        for (let c = 0; c < piece.size; c++) {
+            for (let r = piece.size - 1; r > -1; r--){
+                if (piece.perm[r][c] > 0) {
+                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
+                        hit_bottom = true;
+                    };
+                    break;
+                };
+            };
+        };
+        if (!hit_bottom) {
+            move_down();
+            fast_drop();
+        }
     };
 
     // Moves piece rightwards by one
@@ -484,58 +579,62 @@ function Tetris() {
     // Returns the html component
     return (
         <React.Fragment>
-          <div>
-            <table className="tetris-page">
-            <tr>
-                <td className="">
-                Instructions Page:
-                </td>
-                <td className="">
-                Tetris
-                </td>
-                <td className="">
-                Next Pieces
-                </td>
-            </tr>
-            <tr>
-                <td className="instructions-page">
-                    <p>Seconds: {Math.floor(count/420)}</p>
-                    <p>{play ? "Playing" : "Paused"}</p>
-                    <p>HI {piece.perm}</p>
-                </td>
-                <td className="tetris-screen">
-                    <table className="tetris-screen-display">
-                        {grid.slice(3,23).map((row, row_index) =>
-                            <tr className="tetris-row">
-                                {row.map((col, col_index) =>
-                                    <td  id={`${col}`} className={`${row_index + 3}-${col_index}`}>{col}</td>
+            <div className="tetris-screen-container">
+                <audio id="tetris-theme" autoPlay loop>
+                    <source src="https://ia800504.us.archive.org/33/items/TetrisThemeMusic/Tetris.mp3" type="audio/mpeg"/>
+                    Your browser does not support the audio element.
+                </audio>
+                <table className="tetris-page">
+                    <tr>
+                        <td className="">
+                        Instructions Page:
+                        </td>
+                        <td className="">
+                        Tetris
+                        </td>
+                        <td className="">
+                        Next Pieces
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="instructions-page">
+                            <p>Seconds: {Math.floor(count/420)}</p>
+                            <p>{play ? "Playing" : "Paused"}</p>
+                            <p>HI {piece.perm}</p>
+                        </td>
+                        <td className="tetris-screen">
+                            <table className="tetris-screen-display">
+                                {grid.slice(3,23).map((row, row_index) =>
+                                    <tr className="tetris-row">
+                                        {row.map((col, col_index) =>
+                                            <td  id={`${col}`} className={`${row_index + 3}-${col_index}`}>{col}</td>
+                                        )}
+                                    </tr>
                                 )}
-                            </tr>
-                        )}
-                    </table>
-                </td>
-                <td className="next-pieces">
-                table-stuff
-                </td>
-            </tr>
-            </table>
-            <button onClick={move_left}>
-                Move Left
-            </button>
-            <button onClick={rotate}>
-                Rotate
-            </button>
-            <button onClick={toggle_play}>
-                Play/Pause
-            </button>
-            <button onClick={move_right}>
-                Move Right
-            </button>
-            {/* <button onClick={start_game}>
-                Start Game
-            </button> */}
-        </div>
-      </React.Fragment>);
+                            </table>
+                        </td>
+                        <td className="next-pieces">
+                        table-stuff
+                        </td>
+                    </tr>
+                </table>
+                <button onClick={move_left}>
+                    Move Left
+                </button>
+                <button onClick={rotate}>
+                    Rotate
+                </button>
+                <button onClick={toggle_play}>
+                    Play/Pause
+                </button>
+                <button onClick={move_right}>
+                    Move Right
+                </button>
+                {/* <button onClick={start_game}>
+                    Start Game
+                </button> */}
+            </div>
+        </React.Fragment>);
 };
 
 // Default export
