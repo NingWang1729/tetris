@@ -85,6 +85,9 @@ function Thread(props) {
 
     const [likes, setLikes] = useState(0);
     const [time, setTime] = useState('Just now');
+    const [comments, setComments] = useState([]);
+
+    //time constants
     const createdOn = props.createdOn;
     const min = 60 * 1000;
     const hour = min * 60;
@@ -92,7 +95,6 @@ function Thread(props) {
     const week = day * 7;
     const max = week + day;
     let dateTimer = setInterval(tick, 1000);
-    //var [subComments, setSubComments] = useState([]);
 
     //handles created '[some time] ago' message at bottom of forum
     function tick() {
@@ -122,15 +124,79 @@ function Thread(props) {
         setTime(message);
     }
 
+    function addComment(name, message) {
+        //make sure comment is not empty...
+        if (name === '' || message === '') {
+            alert('Must name comment and fill out description!');
+            return;
+        }
+
+        const date = new Date();
+        const key = name + ' ' + date.getTime();
+        let newComment = <SubCommentA key={key} name={name} message={message} createdOn={date}/>;
+        setComments(comments.concat([newComment]));
+    }
+
     //note: div instead of a react.fragment so that wrapper for the thread can be stylized
     return (
         <div className="thread">
             <div className="thread-name">{props.name}</div>
-            <button className="reply-button">Reply</button>
+            <button className="reply-button" onClick={()=> addComment('adam', 'test comment')}>Reply</button>
             <button className="like-button" onClick={()=> setLikes(likes+1)}>Like</button>
             <div className="likes">{likes}</div>
             <p>{props.message}</p>
+            {comments}
             <p>{time}</p>
+        </div>
+    );
+}
+
+//UI for a subcomment
+function SubCommentA(props) {
+    const [likes, setLikes] = useState(0);
+    const [time, setTime] = useState('Just now');
+
+    //time constants
+    const createdOn = props.createdOn;
+    const min = 60 * 1000;
+    const hour = min * 60;
+    const day = hour * 24;
+    const week = day * 7;
+    const max = week + day;
+    let dateTimer = setInterval(tick, 1000);
+
+    //handles created '[some time] ago' message at bottom of forum
+    function tick() {
+        const now = new Date();
+        const diff = now - createdOn;
+        let message = '';
+        switch (true) {
+            case diff < min:
+                message = Math.floor(diff/1000) + ' seconds ago';
+                break;
+            case diff < hour:
+                message = Math.floor(diff/min) + ' minutes ago';
+                break;
+            case diff < day:
+                message = Math.floor(diff/hour) + ' hours ago';
+                break;
+            case diff < week:
+                message = Math.floor(diff/day) + ' days ago';
+                break;
+            case diff < max:
+                message = '1 week ago';
+                break;
+            default:
+                message = createdOn;
+                break;
+        }
+        setTime(message);
+    }
+
+    return (
+        <div className="comment">
+            <div>{props.name}</div>
+            <div>{props.message}</div>
         </div>
     );
 }
