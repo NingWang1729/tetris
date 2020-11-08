@@ -1,6 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
 
+//returns message displaying how old a date is
+function howOld(createdOn) {
+    //time constants
+    const created = createdOn;
+    const min = 60 * 1000;
+    const hour = min * 60;
+    const day = hour * 24;
+    const week = day * 7;
+    const max = week + day;
+
+    //handles created '[some time] ago' message
+    const now = new Date();
+    const diff = now - created;
+    let message = '';
+    switch (true) {
+        case diff < min:
+            message = Math.floor(diff/1000) + ' seconds ago';
+            break;
+        case diff < hour:
+            message = Math.floor(diff/min) + ' minutes ago';
+            break;
+        case diff < day:
+            message = Math.floor(diff/hour) + ' hours ago';
+            break;
+        case diff < week:
+            message = Math.floor(diff/day) + ' days ago';
+            break;
+        case diff < max:
+            message = '1 week ago';
+            break;
+        default:
+            message = createdOn;
+            break;
+    }
+    return(message);
+}
+
 function Forum() {
     /*TO DO:
         -method to filter threads based on likes or some other metrics
@@ -78,7 +115,7 @@ function CreateNewThread(props) {
 function Thread(props) {
     /*TO DO:
         -create a 'posted by: user_name' message for threads
-        -allow possibility to add subcomments
+        -make subcomments dynamic
         -make it so user can only like or unlike, not keep adding likes
         -make tick function server dependent. Currently clocks tick out of sync b/c they are a porperty of the thread itself
     */
@@ -87,41 +124,10 @@ function Thread(props) {
     const [time, setTime] = useState('Just now');
     const [comments, setComments] = useState([]);
 
-    //time constants
     const createdOn = props.createdOn;
-    const min = 60 * 1000;
-    const hour = min * 60;
-    const day = hour * 24;
-    const week = day * 7;
-    const max = week + day;
     let dateTimer = setInterval(tick, 1000);
-
-    //handles created '[some time] ago' message at bottom of forum
     function tick() {
-        const now = new Date();
-        const diff = now - createdOn;
-        let message = '';
-        switch (true) {
-            case diff < min:
-                message = Math.floor(diff/1000) + ' seconds ago';
-                break;
-            case diff < hour:
-                message = Math.floor(diff/min) + ' minutes ago';
-                break;
-            case diff < day:
-                message = Math.floor(diff/hour) + ' hours ago';
-                break;
-            case diff < week:
-                message = Math.floor(diff/day) + ' days ago';
-                break;
-            case diff < max:
-                message = '1 week ago';
-                break;
-            default:
-                message = createdOn;
-                break;
-        }
-        setTime(message);
+        setTime(howOld(createdOn));
     }
 
     function addComment(name, message) {
@@ -156,47 +162,17 @@ function SubCommentA(props) {
     const [likes, setLikes] = useState(0);
     const [time, setTime] = useState('Just now');
 
-    //time constants
     const createdOn = props.createdOn;
-    const min = 60 * 1000;
-    const hour = min * 60;
-    const day = hour * 24;
-    const week = day * 7;
-    const max = week + day;
     let dateTimer = setInterval(tick, 1000);
-
-    //handles created '[some time] ago' message at bottom of forum
     function tick() {
-        const now = new Date();
-        const diff = now - createdOn;
-        let message = '';
-        switch (true) {
-            case diff < min:
-                message = Math.floor(diff/1000) + ' seconds ago';
-                break;
-            case diff < hour:
-                message = Math.floor(diff/min) + ' minutes ago';
-                break;
-            case diff < day:
-                message = Math.floor(diff/hour) + ' hours ago';
-                break;
-            case diff < week:
-                message = Math.floor(diff/day) + ' days ago';
-                break;
-            case diff < max:
-                message = '1 week ago';
-                break;
-            default:
-                message = createdOn;
-                break;
-        }
-        setTime(message);
+        setTime(howOld(createdOn));
     }
 
     return (
         <div className="comment">
-            <div>{props.name}</div>
-            <div>{props.message}</div>
+            <div className="comment-name">{props.name}</div>
+            <div className="comment-message">{props.message}</div>
+            <div>{time}</div>
         </div>
     );
 }

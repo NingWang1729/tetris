@@ -15,12 +15,6 @@
   margin: 0 5pt 0 5pt;
 }
 
-.comment {
-  margin: 2pt 0 0 10pt;
-  background-color: white;
-  text-align: left;
-}
-
 .thread {
   margin: 5pt;
   background-color: beige;
@@ -33,6 +27,21 @@
   font-weight: bold;
   display: inline-block;
 }
+
+.comment {
+  margin: 2pt 0 0 10pt;
+  background-color: white;
+  text-align: left;
+}
+.comment-name {
+  display: inline-block;
+  font-weight: bold;
+  margin: 0 5pt 0 0;
+}
+.comment-message {
+  display: inline-block;
+}
+
 .reply-button {
   margin: 0 5pt 0 5pt;
 }
