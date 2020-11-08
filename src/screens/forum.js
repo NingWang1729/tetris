@@ -12,7 +12,7 @@ function Forum() {
     const [threads, setThreads] = useState([]);
 
     //method to add a thread to threads array
-    function addThread(name, message, setName, setMessage) {
+    function addThread(name, message) {
         //make sure thread is not empty...
         if (name === '' || message === '') {
             alert('Must name thread and fill out description!');
@@ -23,8 +23,6 @@ function Forum() {
         const key = name + ' ' + date.getTime();
         let newThread = <Thread key={key} name={name} message={message} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
-        setName(''); //resets input field for name of thread to be place-holder text 
-        setMessage(''); //same but for message of thread
     }
 
     return (
@@ -44,6 +42,12 @@ function CreateNewThread(props) {
     const [name, setName] = useState(''); //state to store name of thread
     const [message, setMessage] = useState(''); //state to store message of thread
 
+    function handleClick() {
+        props.createThread(name, message);
+        setName('');
+        setMessage('');
+    }
+
     /*returns 2 input fields where user can input information about thread
     and a button that calls method to create a thread*/
     return (
@@ -61,7 +65,7 @@ function CreateNewThread(props) {
                 className="create-thread-input"
             />
             <button
-                onClick={() => props.createThread(name, message, setName, setMessage)}
+                onClick={() => handleClick()}
                 className="create-thread-btn"
             >
                 Create New Thread
@@ -76,6 +80,7 @@ function Thread(props) {
         -create a 'posted by: user_name' message for threads
         -allow possibility to add subcomments
         -make it so user can only like or unlike, not keep adding likes
+        -make tick function server dependent. Currently clocks tick out of sync b/c they are a porperty of the thread itself
     */
 
     const [likes, setLikes] = useState(0);
