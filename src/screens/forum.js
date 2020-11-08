@@ -36,7 +36,7 @@ function Forum() {
 //UI to get user input for creating new threads, calls Forum.addThread() w/ given information
 function CreateNewThread(props) {
     /*TO DO:
-        
+        -make it look nice
      */
 
     const [name, setName] = useState(''); //state to store name of thread
