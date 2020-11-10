@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
 
+/*TO-DO (general ideas): 
+    -create commentA and commentB stack to allow continual subcommenting
+    -generalize threads, commentA and commentB into one functional component decleration
+*/
+
 //returns message displaying how old a date is
 function howOld(createdOn) {
     //time constants
