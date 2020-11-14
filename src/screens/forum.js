@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
-
+import { axios } from 'axios'
 /*TO-DO (general ideas): 
     -create commentA and commentB stack to allow continual subcommenting
     -generalize threads, commentA and commentB into one functional component decleration
@@ -84,35 +84,42 @@ function CreateNewThread(props) {
     const [name, setName] = useState(''); //state to store name of thread
     const [message, setMessage] = useState(''); //state to store message of thread
 
-    function handleClick() {
+    function handleSubmit(e, name, message) {
+        e.preventDefault();
+        alert("You have forumed the discourse");
+        axios.post("/forum_posts/", {
+            headers: { "thread_name": {name},
+                        "thread_message" : {message} }
+        });
         props.createThread(name, message);
         setName('');
         setMessage('');
     }
-
     /*returns 2 input fields where user can input information about thread
     and a button that calls method to create a thread*/
     return (
-        <div>
+        <form action="/forum_posts/" method="POST" onSubmit={handleSubmit.bind(this, name, message)}>
             <input 
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Thread Name"
                 className="create-thread-input"
+                name="thread_name"
             />
             <input
                 value={message}
                 onChange={e => setMessage(e.target.value)}
                 placeholder="Thread Message"
                 className="create-thread-input"
+                name="thread_message"
             />
             <button
-                onClick={() => handleClick()}
+                type="submit"
                 className="create-thread-btn"
             >
                 Create New Thread
             </button>
-        </div>
+        </form>
     );
 }
 
