@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend Server",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NingWang1729/tetris.git"
+  },
+  "author": "\"Ning Wang\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NingWang1729/tetris/issues"
+  },
+  "homepage": "https://github.com/NingWang1729/tetris#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
