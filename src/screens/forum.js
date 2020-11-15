@@ -83,7 +83,6 @@ function Forum() {
         }
 
         const date = new Date();
-        alert(date);
         const key = name + ' ' + date.getTime();
         let newThread = <Thread key={key} name={name} message={message} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
@@ -105,26 +104,10 @@ function CreateNewThread(props) {
 
     const [name, setName] = useState(''); //state to store name of thread
     const [message, setMessage] = useState(''); //state to store message of thread
-    //This method changes the page to great annoyance
+
+    // Post Request
     function handleSubmit(e, thread_name, thread_message) {
-        e.preventDefault();
-        // props.createThread(name, message);
-        // alert("You have forumed the discourse");
-        props.createThread(name, message);
-        Post("http://localhost:5000/forum_posts/",
-            {
-                "thread_name": thread_name,
-                "thread_message" : thread_message
-            }
-        );
-        props.createThread(name, message);
-        setName('');
-        setMessage('');
-    }
-    // This method does not actually send the request for some reason.
-    function handleSubmit2(e, thread_name, thread_message) {
         // e.preventDefault();
-        alert("You have forumed the discourse");
         props.createThread(name, message);
         const data = { 
             "thread_name": thread_name,
@@ -141,13 +124,14 @@ function CreateNewThread(props) {
         setName('');
         setMessage('');
     }
+
     /*returns 2 input fields where user can input information about thread
     and a button that calls method to create a thread*/
     return (
         <form 
         action="http://localhost:5000/forum_posts/" 
         method="POST" 
-        onSubmit={handleSubmit2.bind(this, name, message)}
+        onSubmit={handleSubmit.bind(this, name, message)}
         >
             <input 
                 value={name}

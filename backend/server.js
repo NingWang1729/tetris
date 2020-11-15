@@ -35,8 +35,7 @@ app.post('/forum_posts/', function(req, res){
         thread_name : req.body.thread_name,
         thread_message : req.body.thread_message
     };
-    // forum_posts.push({'thread_name': req.body.thread_name, 'thread_message': req.body.thread_message})
-    forum_posts.push([req.body.thread_name, req.body.thread_message])
+    forum_posts.push([req.body.thread_name, req.body.thread_message, 0, new Date()])
     console.log(forum_posts);
     res.redirect('http://localhost:3000/forum');
     res.end(JSON.stringify(response));
