@@ -5,7 +5,7 @@ import '../styles/forum.css';
     -create commentA and commentB stack to allow continual subcommenting
     -generalize threads, commentA and commentB into one functional component decleration
 */
-const BACKEND_PORT = "https://633bf0fe7a5b.ngrok.io";
+const BACKEND_PORT = "https://e1d7f15e6973.ngrok.io";
 
 //returns message displaying how old a date is
 function howOld(createdOn) {
@@ -60,6 +60,7 @@ function Forum() {
                 response.json().then((data) => {
                     let old_posts = [];
                     for (let i = 0; i < data.length; i++) {
+                        console.log(data[i]);
                         let post_name = data[i].name;
                         let post_message = data[i].message;
                         let likes = data[i].likes;
