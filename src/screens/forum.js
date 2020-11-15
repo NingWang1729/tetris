@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
-import { axios } from 'axios'
+import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios'
+import axios from 'axios'
 /*TO-DO (general ideas): 
     -create commentA and commentB stack to allow continual subcommenting
     -generalize threads, commentA and commentB into one functional component decleration
@@ -49,9 +50,29 @@ function Forum() {
         -threads array needs to pull from server database
     */
 
-
     //creates a state that holds an array of all threads
     const [threads, setThreads] = useState([]);
+
+    //Retrieves previous posts from backend
+    useEffect(() => {
+        fetch('http://localhost:5000/forum_posts')
+            .then((response) => {
+                response.json().then((data) => {
+                    let old_posts = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let post_name = data[i][0];
+                        let post_message = data[i][1];
+                        let likes = data[i][2];
+                        let date = data[i][3];
+                        date = new Date(date);
+                        let key = post_name + ' ' + date.getTime();
+                        let newThread = <Thread key={key} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
+                        old_posts.push(newThread);
+                    }
+                    setThreads(old_posts);
+                });
+            });
+    }, []);
 
     //method to add a thread to threads array
     function addThread(name, message) {
@@ -62,6 +83,7 @@ function Forum() {
         }
 
         const date = new Date();
+        alert(date);
         const key = name + ' ' + date.getTime();
         let newThread = <Thread key={key} name={name} message={message} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
@@ -83,14 +105,38 @@ function CreateNewThread(props) {
 
     const [name, setName] = useState(''); //state to store name of thread
     const [message, setMessage] = useState(''); //state to store message of thread
-
-    function handleSubmit(e, name, message) {
+    //This method changes the page to great annoyance
+    function handleSubmit(e, thread_name, thread_message) {
         e.preventDefault();
+        // props.createThread(name, message);
+        // alert("You have forumed the discourse");
+        props.createThread(name, message);
+        Post("http://localhost:5000/forum_posts/",
+            {
+                "thread_name": thread_name,
+                "thread_message" : thread_message
+            }
+        );
+        props.createThread(name, message);
+        setName('');
+        setMessage('');
+    }
+    // This method does not actually send the request for some reason.
+    function handleSubmit2(e, thread_name, thread_message) {
+        // e.preventDefault();
         alert("You have forumed the discourse");
-        axios.post("/forum_posts/", {
-            headers: { "thread_name": {name},
-                        "thread_message" : {message} }
-        });
+        props.createThread(name, message);
+        const data = { 
+            "thread_name": thread_name,
+            "thread_message" : thread_message 
+        };
+        fetch("http://localhost:5000/forum_posts/", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
         props.createThread(name, message);
         setName('');
         setMessage('');
@@ -98,7 +144,11 @@ function CreateNewThread(props) {
     /*returns 2 input fields where user can input information about thread
     and a button that calls method to create a thread*/
     return (
-        <form action="/forum_posts/" method="POST" onSubmit={handleSubmit.bind(this, name, message)}>
+        <form 
+        action="http://localhost:5000/forum_posts/" 
+        method="POST" 
+        onSubmit={handleSubmit2.bind(this, name, message)}
+        >
             <input 
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -116,6 +166,7 @@ function CreateNewThread(props) {
             <button
                 type="submit"
                 className="create-thread-btn"
+                // onClick={handleSubmit2.bind(this, name, message)}
             >
                 Create New Thread
             </button>
@@ -132,7 +183,7 @@ function Thread(props) {
         -make tick function server dependent. Currently clocks tick out of sync b/c they are a porperty of the thread itself
     */
 
-    const [likes, setLikes] = useState(0);
+    const [likes, setLikes] = useState(props.likes);
     const [time, setTime] = useState('Just now');
     const [comments, setComments] = useState([]);
 
