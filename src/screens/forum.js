@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/forum.css';
-import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios'
-import axios from 'axios'
-/*TO-DO (general ideas): 
+
+/* TO-DO (general ideas): 
     -create commentA and commentB stack to allow continual subcommenting
     -generalize threads, commentA and commentB into one functional component decleration
 */
+const BACKEND_PORT = "https://c787f3d52e12.ngrok.io";
 
 //returns message displaying how old a date is
 function howOld(createdOn) {
-    //time constants
+    // Time constants
     const created = createdOn;
     const min = 60 * 1000;
     const hour = min * 60;
@@ -17,7 +17,7 @@ function howOld(createdOn) {
     const week = day * 7;
     const max = week + day;
 
-    //handles created '[some time] ago' message
+    // Handles created '[some time] ago' message
     const now = new Date();
     const diff = now - created;
     let message = '';
@@ -50,20 +50,20 @@ function Forum() {
         -threads array needs to pull from server database
     */
 
-    //creates a state that holds an array of all threads
+    // Creates a state that holds an array of all threads
     const [threads, setThreads] = useState([]);
 
-    //Retrieves previous posts from backend
+    // Retrieves previous posts from backend
     useEffect(() => {
-        fetch('http://localhost:5000/forum_posts')
+        fetch(`${BACKEND_PORT}/forum_posts`)
             .then((response) => {
                 response.json().then((data) => {
                     let old_posts = [];
                     for (let i = 0; i < data.length; i++) {
-                        let post_name = data[i][0];
-                        let post_message = data[i][1];
-                        let likes = data[i][2];
-                        let date = data[i][3];
+                        let post_name = data[i].name;
+                        let post_message = data[i].message;
+                        let likes = data[i].likes;
+                        let date = data[i].date;
                         date = new Date(date);
                         let key = post_name + ' ' + date.getTime();
                         let newThread = <Thread key={key} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
@@ -84,7 +84,7 @@ function Forum() {
 
         const date = new Date();
         const key = name + ' ' + date.getTime();
-        let newThread = <Thread key={key} name={name} message={message} createdOn={date}/>;
+        let newThread = <Thread key={key} name={name} message={message} likes={0} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
     }
 
@@ -105,34 +105,30 @@ function CreateNewThread(props) {
     const [name, setName] = useState(''); //state to store name of thread
     const [message, setMessage] = useState(''); //state to store message of thread
 
-    // Post Request
+    // Post Request To Backend
     function handleSubmit(e, thread_name, thread_message) {
-        // e.preventDefault();
+        e.preventDefault();
+        console.log("sent request")
         props.createThread(name, message);
         const data = { 
             "thread_name": thread_name,
             "thread_message" : thread_message 
         };
-        fetch("http://localhost:5000/forum_posts/", {
+        fetch(`${BACKEND_PORT}/forum_posts/`, {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
         })
-        props.createThread(name, message);
         setName('');
         setMessage('');
     }
 
-    /*returns 2 input fields where user can input information about thread
-    and a button that calls method to create a thread*/
+    /* Returns 2 input fields where user can input information about thread
+    and a button that calls method to create a thread */
     return (
-        <form 
-        action="http://localhost:5000/forum_posts/" 
-        method="POST" 
-        onSubmit={handleSubmit.bind(this, name, message)}
-        >
+        <form>
             <input 
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -150,7 +146,7 @@ function CreateNewThread(props) {
             <button
                 type="submit"
                 className="create-thread-btn"
-                // onClick={handleSubmit2.bind(this, name, message)}
+                onClick={(e) => handleSubmit(e, name, message)}
             >
                 Create New Thread
             </button>
