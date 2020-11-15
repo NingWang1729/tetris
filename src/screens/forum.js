@@ -5,7 +5,7 @@ import '../styles/forum.css';
     -create commentA and commentB stack to allow continual subcommenting
     -generalize threads, commentA and commentB into one functional component decleration
 */
-const BACKEND_PORT = "https://c787f3d52e12.ngrok.io";
+const BACKEND_PORT = "https://633bf0fe7a5b.ngrok.io";
 
 //returns message displaying how old a date is
 function howOld(createdOn) {
