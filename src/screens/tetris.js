@@ -396,6 +396,10 @@ function Tetris() {
     };
 
     function fast_drop() {
+        if(!play){
+          return;
+        }
+
         var hit_bottom = false;
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
