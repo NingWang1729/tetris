@@ -111,7 +111,7 @@ function CreateNewThread(props) {
         e.preventDefault();
         console.log("sent request")
         props.createThread(name, message);
-        const data = { 
+        let data = { 
             "thread_name": thread_name,
             "thread_message" : thread_message 
         };

@@ -21,6 +21,14 @@ CREATE TABLE forum_posts(
 );
 */
 
+/*
+CREATE TABLE tetris_leaderboard(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    score INT NOT NULL DEFAULT 0,
+    post_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
+);
+*/
+
 /*  ONE TIME INSERT
     var forum_posts_sql = [
         [1, 'C++', 'hello', 1, '2020-11-11 18:12:46'],

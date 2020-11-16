@@ -78,5 +78,36 @@
 }
 
 .next-pieces {
-    width: 25%;
+    display: flex;
+}
+
+.tetris-leaderboard {
+    width: 100%;
+    background-color: bisque;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.leaderboard-heading-1 {
+    font-size: 20pt;
+    font-weight: 900;
+}
+
+.leaderboard-heading-2 {
+    font-size: 16pt;
+    font-weight: 600;
+}
+
+.leaderboard-ranking {
+    font-size: 12;
+    font-weight: 500;
+    text-align: left;
+}
+
+.leaderboard-ranking td {
+    padding-left: 5%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
 }
