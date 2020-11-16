@@ -61,13 +61,14 @@ function Forum() {
                     let old_posts = [];
                     for (let i = 0; i < data.length; i++) {
                         console.log(data[i]);
+                        let id = data[i].id;
                         let post_name = data[i].name;
                         let post_message = data[i].message;
                         let likes = data[i].likes;
                         let date = data[i].date;
                         date = new Date(date);
-                        let key = post_name + ' ' + date.getTime();
-                        let newThread = <Thread key={key} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
+                        
+                        let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
                         old_posts.push(newThread);
                     }
                     setThreads(old_posts);
@@ -84,8 +85,9 @@ function Forum() {
         }
 
         const date = new Date();
-        const key = name + ' ' + date.getTime();
-        let newThread = <Thread key={key} name={name} message={message} likes={0} createdOn={date}/>;
+        // const key = name + ' ' + date.getTime();
+        // let newThread = <Thread key={key} name={name} message={message} likes={0} createdOn={date}/>;
+        let newThread = <Thread id={threads.length + 1} name={name} message={message} likes={0} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
     }
 
@@ -189,7 +191,7 @@ function Thread(props) {
 
     //note: div instead of a react.fragment so that wrapper for the thread can be stylized
     return (
-        <div className="thread">
+        <div className="thread" id={props.id}>
             <div className="thread-name">{props.name}</div>
             <button className="reply-button" onClick={()=> addComment('adam', 'test comment')}>Reply</button>
             <button className="like-button" onClick={()=> setLikes(likes+1)}>Like</button>
