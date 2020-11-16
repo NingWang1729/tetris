@@ -654,7 +654,7 @@ function Tetris() {
                                 {leaderboard.map((rank) => 
                                     <tr className='leaderboard-ranking' id={JSON.parse(rank).id}>
                                         <td>{JSON.parse(rank).score}</td>
-                                        <td>{dateformat(JSON.parse(rank).date, 'mm/dd/yyyy')}</td>
+                                        <td>{dateformat(JSON.parse(rank).date, 'mm/dd/yyyy hh:MM:ss')}</td>
                                     </tr>
                                 )}
                             </table>

@@ -58,7 +58,7 @@ app.post('/forum_posts/', (req, res) => {
 });
 
 app.get('/tetris_leaderboard/', (req, res) => {
-    connection.query(`SELECT * FROM tetris_leaderboard`,(error, results)=>{
+    connection.query(`SELECT * FROM tetris_leaderboard ORDER BY score DESC`,(error, results)=>{
         let forum_posts = [];
         for (let i = 0; i < results.length; i++) {
             let post = { id : results[i].id, score : results[i].score, date : results[i].post_date};
