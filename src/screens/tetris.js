@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import dateformat from 'dateformat';
 import  '../styles/tetris.css';
 
 function Tetris() {
+    const BACKEND_PORT = "https://e1d7f15e6973.ngrok.io";
+    var [leaderboard, setLeaderboard] = useState([]);
+    useEffect(() => {
+        fetch(`${BACKEND_PORT}/tetris_leaderboard/`)
+            .then((response) => {
+                response.json().then((data) => {
+                    let lb = [];
+                    for (let i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                        let ranking = { id : data[i].id, score : data[i].score, date : new Date(data[i].date)}
+                        lb.push(JSON.stringify(ranking));
+                    }
+                    setLeaderboard(lb);
+                });
+        });
+    }, []);
+    
     var [order, setOrder] = useState([1, 2, 3, 4, 5, 6, 7]);
     var [play, setPlay] = useState(false);  // Whether game is playing or paused
     var [count, setCount] = useState(0);    // Timer, 1 second per count
@@ -363,6 +381,13 @@ function Tetris() {
                 let sound = document.getElementById("tetris-theme");
                 sound.load();
                 sound.pause();
+                fetch(`${BACKEND_PORT}/tetris_leaderboard/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ score : count })
+                });
                 return(false);
             }
             nextPiece();
@@ -618,7 +643,21 @@ function Tetris() {
                             </table>
                         </td>
                         <td className="next-pieces">
-                        table-stuff
+                            <table className='tetris-leaderboard'>
+                                <tr className='leaderboard-heading-1'>
+                                    <td colSpan={2}><b>Leaderboard</b></td>
+                                </tr>
+                                <tr className='leaderboard-heading-2'>
+                                    <td><b>Score:</b></td>
+                                    <td><b>Date:</b></td>
+                                </tr>
+                                {leaderboard.map((rank) => 
+                                    <tr className='leaderboard-ranking' id={JSON.parse(rank).id}>
+                                        <td>{JSON.parse(rank).score}</td>
+                                        <td>{dateformat(JSON.parse(rank).date, 'mm/dd/yyyy')}</td>
+                                    </tr>
+                                )}
+                            </table>
                         </td>
                     </tr>
                 </table>

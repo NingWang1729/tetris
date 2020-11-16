@@ -38,21 +38,38 @@ app.post('/post/:id', (req, res) => {
     res.end();
 });
 
-app.get('/forum_posts/', function(req, res){
+app.get('/forum_posts/', (req, res) => {
     connection.query(`SELECT * FROM forum_posts`,(error, results)=>{
         let forum_posts = [];
         for (let i = 0; i < results.length; i++) {
             let post = { id : results[i].id, name : results[i].name, message : results[i].message, likes : results[i].likes, date : results[i].post_date};
             forum_posts.push(post);
         }
-        let forum_posts_json = JSON.stringify(forum_posts);
-        console.log(forum_posts_json);
-        res.send(forum_posts_json);
+        res.send(forum_posts);
     });
 });
 
-app.post('/forum_posts/', function(req, res){
+app.post('/forum_posts/', (req, res) => {
     connection.query(`INSERT INTO forum_posts (name, message) VALUES ('${req.body.thread_name}', '${req.body.thread_message}')`,(error, results)=>{
+        console.log(error);
+        console.log(results);
+    });
+    res.end();
+});
+
+app.get('/tetris_leaderboard/', (req, res) => {
+    connection.query(`SELECT * FROM tetris_leaderboard`,(error, results)=>{
+        let forum_posts = [];
+        for (let i = 0; i < results.length; i++) {
+            let post = { id : results[i].id, score : results[i].score, date : results[i].post_date};
+            forum_posts.push(post);
+        }
+        res.send(forum_posts);
+    });
+});
+
+app.post('/tetris_leaderboard/', (req, res) => {
+    connection.query(`INSERT INTO tetris_leaderboard (score) VALUES ('${req.body.score}')`,(error, results)=>{
         console.log(error);
         console.log(results);
     });

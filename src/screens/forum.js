@@ -75,7 +75,7 @@ function Forum() {
                 });
             });
     }, []);
-
+    
     //method to add a thread to threads array
     function addThread(name, message) {
         //make sure thread is not empty...
@@ -111,7 +111,7 @@ function CreateNewThread(props) {
         e.preventDefault();
         console.log("sent request")
         props.createThread(name, message);
-        const data = { 
+        let data = { 
             "thread_name": thread_name,
             "thread_message" : thread_message 
         };
