@@ -85,8 +85,6 @@ function Forum() {
         }
 
         const date = new Date();
-        // const key = name + ' ' + date.getTime();
-        // let newThread = <Thread key={key} name={name} message={message} likes={0} createdOn={date}/>;
         let newThread = <Thread id={threads.length + 1} name={name} message={message} likes={0} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
     }
@@ -118,12 +116,12 @@ function CreateNewThread(props) {
             "thread_message" : thread_message 
         };
         fetch(`${BACKEND_PORT}/forum_posts/`, {
-            method: 'POST', // or 'PUT'
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
-        })
+        });
         setName('');
         setMessage('');
     }
@@ -170,6 +168,17 @@ function Thread(props) {
     const [time, setTime] = useState('Just now');
     const [comments, setComments] = useState([]);
 
+    function addLike() {
+        fetch(`${BACKEND_PORT}/post/${props.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ likes : likes + 1 })
+        });
+        setLikes(likes + 1);
+    };
+
     const createdOn = props.createdOn;
     let dateTimer = setInterval(tick, 1000);
     function tick() {
@@ -194,7 +203,7 @@ function Thread(props) {
         <div className="thread" id={props.id}>
             <div className="thread-name">{props.name}</div>
             <button className="reply-button" onClick={()=> addComment('adam', 'test comment')}>Reply</button>
-            <button className="like-button" onClick={()=> setLikes(likes+1)}>Like</button>
+            <button className="like-button" onClick={addLike}>Like</button>
             <div className="likes">{likes}</div>
             <p>{props.message}</p>
             {comments}
