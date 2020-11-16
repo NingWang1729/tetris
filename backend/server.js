@@ -22,33 +22,41 @@ app.get('/', (req, res) => {
 })
 
 app.get('/post/:id', (req, res) => {
-    res.send(forum_posts_json[req.params.id - 1]);
+    connection.query(`SELECT * FROM forum_posts WHERE id = ${req.params.id}`, (error, results)=>{
+        let post = { id : results[0].id, name : results[0].name, message : results[0].message, likes : results[0].likes, date : results[0].post_date};
+        console.log(`Sent post ${post} to /post/${post.id}`);
+        res.send(post);
+    });
+});
+
+app.post('/post/:id', (req, res) => {
+    console.log(req.params.id, req.body.likes);
+    connection.query(`UPDATE forum_posts SET likes = ${req.body.likes} WHERE id = ${req.params.id}`, (error, results) => {
+        console.log(error);
+        console.log(results);
+    });
+    res.end();
 });
 
 app.get('/forum_posts/', function(req, res){
     connection.query(`SELECT * FROM forum_posts`,(error, results)=>{
-        console.log(results);
-        var forum_posts = [];
+        let forum_posts = [];
         for (let i = 0; i < results.length; i++) {
             let post = { id : results[i].id, name : results[i].name, message : results[i].message, likes : results[i].likes, date : results[i].post_date};
             forum_posts.push(post);
         }
-        var forum_posts_json = JSON.stringify(forum_posts);
+        let forum_posts_json = JSON.stringify(forum_posts);
         console.log(forum_posts_json);
         res.send(forum_posts_json);
     });
 });
 
 app.post('/forum_posts/', function(req, res){
-    response = {
-        thread_name : req.body.thread_name,
-        thread_message : req.body.thread_message
-    };
     connection.query(`INSERT INTO forum_posts (name, message) VALUES ('${req.body.thread_name}', '${req.body.thread_message}')`,(error, results)=>{
         console.log(error);
         console.log(results);
     });
-    res.end(JSON.stringify(response));
+    res.end();
 });
 
 app.listen(PORT, () => {
