@@ -75,7 +75,7 @@ function Forum() {
                 });
             });
     }, []);
-
+    
     //method to add a thread to threads array
     function addThread(name, message) {
         //make sure thread is not empty...

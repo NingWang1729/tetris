@@ -45,9 +45,7 @@ app.get('/forum_posts/', function(req, res){
             let post = { id : results[i].id, name : results[i].name, message : results[i].message, likes : results[i].likes, date : results[i].post_date};
             forum_posts.push(post);
         }
-        let forum_posts_json = JSON.stringify(forum_posts);
-        console.log(forum_posts_json);
-        res.send(forum_posts_json);
+        res.send(forum_posts);
     });
 });
 
