@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import dateformat from 'dateformat';
 import  '../styles/tetris.css';
 
-function Tetris() {
-    const BACKEND_PORT = "https://e1d7f15e6973.ngrok.io";
+function Tetris(port_to_backend) {
+    const BACKEND_PORT = port_to_backend;
     var [leaderboard, setLeaderboard] = useState([]);
     useEffect(() => {
         fetch(`${BACKEND_PORT}/tetris_leaderboard/`)
