@@ -20,7 +20,6 @@ function Forum(port_to_backend) {
                 response.json().then((data) => {
                     let old_posts = [];
                     for (let i = 0; i < data.length; i++) {
-                        console.log(data[i]);
                         let id = data[i].id;
                         let post_name = data[i].name;
                         let post_message = data[i].message;
@@ -43,9 +42,11 @@ function Forum(port_to_backend) {
     function addThread(name, message) {
         //make sure thread is not empty...
         if (name === '' || message === '') {
-            alert('Must name thread and fill out description!');
+            alert("Name and message cannot be empty!");
             return;
-        }
+        } else {
+            console.log("User has added a thread...");
+        };
 
         const date = new Date();
         let newThread = <Thread id={threads.length + 1} name={name} message={message} likes={0} createdOn={date}/>;
@@ -53,15 +54,11 @@ function Forum(port_to_backend) {
     }
 
     function loadComments() {
-        // e.preventDefault();
-        console.log("Starting dev mode...");
         fetch(`${BACKEND_PORT}/forum_comments/`)
             .then((response) => {
                 response.json().then((data) => {
                     var threads = document.getElementsByClassName("thread");
                     for (let i = 0; i < data.length; i++) {
-                        console.log(data[i]);
-                        
                         // Retrieve data from backend
                         let name = data[i].name;
                         let message = data[i].message;
@@ -110,9 +107,10 @@ function Forum(port_to_backend) {
             e.preventDefault();
             props.createThread(name, message);
             if (thread_name == '' || thread_message == '') {
+                console.log("User attempted to post an empty thread...");
                 return false;
             } else {
-                console.log("sent request");
+                console.log("User posted a thread...");
             }
             let data = { 
                 "thread_name": thread_name,
@@ -131,12 +129,12 @@ function Forum(port_to_backend) {
 
         function sortByLikes(e) {
             e.preventDefault();
+            console.log("User is sorting posts by likes...");
             fetch(`${BACKEND_PORT}/forum_posts_by_likes/`)
                 .then((response) => {
                     response.json().then((data) => {
                         let old_posts = [];
                         for (let i = 0; i < data.length; i++) {
-                            console.log(data[i]);
                             let id = data[i].id;
                             let post_name = data[i].name;
                             let post_message = data[i].message;
@@ -154,12 +152,12 @@ function Forum(port_to_backend) {
 
         function sortByNew(e) {
             e.preventDefault();
+            console.log("User is sorting posts by new...")
             fetch(`${BACKEND_PORT}/forum_posts_by_new/`)
                 .then((response) => {
                     response.json().then((data) => {
                         let old_posts = [];
                         for (let i = 0; i < data.length; i++) {
-                            console.log(data[i]);
                             let id = data[i].id;
                             let post_name = data[i].name;
                             let post_message = data[i].message;
@@ -261,11 +259,11 @@ function Forum(port_to_backend) {
             if (name === '' || message === '') {
                 alert('Must name comment and fill out description!');
                 return;
+            } else {
+                console.log("User has added a comment...");
             }
-            let post_id = props.post_id;
             const date = new Date();
             const key = name + ' ' + date.getTime();
-            console.log(props);
             let newComment = <SubCommentA key={key} name={name} message={message} createdOn={date} post_id={props.id}/>;
             setComments(comments.concat([newComment]));
         }
@@ -279,7 +277,7 @@ function Forum(port_to_backend) {
                 <div className="likes">{likes}</div>
                 <p>{props.message}</p>
                 {comments}
-                {showAddCommentField ? <CreateSubCommentForm createComment={addComment} hide={() => setVisibility(false)}/> : null}
+                {showAddCommentField ? <CreateSubCommentForm createComment={addComment} post_id={props.id} hide={() => setVisibility(false)}/> : null}
                 <p>{time}</p>
             </div>
         );
@@ -290,10 +288,31 @@ function Forum(port_to_backend) {
         //state to store message of the comment
         const [message, setMessage] = useState('');
 
-        function handleSubmit(e, thread_name, thread_message) {
+        function handleSubmit(e, comment_message) {
             e.preventDefault();
             //need to change this from 'Adam' to User_ID or something similar
-            props.createComment('Adam', message);
+            props.createComment('Anonymous', message);
+            // start
+            if (comment_message == '') {
+                console.log("User attempted to comment an empty comment...");
+                return false;
+            } else {
+                console.log("Comment is valid...");
+            }
+            let data = { 
+                comment_name: 'Anonymous',
+                comment_message : comment_message,
+                post_id : props.post_id
+            };
+            console.log(data);
+            fetch(`${BACKEND_PORT}/forum_comments/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            // end
             props.hide();
             setMessage('');
         }
