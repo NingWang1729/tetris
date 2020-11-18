@@ -55,7 +55,7 @@ function Forum(port_to_backend) {
     }
 
     //UI to get user input for creating new threads, calls Forum.addThread() w/ given information
-    function CreateNewThread(props) {
+    function ForumManager(props) {
         /*TO DO:
             -make it look nice
         */
@@ -66,8 +66,12 @@ function Forum(port_to_backend) {
         // Post Request To Backend
         function handleSubmit(e, thread_name, thread_message) {
             e.preventDefault();
-            console.log("sent request")
             props.createThread(name, message);
+            if (thread_name == '' || thread_message == '') {
+                return false;
+            } else {
+                console.log("sent request");
+            }
             let data = { 
                 "thread_name": thread_name,
                 "thread_message" : thread_message 
@@ -82,6 +86,10 @@ function Forum(port_to_backend) {
             setName('');
             setMessage('');
         }
+
+        function sortByLikes(e) {
+            alert("Sorting by likes!");
+        };
 
         /* Returns 2 input fields where user can input information about thread
         and a button that calls method to create a thread */
@@ -102,11 +110,18 @@ function Forum(port_to_backend) {
                     name="thread_message"
                 />
                 <button
-                    type="submit"
+                    type="button"
                     className="create-thread-btn"
                     onClick={(e) => handleSubmit(e, name, message)}
                 >
-                    Create New Thread
+                    Create Post
+                </button>
+                <button
+                    type="button"
+                    className="sort-by-likes-btn"
+                    onClick={(e) => sortByLikes(e)}
+                >
+                    Sort by Likes
                 </button>
             </form>
         );
@@ -263,7 +278,7 @@ function Forum(port_to_backend) {
     // Returns Forum
     return (
         <React.Fragment>
-            <CreateNewThread createThread={addThread}/>
+            <ForumManager createThread={addThread}/>
             {threads}
         </React.Fragment>
     );
