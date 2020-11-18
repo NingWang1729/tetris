@@ -7,18 +7,13 @@ import '../styles/forum.css';
 */
 
 function Forum(port_to_backend) {
-    /*TO DO:
-        -method to filter threads based on likes or some other metrics
-        -threads array needs to pull from server database
-    */
-
     // Port to backend server
     const BACKEND_PORT = port_to_backend;
     
     // Creates a state that holds an array of all threads
     const [threads, setThreads] = useState([]);
 
-    // Retrieves previous posts from backend
+    // Retrieves data from backend
     useEffect(() => {
         fetch(`${BACKEND_PORT}/forum_posts`)
             .then((response) => {
@@ -38,6 +33,9 @@ function Forum(port_to_backend) {
                     }
                     setThreads(old_posts);
                 });
+            })
+            .then(() => {
+                loadComments();
             });
     }, []);
     
@@ -53,6 +51,50 @@ function Forum(port_to_backend) {
         let newThread = <Thread id={threads.length + 1} name={name} message={message} likes={0} createdOn={date}/>;
         setThreads(threads.concat([newThread]));
     }
+
+    function loadComments() {
+        // e.preventDefault();
+        console.log("Starting dev mode...");
+        fetch(`${BACKEND_PORT}/forum_comments/`)
+            .then((response) => {
+                response.json().then((data) => {
+                    var threads = document.getElementsByClassName("thread");
+                    for (let i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                        
+                        // Retrieve data from backend
+                        let name = data[i].name;
+                        let message = data[i].message;
+                        let likes = data[i].likes;
+                        let date = data[i].date;
+                        date = new Date(date);
+                        let post_id = data[i].post_id;
+                        
+                        // Create the comment
+                        let current_thread = threads.item(post_id - 1);
+                        let comment = document.createElement('div');
+                        comment.className = "comment";
+                        comment.setAttribute("post_id", post_id);
+                        let comment_name = document.createElement('div');
+                        comment_name.className = "comment-name";
+                        comment_name.textContent = name;
+                        let comment_likes = document.createElement('div');
+                        comment_likes.className = "likes";
+                        comment_likes.textContent = `Likes: ${likes}`;
+                        let comment_message = document.createElement('div');
+                        comment_message.className = "comment-message";
+                        comment_message.textContent = message;
+                        let comment_date = document.createElement('div');
+                        comment_date.textContent = date;
+                        comment.appendChild(comment_name);
+                        comment.appendChild(comment_likes);
+                        comment.appendChild(comment_message);
+                        comment.appendChild(comment_date);
+                        current_thread.insertBefore(comment, current_thread.lastChild);
+                    }
+                });
+            });
+    };
 
     //UI to get user input for creating new threads, calls Forum.addThread() w/ given information
     function ForumManager(props) {
@@ -172,6 +214,13 @@ function Forum(port_to_backend) {
                 >
                     Sort by New
                 </button>
+                <button
+                    type="button"
+                    // className="sort-by-new-btn"
+                    onClick={(e) => loadComments(e)}
+                >
+                    Dev Button
+                </button>
             </form>
         );
     }
@@ -207,16 +256,17 @@ function Forum(port_to_backend) {
             setTime(howOld(createdOn));
         }
 
-        function addComment(name , message) {
+        function addComment(name, message) {
             //make sure comment is not empty...
             if (name === '' || message === '') {
                 alert('Must name comment and fill out description!');
                 return;
             }
-
+            let post_id = props.post_id;
             const date = new Date();
             const key = name + ' ' + date.getTime();
-            let newComment = <SubCommentA key={key} name={name} message={message} createdOn={date}/>;
+            console.log(props);
+            let newComment = <SubCommentA key={key} name={name} message={message} createdOn={date} post_id={props.id}/>;
             setComments(comments.concat([newComment]));
         }
 
@@ -277,20 +327,19 @@ function Forum(port_to_backend) {
     //UI for a subcomment
     function SubCommentA(props) {
         const [likes, setLikes] = useState(0);
-        const [time, setTime] = useState('Just now');
-
-        const createdOn = props.createdOn;
-        let dateTimer = setInterval(tick, 1000);
-        function tick() {
-            setTime(howOld(createdOn));
-        }
-
+        // const [time, setTime] = useState('Just now');
+        // const createdOn = props.createdOn;
+        // let dateTimer = setInterval(tick, 1000);
+        // function tick() {
+        //     setTime(howOld(createdOn));
+        // }
+        let date = String(props.createdOn);
         return (
-            <div className="comment">
+            <div className="comment" post_id={props.post_id}>
                 <div className="comment-name">{props.name}</div>
+                <div className="likes">Likes: {likes}</div>
                 <div className="comment-message">{props.message}</div>
-                <div>{likes}</div>
-                <div>{time}</div>
+                <div>{date}</div>
             </div>
         );
     };

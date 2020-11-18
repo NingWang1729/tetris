@@ -49,15 +49,17 @@
   margin: 0 5pt 0 0;
 }
 .comment-message {
-  display: inline-block;
+  padding-left: 1%;
 }
 
 .reply-button {
   margin: 0 5pt 0 5pt;
 }
+
 .like-button {
   margin: 0 5pt 0 5pt;
 }
+
 .likes {
   display: inline-block;
 }
