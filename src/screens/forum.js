@@ -165,7 +165,7 @@ function Forum(port_to_backend) {
                 <div className="likes">{likes}</div>
                 <p>{props.message}</p>
                 {comments}
-                {showAddCommentField ? <CreateSubCommentForm createComment={addComment} cancelComment={() => setVisibility(false)}/> : null}
+                {showAddCommentField ? <CreateSubCommentForm createComment={addComment} hide={() => setVisibility(false)}/> : null}
                 <p>{time}</p>
             </div>
         );
@@ -180,6 +180,7 @@ function Forum(port_to_backend) {
             e.preventDefault();
             //need to change this from 'Adam' to User_ID or something similar
             props.createComment('Adam', message);
+            props.hide();
             setMessage('');
         }
 
@@ -201,7 +202,7 @@ function Forum(port_to_backend) {
                 </button>
                 <button
                     type="submit"
-                    onClick={() => props.cancelComment()}
+                    onClick={() => props.hide()}
                 >
                     Cancel
                 </button>
@@ -224,6 +225,7 @@ function Forum(port_to_backend) {
             <div className="comment">
                 <div className="comment-name">{props.name}</div>
                 <div className="comment-message">{props.message}</div>
+                <div>{likes}</div>
                 <div>{time}</div>
             </div>
         );
