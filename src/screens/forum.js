@@ -165,7 +165,7 @@ function Forum(port_to_backend) {
                 <div className="likes">{likes}</div>
                 <p>{props.message}</p>
                 {comments}
-                {showAddCommentField ? <CreateSubCommentForm createComment={addComment}/> : null}
+                {showAddCommentField ? <CreateSubCommentForm createComment={addComment} cancelComment={() => setVisibility(false)}/> : null}
                 <p>{time}</p>
             </div>
         );
@@ -198,6 +198,12 @@ function Forum(port_to_backend) {
                     onClick={(e) => handleSubmit(e, message)}
                 >
                     Comment
+                </button>
+                <button
+                    type="submit"
+                    onClick={() => props.cancelComment()}
+                >
+                    Cancel
                 </button>
             </form>
         );
