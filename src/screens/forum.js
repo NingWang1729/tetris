@@ -88,7 +88,49 @@ function Forum(port_to_backend) {
         }
 
         function sortByLikes(e) {
-            alert("Sorting by likes!");
+            e.preventDefault();
+            fetch(`${BACKEND_PORT}/forum_posts_by_likes/`)
+                .then((response) => {
+                    response.json().then((data) => {
+                        let old_posts = [];
+                        for (let i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            let id = data[i].id;
+                            let post_name = data[i].name;
+                            let post_message = data[i].message;
+                            let likes = data[i].likes;
+                            let date = data[i].date;
+                            date = new Date(date);
+                            
+                            let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
+                            old_posts.push(newThread);
+                        }
+                        setThreads(old_posts);
+                    });
+                });
+        };
+
+        function sortByNew(e) {
+            e.preventDefault();
+            fetch(`${BACKEND_PORT}/forum_posts_by_new/`)
+                .then((response) => {
+                    response.json().then((data) => {
+                        let old_posts = [];
+                        for (let i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            let id = data[i].id;
+                            let post_name = data[i].name;
+                            let post_message = data[i].message;
+                            let likes = data[i].likes;
+                            let date = data[i].date;
+                            date = new Date(date);
+                            
+                            let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
+                            old_posts.push(newThread);
+                        }
+                        setThreads(old_posts);
+                    });
+                });
         };
 
         /* Returns 2 input fields where user can input information about thread
@@ -123,6 +165,13 @@ function Forum(port_to_backend) {
                 >
                     Sort by Likes
                 </button>
+                <button
+                    type="button"
+                    className="sort-by-new-btn"
+                    onClick={(e) => sortByNew(e)}
+                >
+                    Sort by New
+                </button>
             </form>
         );
     }
@@ -137,7 +186,7 @@ function Forum(port_to_backend) {
         */
 
         const [likes, setLikes] = useState(props.likes);
-        const [time, setTime] = useState('Just now');
+        const [time, setTime] = useState('Loading...');
         const [comments, setComments] = useState([]);
         const [showAddCommentField, setVisibility] = useState(false);
 
