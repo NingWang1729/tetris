@@ -11,6 +11,11 @@
   font-weight: bold;
 }
 
+.sort-by-likes-btn {
+  font-size: 15pt;
+  font-weight: bold;
+}
+
 .create-thread-input {
   margin: 0 5pt 0 5pt;
 }
