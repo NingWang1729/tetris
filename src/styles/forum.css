@@ -63,3 +63,7 @@
 .likes {
   display: inline-block;
 }
+
+.dev-button {
+  visibility: hidden;
+}
