@@ -595,7 +595,7 @@ function Tetris(port_to_backend) {
 
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
-        const timer = setTimeout(counter, 0.1);
+        const timer = setTimeout(counter, 1);
         // const timer = setInterval(counter, 5);
         // return () => clearInterval(timer);
     }, [count]);

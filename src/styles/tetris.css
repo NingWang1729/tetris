@@ -22,6 +22,7 @@
 }
 
 .tetris-screen-display td {
+    width: 10%;
     border: 1px;
     border-style: solid;
     border-color: gray;
