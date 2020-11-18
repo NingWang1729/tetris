@@ -6,7 +6,7 @@ import Tetris from './screens/tetris';
 import Forum from './screens/forum';
 
 // To be updated every 8 hours until a permanent backend port is found
-const BACKEND_PORT = "https://120ab89ecef6.ngrok.io";
+const BACKEND_PORT = "https://7bf21e30cbce.ngrok.io";
 
 function App() {
     return (
@@ -16,7 +16,7 @@ function App() {
                     header
                 </p>
             </header>
-            <BrowserRouter>
+            <BrowserRouter basename={window.location.path || ''}>
                 <Route path="/" exact={true} component={Home.bind(this, BACKEND_PORT)}/>
                 <Route path="/tetris" exact={true} component={Tetris.bind(this, BACKEND_PORT)}/>
                 <Route path="/forum" exact={true} component={Forum.bind(this, BACKEND_PORT)}/>
