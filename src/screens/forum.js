@@ -37,61 +37,6 @@ function Forum(port_to_backend) {
                 loadComments();
             });
     }, []);
-    
-    //method to add a thread to threads array
-    function addThread(name, message) {
-        //make sure thread is not empty...
-        if (name === '' || message === '') {
-            alert("Name and message cannot be empty!");
-            return;
-        } else {
-            console.log("User has added a thread...");
-        };
-
-        const date = new Date();
-        let newThread = <Thread id={threads.length + 1} name={name} message={message} likes={0} createdOn={date}/>;
-        setThreads(threads.concat([newThread]));
-    }
-
-    function loadComments() {
-        fetch(`${BACKEND_PORT}/forum_comments/`)
-            .then((response) => {
-                response.json().then((data) => {
-                    var threads = document.getElementsByClassName("thread");
-                    for (let i = 0; i < data.length; i++) {
-                        // Retrieve data from backend
-                        let name = data[i].name;
-                        let message = data[i].message;
-                        let likes = data[i].likes;
-                        let date = data[i].date;
-                        date = new Date(date);
-                        let post_id = data[i].post_id;
-                        
-                        // Create the comment
-                        let current_thread = threads.item(post_id - 1);
-                        let comment = document.createElement('div');
-                        comment.className = "comment";
-                        comment.setAttribute("post_id", post_id);
-                        let comment_name = document.createElement('div');
-                        comment_name.className = "comment-name";
-                        comment_name.textContent = name;
-                        let comment_likes = document.createElement('div');
-                        comment_likes.className = "likes";
-                        comment_likes.textContent = `Likes: ${likes}`;
-                        let comment_message = document.createElement('div');
-                        comment_message.className = "comment-message";
-                        comment_message.textContent = message;
-                        let comment_date = document.createElement('div');
-                        comment_date.textContent = date;
-                        comment.appendChild(comment_name);
-                        comment.appendChild(comment_likes);
-                        comment.appendChild(comment_message);
-                        comment.appendChild(comment_date);
-                        current_thread.insertBefore(comment, current_thread.lastChild);
-                    }
-                });
-            });
-    };
 
     //UI to get user input for creating new threads, calls Forum.addThread() w/ given information
     function ForumManager(props) {
@@ -126,52 +71,6 @@ function Forum(port_to_backend) {
             setName('');
             setMessage('');
         }
-
-        function sortByLikes(e) {
-            e.preventDefault();
-            console.log("User is sorting posts by likes...");
-            fetch(`${BACKEND_PORT}/forum_posts_by_likes/`)
-                .then((response) => {
-                    response.json().then((data) => {
-                        let old_posts = [];
-                        for (let i = 0; i < data.length; i++) {
-                            let id = data[i].id;
-                            let post_name = data[i].name;
-                            let post_message = data[i].message;
-                            let likes = data[i].likes;
-                            let date = data[i].date;
-                            date = new Date(date);
-                            
-                            let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
-                            old_posts.push(newThread);
-                        }
-                        setThreads(old_posts);
-                    });
-                });
-        };
-
-        function sortByNew(e) {
-            e.preventDefault();
-            console.log("User is sorting posts by new...")
-            fetch(`${BACKEND_PORT}/forum_posts_by_new/`)
-                .then((response) => {
-                    response.json().then((data) => {
-                        let old_posts = [];
-                        for (let i = 0; i < data.length; i++) {
-                            let id = data[i].id;
-                            let post_name = data[i].name;
-                            let post_message = data[i].message;
-                            let likes = data[i].likes;
-                            let date = data[i].date;
-                            date = new Date(date);
-                            
-                            let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
-                            old_posts.push(newThread);
-                        }
-                        setThreads(old_posts);
-                    });
-                });
-        };
 
         /* Returns 2 input fields where user can input information about thread
         and a button that calls method to create a thread */
@@ -214,8 +113,8 @@ function Forum(port_to_backend) {
                 </button>
                 <button
                     type="button"
-                    // className="sort-by-new-btn"
-                    onClick={(e) => loadComments(e)}
+                    className="dev-button"
+                    onClick={(e) => runDevelopment(e)}
                 >
                     Dev Button
                 </button>
@@ -223,7 +122,108 @@ function Forum(port_to_backend) {
         );
     }
 
-    //The UI for a thread
+    //  Loads comments from backend according to highest number of likes
+    function sortByLikes(e) {
+        e.preventDefault();
+        console.log("User is sorting posts by likes...");
+        fetch(`${BACKEND_PORT}/forum_posts_by_likes/`)
+            .then((response) => {
+                response.json().then((data) => {
+                    let old_posts = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let id = data[i].id;
+                        let post_name = data[i].name;
+                        let post_message = data[i].message;
+                        let likes = data[i].likes;
+                        let date = data[i].date;
+                        date = new Date(date);
+                        
+                        let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
+                        old_posts.push(newThread);
+                    }
+                    setThreads(old_posts);
+                });
+            })
+            .then(() => {
+                loadComments();
+            });
+    };
+
+    //  Loads comments from backend according to reverse chronological order
+    function sortByNew(e) {
+        e.preventDefault();
+        console.log("User is sorting posts by new...")
+        fetch(`${BACKEND_PORT}/forum_posts_by_new/`)
+            .then((response) => {
+                response.json().then((data) => {
+                    let old_posts = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let id = data[i].id;
+                        let post_name = data[i].name;
+                        let post_message = data[i].message;
+                        let likes = data[i].likes;
+                        let date = data[i].date;
+                        date = new Date(date);
+                        
+                        let newThread = <Thread id={id} name={post_name} message={post_message} likes={likes} createdOn={date}/>;
+                        old_posts.push(newThread);
+                    }
+                    setThreads(old_posts);
+                });
+            })
+            .then(() => {
+                loadComments();
+            });
+    };
+
+    //  Loads comments to posts from backend server
+    function loadComments() {
+        fetch(`${BACKEND_PORT}/forum_comments/`)
+            .then((response) => {
+                response.json().then((data) => {
+                    var threads = document.getElementsByClassName("thread");
+                    for (let i = 0; i < data.length; i++) {
+                        // Retrieve data from backend
+                        let name = data[i].name;
+                        let message = data[i].message;
+                        let likes = data[i].likes;
+                        let date = data[i].date;
+                        date = new Date(date);
+                        let post_id = data[i].post_id;
+                        
+                        // Create the comment
+                        for (let j = 0; j < threads.length; j++) {
+                            var current_thread = threads.item(j);
+                            if (current_thread.id == post_id) {
+                                break;
+                            };
+                        }
+                        // let current_thread = threads.item(post_id - 1);
+                        let comment = document.createElement('div');
+                        comment.className = "comment";
+                        comment.setAttribute("post_id", post_id);
+                        let comment_name = document.createElement('div');
+                        comment_name.className = "comment-name";
+                        comment_name.textContent = name;
+                        let comment_likes = document.createElement('div');
+                        comment_likes.className = "likes";
+                        comment_likes.textContent = `Likes: ${likes}`;
+                        let comment_message = document.createElement('div');
+                        comment_message.className = "comment-message";
+                        comment_message.textContent = message;
+                        let comment_date = document.createElement('div');
+                        comment_date.textContent = date;
+                        comment.appendChild(comment_name);
+                        comment.appendChild(comment_likes);
+                        comment.appendChild(comment_message);
+                        comment.appendChild(comment_date);
+                        current_thread.insertBefore(comment, current_thread.lastChild);
+                    }
+                });
+            });
+    };
+
+    //  React Component for threads
     function Thread(props) {
         /*TO DO:
             -create a 'posted by: user_name' message for threads
@@ -268,7 +268,7 @@ function Forum(port_to_backend) {
             setComments(comments.concat([newComment]));
         }
 
-        //note: div instead of a react.fragment so that wrapper for the thread can be stylized
+        // note: div instead of a react.fragment so that wrapper for the thread can be stylized
         return (
             <div className="thread" id={props.id}>
                 <div className="thread-name">{props.name}</div>
@@ -283,7 +283,42 @@ function Forum(port_to_backend) {
         );
     }
 
-    //UI for creating-sub-comment form
+    //  Function to add a thread to threads array
+    function addThread(name, message) {
+        //make sure thread is not empty...
+        if (name === '' || message === '') {
+            alert("Name and message cannot be empty!");
+            return;
+        } else {
+            console.log("User has added a thread...");
+        };
+
+        const date = new Date();
+        let newThread = <Thread id={threads.length + 1} name={name} message={message} likes={0} createdOn={date}/>;
+        setThreads(threads.concat([newThread]));
+    }
+
+    //  React Component for a subcomment
+    function SubCommentA(props) {
+        const [likes, setLikes] = useState(0);
+        // const [time, setTime] = useState('Just now');
+        // const createdOn = props.createdOn;
+        // let dateTimer = setInterval(tick, 1000);
+        // function tick() {
+        //     setTime(howOld(createdOn));
+        // }
+        let date = String(props.createdOn);
+        return (
+            <div className="comment" post_id={props.post_id}>
+                <div className="comment-name">{props.name}</div>
+                <div className="likes">Likes: {likes}</div>
+                <div className="comment-message">{props.message}</div>
+                <div>{date}</div>
+            </div>
+        );
+    };
+
+    //  UI for creating-sub-comment form
     function CreateSubCommentForm(props) {
         //state to store message of the comment
         const [message, setMessage] = useState('');
@@ -343,26 +378,6 @@ function Forum(port_to_backend) {
         );
     }
 
-    //UI for a subcomment
-    function SubCommentA(props) {
-        const [likes, setLikes] = useState(0);
-        // const [time, setTime] = useState('Just now');
-        // const createdOn = props.createdOn;
-        // let dateTimer = setInterval(tick, 1000);
-        // function tick() {
-        //     setTime(howOld(createdOn));
-        // }
-        let date = String(props.createdOn);
-        return (
-            <div className="comment" post_id={props.post_id}>
-                <div className="comment-name">{props.name}</div>
-                <div className="likes">Likes: {likes}</div>
-                <div className="comment-message">{props.message}</div>
-                <div>{date}</div>
-            </div>
-        );
-    };
-
     //returns message displaying how old a date is
     function howOld(createdOn) {
         // Time constants
@@ -398,6 +413,11 @@ function Forum(port_to_backend) {
                 break;
         }
         return(message);
+    }
+
+    // Use to test builds in development
+    function runDevelopment() {
+        alert("Running Development...");
     }
 
     // Returns Forum
