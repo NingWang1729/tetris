@@ -124,6 +124,7 @@ function Forum(port_to_backend) {
         const [likes, setLikes] = useState(props.likes);
         const [time, setTime] = useState('Just now');
         const [comments, setComments] = useState([]);
+        const [showAddCommentField, setVisibility] = useState(false);
 
         function addLike() {
             fetch(`${BACKEND_PORT}/post/${props.id}`, {
@@ -142,7 +143,7 @@ function Forum(port_to_backend) {
             setTime(howOld(createdOn));
         }
 
-        function addComment(name, message) {
+        function addComment(name , message) {
             //make sure comment is not empty...
             if (name === '' || message === '') {
                 alert('Must name comment and fill out description!');
@@ -159,13 +160,46 @@ function Forum(port_to_backend) {
         return (
             <div className="thread" id={props.id}>
                 <div className="thread-name">{props.name}</div>
-                <button className="reply-button" onClick={()=> addComment('adam', 'test comment')}>Reply</button>
+                <button className="reply-button" onClick={()=> setVisibility(true)}>Reply</button>
                 <button className="like-button" onClick={addLike}>Like</button>
                 <div className="likes">{likes}</div>
                 <p>{props.message}</p>
                 {comments}
+                {showAddCommentField ? <CreateSubCommentForm createComment={addComment}/> : null}
                 <p>{time}</p>
             </div>
+        );
+    }
+
+    //UI for creating-sub-comment form
+    function CreateSubCommentForm(props) {
+        //state to store message of the comment
+        const [message, setMessage] = useState('');
+
+        function handleSubmit(e, thread_name, thread_message) {
+            e.preventDefault();
+            //need to change this from 'Adam' to User_ID or something similar
+            props.createComment('Adam', message);
+            setMessage('');
+        }
+
+        return (
+            <form>
+                <input
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                    placeholder="Comment Message"
+                    //className="*Need comment-mesage class*"
+                    name="thread_message"
+                />
+                <button
+                    type="submit"
+                    //className="*need comment-button class*"
+                    onClick={(e) => handleSubmit(e, message)}
+                >
+                    Comment
+                </button>
+            </form>
         );
     }
 
