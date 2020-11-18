@@ -49,6 +49,28 @@ app.get('/forum_posts/', (req, res) => {
     });
 });
 
+app.get('/forum_posts_by_likes/', (req, res) => {
+    connection.query(`SELECT * FROM forum_posts ORDER BY likes DESC`,(error, results)=>{
+        let forum_posts = [];
+        for (let i = 0; i < results.length; i++) {
+            let post = { id : results[i].id, name : results[i].name, message : results[i].message, likes : results[i].likes, date : results[i].post_date};
+            forum_posts.push(post);
+        }
+        res.send(forum_posts);
+    });
+});
+
+app.get('/forum_posts_by_new/', (req, res) => {
+    connection.query(`SELECT * FROM forum_posts ORDER BY post_date DESC`,(error, results)=>{
+        let forum_posts = [];
+        for (let i = 0; i < results.length; i++) {
+            let post = { id : results[i].id, name : results[i].name, message : results[i].message, likes : results[i].likes, date : results[i].post_date};
+            forum_posts.push(post);
+        }
+        res.send(forum_posts);
+    });
+});
+
 app.post('/forum_posts/', (req, res) => {
     connection.query(`INSERT INTO forum_posts (name, message) VALUES ('${req.body.thread_name}', '${req.body.thread_message}')`,(error, results)=>{
         console.log(error);
