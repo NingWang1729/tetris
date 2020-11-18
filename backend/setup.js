@@ -12,6 +12,14 @@
 
 
 /*
+CREATE TABLE tetris_leaderboard(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    score INT NOT NULL DEFAULT 0,
+    post_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
+);
+*/
+
+/*
 CREATE TABLE forum_posts(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name varchar(255) NOT NULL DEFAULT "An interesting title",
@@ -22,11 +30,15 @@ CREATE TABLE forum_posts(
 */
 
 /*
-CREATE TABLE tetris_leaderboard(
+CREATE TABLE forum_comments(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    score INT NOT NULL DEFAULT 0,
-    post_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
-);
+    name varchar(255) NOT NULL DEFAULT "An interesting title",
+    message varchar(255) NOT NULL DEFAULT "Bottom Text",
+    likes INT NOT NULL DEFAULT 0,
+    post_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    post_id INT NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES forum_posts(id)
+)
 */
 
 /*  ONE TIME INSERT

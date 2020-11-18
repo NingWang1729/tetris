@@ -79,6 +79,25 @@ app.post('/forum_posts/', (req, res) => {
     res.end();
 });
 
+app.get('/forum_comments/', (req, res) => {
+    connection.query(`SELECT * FROM forum_comments`,(error, results)=>{
+        let forum_comments = [];
+        for (let i = 0; i < results.length; i++) {
+            let post = { id : results[i].id, name : results[i].name, message : results[i].message, likes : results[i].likes, date : results[i].post_date, post_id : results[i].post_id};
+            forum_comments.push(post);
+        };
+        res.send(forum_comments);
+    });
+});
+
+app.post('/forum_comments/', (req, res) => {
+    connection.query(`INSERT INTO forum_comments (name, message, post_id) VALUES ('${req.body.comment_name}', '${req.body.comment_message}', '${req.body.post_id}')`,(error, results)=>{
+        console.log(error);
+        console.log(results);
+    });
+    res.end();
+});
+
 app.get('/tetris_leaderboard/', (req, res) => {
     connection.query(`SELECT * FROM tetris_leaderboard ORDER BY score DESC`,(error, results)=>{
         let forum_posts = [];
