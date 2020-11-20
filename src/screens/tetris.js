@@ -172,6 +172,7 @@ function Tetris(port_to_backend) {
                     sound.play();
                 };
                 setPlay(!play);
+                break;
             default: return; // exit this handler for other keys
         }
         // e.preventDefault(); // prevent the default action (scroll / move caret)
