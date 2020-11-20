@@ -281,10 +281,8 @@ function Forum(port_to_backend) {
         return (
             <div className="comment" post_id={props.post_id}>
                 <div className="comment-name">{props.name}</div>
-                <div className="likes">
-                    <button onClick={() => setLikes(likes+1)}>Like</button>
-                    <div>{likes}</div>
-                </div>
+                <button className="like-button" onClick={() => setLikes(likes+1)}>Like</button>
+                <div className="likes">{likes}</div>
                 <div className="comment-message">{props.message}</div>
                 <p>{time}</p>
             </div>
