@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, NavLink, Route} from 'react-router-dom';
 import './App.css';
 import Home from './screens/home';
 import Tetris from './screens/tetris';
@@ -11,22 +11,38 @@ const BACKEND_PORT = "https://9a0168132907.ngrok.io";
 function App() {
     return (
         <div className="App">
-            <header className="App-header2">
-                <p>
-                    <a href="/"><button>Home</button></a>
-                    <a href="/tetris"><button>Tetris</button></a>
-                    <a href="/forum"><button>Forum</button></a>
-                </p>
-            </header>
-            <header className="App-header">
-                Welcome!
-            </header>
+            <table className="app-header">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="/">Home</a>
+                                </td>
+                                <td>
+                                    <a href="/tetris">Tetris</a>
+                                </td>
+                                <td>
+                                    <a href="/forum">Forum</a>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </td>
+                    <td>
+                        <p>Gwabbitz Gaming Arcade</p>
+                    </td>
+                    <td>
+                        <p>About</p>
+                    </td>
+                </tr>
+            </table>
             <BrowserRouter basename={window.location.path || ''}>
                 <Route path="/" exact={true} component={Home.bind(this, BACKEND_PORT)}/>
                 <Route path="/tetris" exact={true} component={Tetris.bind(this, BACKEND_PORT)}/>
                 <Route path="/forum" exact={true} component={Forum.bind(this, BACKEND_PORT)}/>
             </BrowserRouter>
-            <footer>
+            <footer className="footer">
                 <p>
                     footer
                 </p>

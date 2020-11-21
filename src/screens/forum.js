@@ -73,7 +73,7 @@ function Forum(port_to_backend) {
         /* Returns 2 input fields where user can input information about thread
         and a button that calls method to create a thread */
         return (
-            <form>
+            <form className="forum-manager">
                 <input 
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -394,7 +394,13 @@ function Forum(port_to_backend) {
     // Returns Forum
     return (
         <React.Fragment>
+            {/* <br/> */}
             <ForumManager createThread={addThread}/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            {/* <br/> */}
             {threads}
         </React.Fragment>
     );

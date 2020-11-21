@@ -609,6 +609,9 @@ function Tetris(port_to_backend) {
     // Returns the html component
     return (
         <React.Fragment>
+            <br/>
+            <br/>
+            <br/>
             <div className="tetris-screen-container">
                 <audio id="tetris-theme" autoPlay loop>
                     <source src="https://ia800504.us.archive.org/33/items/TetrisThemeMusic/Tetris.mp3" type="audio/mpeg"/>
