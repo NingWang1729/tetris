@@ -2,34 +2,34 @@
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.app-header {
+  background-color: #001234;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 20px;
+  font-size: 12pt;
+  font-weight: 800;
   color: white;
 }
 
-.App-header2 {
-    background-color: #282c34;
-    height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.app-header nav {
+  display: inline-block;
+  color: white;
 }
 
-nava{
-color: #fff;
-padding: 7px 25px;
-display: inline-block;
+a {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  padding: 0px 6px 0px 6px;
 }
 
-.App-link {
-  color: #61dafb;
+a:visited {
+  color:white;
+}
+
+.app-header p {
+  /* display: inline-block */
+  display: flex;
 }

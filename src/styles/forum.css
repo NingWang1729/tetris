@@ -6,6 +6,13 @@
   width: 100%;
 }
 
+.forum-manager {
+  background-color: #01379b;
+  position: fixed;
+  top: 7%;
+  width: 100%;
+}
+
 .create-thread-btn {
   font-size: 15pt;
   font-weight: bold;
