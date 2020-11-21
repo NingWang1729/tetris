@@ -13,7 +13,7 @@ function App() {
         <div className="App">
             <header className="App-header2">
                 <p>
-                    <a href="http://localhost:3000"><button>Home</button></a>
+                    <a href="/"><button>Home</button></a>
                     <a href="/tetris"><button>Tetris</button></a>
                     <a href="/forum"><button>Forum</button></a>
                 </p>
