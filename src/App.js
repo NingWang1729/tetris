@@ -11,15 +11,15 @@ const BACKEND_PORT = "https://9a0168132907.ngrok.io";
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                Welcome!
-            </header>
             <header className="App-header2">
                 <p>
                     <a href="http://localhost:3000"><button>Home</button></a>
                     <a href="/tetris"><button>Tetris</button></a>
                     <a href="/forum"><button>Forum</button></a>
                 </p>
+            </header>
+            <header className="App-header">
+                Welcome!
             </header>
             <BrowserRouter basename={window.location.path || ''}>
                 <Route path="/" exact={true} component={Home.bind(this, BACKEND_PORT)}/>
