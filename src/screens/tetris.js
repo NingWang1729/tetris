@@ -150,20 +150,28 @@ function Tetris(port_to_backend) {
         switch(e.which) {
             case 37: // Left
             case 65: // A
-                movequeue.push(0);//move_left();
+                if(play) {
+                    movequeue.push(0);//move_left();
+                }
                 break;
             case 38: // up
             case 82: // R
             case 87: // W
-                movequeue.push(3);//rotate();
+                if(play) {
+                    movequeue.push(3);//rotate();
+                }
                 break;
             case 39: // Right
             case 68: // D
-                movequeue.push(1);// = move_right();
+                if(play) {
+                    movequeue.push(1);// = move_right();
+                }
                 break;
             case 40: // Down
             case 83: // S
-                movequeue.push(2);//fast_drop();
+                if(play) {
+                    movequeue.push(2);//fast_drop();
+                }
                 break;
             case 32: // Space
             case 80: // P
