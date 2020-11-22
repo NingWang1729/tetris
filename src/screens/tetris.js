@@ -19,7 +19,8 @@ function Tetris(port_to_backend) {
                 });
         });
     }, []);
-    
+
+    var [moves, setMoves] = useState([]);
     var [order, setOrder] = useState([1, 2, 3, 4, 5, 6, 7]);
     var [play, setPlay] = useState(false);  // Whether game is playing or paused
     var [count, setCount] = useState(0);    // Timer, 1 second per count
@@ -145,23 +146,24 @@ function Tetris(port_to_backend) {
     };
 
     document.onkeydown = function(e) {
+        var movequeue = moves;
         switch(e.which) {
             case 37: // Left
             case 65: // A
-                move_left();
+                movequeue.push(0);//move_left();
                 break;
             case 38: // up
             case 82: // R
             case 87: // W
-                rotate();
+                movequeue.push(3);//rotate();
                 break;
             case 39: // Right
             case 68: // D
-                move_right();
+                movequeue.push(1);// = move_right();
                 break;
             case 40: // Down
             case 83: // S
-                fast_drop();
+                movequeue.push(2);//fast_drop();
                 break;
             case 32: // Space
             case 80: // P
@@ -175,6 +177,7 @@ function Tetris(port_to_backend) {
                 break;
             default: return; // exit this handler for other keys
         }
+        setMoves(movequeue);
         // e.preventDefault(); // prevent the default action (scroll / move caret)
     };
 
@@ -541,15 +544,33 @@ function Tetris(port_to_backend) {
     function move_piece() {
         if (play === true) {
             move_down();
-        } else {
-        };
+        }
     };
 
     // Counter for the game
     function counter() {
-        if (count % 200 === 0 && play) {
-            move_piece();
-        };
+        if (play) {
+            if(count % 200 === 0) {
+                moves.push(2);
+            }
+            if(moves.length !== 0) {
+                switch(moves.shift()) { //0 - left, 1 - right, 2 - down, 3 - rotate
+                    case 0:
+                        move_left();
+                        break;
+                    case 1:
+                        move_right();
+                        break;
+                    case 2:
+                        move_down();
+                        break;
+                    case 3:
+                        rotate();
+                        break;
+                    break;
+                }
+            }
+        }
         updateColors();
         setCount(count + 1);
     };
@@ -655,7 +676,7 @@ function Tetris(port_to_backend) {
                                     <td><b>Score:</b></td>
                                     <td><b>Date:</b></td>
                                 </tr>
-                                {leaderboard.map((rank) => 
+                                {leaderboard.map((rank) =>
                                     <tr className='leaderboard-ranking' id={JSON.parse(rank).id}>
                                         <td>{JSON.parse(rank).score}</td>
                                         <td>{dateformat(JSON.parse(rank).date, 'mm/dd/yyyy hh:MM:ss')}</td>
