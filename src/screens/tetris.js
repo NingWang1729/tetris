@@ -389,6 +389,7 @@ function Tetris(port_to_backend) {
                     [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], //Row 25 Serves To Act As Lower Bound
                     [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
                 ]);
+                setMoves([]);
                 toggle_play();
                 let sound = document.getElementById("tetris-theme");
                 sound.load();
