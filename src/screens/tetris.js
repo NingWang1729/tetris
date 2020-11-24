@@ -72,9 +72,9 @@ function Tetris(port_to_backend) {
         col : 3,
         size : 3,
         perm : [
-            [0, 0, 0],
             [0, 1, 1],
-            [0, 1, 1]
+            [0, 1, 1],
+            [0, 0, 0]
         ]
     };
     const S_piece = {
@@ -83,9 +83,9 @@ function Tetris(port_to_backend) {
         col : 3,
         size : 3,
         perm : [
-            [0, 0, 0],
             [0, 2, 2],
-            [2, 2, 0]
+            [2, 2, 0],
+            [0, 0, 0]
         ]
     };
     const Z_piece = {
@@ -94,9 +94,9 @@ function Tetris(port_to_backend) {
         col : 3,
         size : 3,
         perm : [
-            [0, 0, 0],
             [3, 3, 0],
-            [0, 3, 3]
+            [0, 3, 3],
+            [0, 0, 0]
         ]
     };
     const T_piece = {
@@ -116,9 +116,9 @@ function Tetris(port_to_backend) {
         col : 3,
         size : 3,
         perm : [
-            [0, 0, 0],
             [0, 0, 5],
-            [5, 5, 5]
+            [5, 5, 5],
+            [0, 0, 0]
         ]
     };
     const J_piece = {
@@ -127,9 +127,9 @@ function Tetris(port_to_backend) {
         col : 3,
         size : 3,
         perm : [
-            [0, 0, 0],
             [6, 0, 0],
-            [6, 6, 6]
+            [6, 6, 6],
+            [0, 0, 0]
         ]
     };
     const I_piece = {
