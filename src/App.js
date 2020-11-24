@@ -6,7 +6,7 @@ import Tetris from './screens/tetris';
 import Forum from './screens/forum';
 
 // To be updated every 8 hours until a permanent backend port is found
-const BACKEND_PORT = "https://2f25c5e7c1e8.ngrok.io";
+const BACKEND_PORT = "https://209cdb3ed508.ngrok.io";
 
 function App() {
     return (
