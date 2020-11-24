@@ -38,6 +38,15 @@ app.post('/post/:id', (req, res) => {
     res.end();
 });
 
+app.post('/comment/:id', (req, res) => {
+    console.log(req.params.id, req.body.likes);
+    connection.query(`UPDATE forum_comments SET likes = ${req.body.likes} WHERE id = ${req.params.id}`, (error, results) => {
+        console.log(error);
+        console.log(results);
+    });
+    res.end();
+});
+
 app.get('/forum_posts/', (req, res) => {
     connection.query(`SELECT * FROM forum_posts`,(error, results)=>{
         let forum_posts = [];

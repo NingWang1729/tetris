@@ -9,10 +9,8 @@ import '../styles/forum.css';
 function Forum(port_to_backend) {
     // Port to backend server
     const BACKEND_PORT = port_to_backend;
-    
     // Creates a state that holds an array of all threads
     const [threads, setThreads] = useState([]);
-
     // Retrieves data from backend
     useEffect(() => {
         fetch(`${BACKEND_PORT}/forum_posts`)
@@ -33,15 +31,11 @@ function Forum(port_to_backend) {
                     }
                     setThreads(old_posts);
                 });
-            })
+            });
     }, []);
 
     //UI to get user input for creating new threads, calls Forum.addThread() w/ given information
     function ForumManager(props) {
-        /*TO DO:
-            -make it look nice
-        */
-
         const [name, setName] = useState(''); //state to store name of thread
         const [message, setMessage] = useState(''); //state to store message of thread
 
@@ -191,15 +185,16 @@ function Forum(port_to_backend) {
                             //make sure comment belongs in this thread
                             if (data[i].post_id === props.id) {
                                 // Retrieve data from backend
+                                let id = data[i].id;
                                 let name = data[i].name;
                                 let message = data[i].message;
                                 let likes = data[i].likes;
                                 let date = data[i].date;
                                 date = new Date(date);
-                                let id = data[i].post_id;
+                                let post_id = data[i].post_id;
                                 let key = name + '' + date.getTime();
                                 //create comment
-                                let comment = <SubCommentA key={key} name={name} message={message} createdOn={date} likes={likes} post_id={id}/>;
+                                let comment = <SubCommentA key={key} id={id} name={name} message={message} createdOn={date} likes={likes} post_id={post_id}/>;
                                 old_comments.push(comment);
                             }
                         }
@@ -278,10 +273,20 @@ function Forum(port_to_backend) {
         function tick() {
              setTime(howOld(createdOn));
         }
+        function addLike() {
+            fetch(`${BACKEND_PORT}/comment/${props.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ likes : likes + 1 })
+            });
+            setLikes(likes + 1);
+        };
         return (
             <div className="comment" post_id={props.post_id}>
                 <div className="comment-name">{props.name}</div>
-                <button className="like-button" onClick={() => setLikes(likes+1)}>Like</button>
+                <button className="like-button" onClick={addLike}>Like</button>
                 <div className="likes">{likes}</div>
                 <div className="comment-message">{props.message}</div>
                 <p>{time}</p>
@@ -305,7 +310,7 @@ function Forum(port_to_backend) {
             } else {
                 console.log("Comment is valid...");
             }
-            let data = { 
+            let data = {
                 comment_name: 'Anonymous',
                 comment_message : comment_message,
                 post_id : props.post_id
@@ -329,7 +334,6 @@ function Forum(port_to_backend) {
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     placeholder="Comment Message"
-                    //className="*Need comment-mesage class*"
                     name="thread_message"
                 />
                 <button
