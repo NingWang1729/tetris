@@ -71,79 +71,194 @@ function Tetris(port_to_backend) {
         row : 0,
         col : 3,
         size : 3,
-        perm : [
+        orient : 0,
+        perm : [[
+            [0, 1, 1],
+            [0, 1, 1],
+            [0, 0, 0]
+        ],
+        [
+            [0, 1, 1],
+            [0, 1, 1],
+            [0, 0, 0]
+        ],
+        [
+            [0, 1, 1],
+            [0, 1, 1],
+            [0, 0, 0]
+        ],
+        [
             [0, 1, 1],
             [0, 1, 1],
             [0, 0, 0]
         ]
-    };
+    ]};
     const S_piece = {
         color : "green",
         row : 0,
         col : 3,
         size : 3,
-        perm : [
+        orient : 0,
+        perm : [[
             [0, 2, 2],
             [2, 2, 0],
             [0, 0, 0]
+        ],
+        [
+            [0, 2, 0],
+            [0, 2, 2],
+            [0, 0, 2]
+        ],
+        [
+            [0, 0, 0],
+            [0, 2, 2],
+            [2, 2, 0]
+        ],
+        [
+            [2, 0, 0],
+            [2, 2, 0],
+            [0, 2, 0]
         ]
-    };
+    ]};
     const Z_piece = {
         color : "red",
         row : 0,
         col : 3,
         size : 3,
-        perm : [
+        orient : 0,
+        perm : [[
             [3, 3, 0],
             [0, 3, 3],
             [0, 0, 0]
+        ],
+        [
+            [0, 0, 3],
+            [0, 3, 3],
+            [0, 3, 0]
+        ],
+        [
+            [0, 0, 0],
+            [3, 3, 0],
+            [0, 3, 3]
+        ],
+        [
+            [0, 3, 0],
+            [3, 3, 0],
+            [3, 0, 0]
         ]
-    };
+    ]};
     const T_piece = {
         color : "purple",
         row : 0,
         col : 3,
         size : 3,
-        perm : [
+        orient : 0,
+        perm : [[
             [0, 4, 0],
             [4, 4, 4],
             [0, 0, 0]
+        ],
+        [
+            [0, 4, 0],
+            [0, 4, 4],
+            [0, 4, 0]
+        ],
+        [
+            [0, 0, 0],
+            [4, 4, 4],
+            [0, 4, 0]
+        ],
+        [
+            [0, 4, 0],
+            [4, 4, 0],
+            [0, 4, 0]
         ]
-    };
+    ]};
     const L_piece = {
         color : "orange",
         row : 0,
         col : 3,
         size : 3,
-        perm : [
+        orient : 0,
+        perm : [[
             [0, 0, 5],
             [5, 5, 5],
             [0, 0, 0]
+        ],
+        [
+            [0, 5, 0],
+            [0, 5, 0],
+            [0, 5, 5]
+        ],
+        [
+            [0, 0, 0],
+            [5, 5, 5],
+            [5, 0, 0]
+        ],
+        [
+            [5, 5, 0],
+            [0, 5, 0],
+            [0, 5, 0]
         ]
-    };
+    ]};
     const J_piece = {
         color : "blue",
         row : 0,
         col : 3,
         size : 3,
-        perm : [
+        orient : 0,
+        perm : [[
             [6, 0, 0],
             [6, 6, 6],
             [0, 0, 0]
+        ],
+        [
+            [0, 6, 6],
+            [0, 6, 0],
+            [0, 6, 0]
+        ],
+        [
+            [0, 0, 0],
+            [6, 6, 6],
+            [0, 0, 6]
+        ],
+        [
+            [0, 6, 0],
+            [0, 6, 0],
+            [6, 6, 0]
         ]
-    };
+    ]};
     const I_piece = {
         color : "cyan",
         row : 0,
         col : 3,
         size : 4,
-        perm : [
+        orient : 0,
+        perm : [[
             [0, 0, 0, 0],
             [7, 7, 7, 7],
             [0, 0, 0, 0],
             [0, 0, 0, 0]
-        ]
-    };
+        ],
+        [
+            [0, 7, 0, 0],
+            [0, 7, 0, 0],
+            [0, 7, 0, 0],
+            [0, 7, 0, 0]
+        ],
+        [
+            [0, 0, 0, 0],
+            [7, 7, 7, 7],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ],
+        [
+            [0, 7, 0, 0],
+            [0, 7, 0, 0],
+            [0, 7, 0, 0],
+            [0, 7, 0, 0]
+        ],
+    ]};
 
     document.onkeydown = function(e) {
         var movequeue = moves;
@@ -253,55 +368,26 @@ function Tetris(port_to_backend) {
     // TODO: Ensure the rotation does not cause collision
     function rotate() {
         // O piece cannot rotate
-        if (piece.perm[1][1] === 1 || !play) {
+        if (piece.perm[0][1][1] === 1 || !play) {
             return(false);
         };
 
-        let hit_bottom = false;
-        for (let c = 0; c < piece.size; c++) {
-            for (let r = piece.size - 1; r > -1; r--){
-                if (piece.perm[r][c] > 0) {
-                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
-                        hit_bottom = true;
-                    };
-                    break;
-                };
-            };
-        };
-        if (hit_bottom) {
-            let tspin_grid = grid;
-            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && tspin_grid[piece.row + 1][piece.col] === 0) {
-                piece.perm[1][0] = 4;
-                piece.perm[0][1] = 0;
-                let t_grid = grid;
-                t_grid[piece.row + 1][piece.col] = 4;
-                t_grid[piece.row][piece.col + 1] = 0;
-                setGrid(t_grid);
-            };
-            nextPiece();
-            return(false);
-        };
-
-        //Deletes old piece
-        var cleaned_grid = grid;
+        // Deletes old piece
+        // This should give grid minus the current piece.
+        var cleaned_grid = JSON.parse(JSON.stringify(grid));
         for (let i = 0; i < piece.size; i++) {
             for (let j = 0; j < piece.size; j++) {
-                if (piece.perm[i][j] !== 0) {
+                if (piece.perm[piece.orient][i][j] !== 0) {
                     cleaned_grid[piece.row + i][piece.col + j] = 0;
                 };
             };
         };
 
-        //Rotates old piece
-        let rotated = [];
-        for (let i = 0; i < piece.size; i++) {
-            let temp = [];
-            for (let j = 0; j < piece.size; j++) {
-                temp.push(piece.perm[piece.size - j - 1][i]);
-            };
-            rotated.push(temp);
-        };
+        // increasing orientation will move the permutation of the piece
+        let new_orient = (piece.orient + 1) % 4
 
+        // test if each wall kick can allow a rotation
+        // if can_rotate is ever true after a wallkick, others will never trigger
         let can_rotate = true;
         if (piece.col < 0) {
             can_rotate = false;
@@ -310,26 +396,59 @@ function Tetris(port_to_backend) {
         } else {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (rotated[i][j] !== 0 && cleaned_grid[piece.row + i][piece.col + j] !== 0) {
+                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[piece.row + i][piece.col + j] !== 0) {
                         can_rotate = false;
                     };
                 };
             };
+            // time to change the grid...
+            if (can_rotate) {
+                for (let i = 0; i < piece.size; i++) {
+                    for (let j = 0; j < piece.size; j++) {
+                        if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[piece.row + i][piece.col + j] === 0) {
+                            cleaned_grid[piece.row + i][piece.col + j] = piece.perm[new_orient][i][j];
+                        };
+                    };
+                };
+            }
         };
+
+        // Wall kick 1
+        if (!can_rotate){
+            // alert("WK1");
+            can_rotate = !can_rotate;
+            can_rotate = !can_rotate;
+        }
+
+        // Wall kick 2
+        if (!can_rotate){
+            // alert("WK2");
+            can_rotate = !can_rotate;
+            can_rotate = !can_rotate;
+        }
+
+        // Wall kick 3
+        if (!can_rotate){
+            // alert("WK3");
+            can_rotate = !can_rotate;
+            can_rotate = !can_rotate;
+        }
+
+        // Wall kick 4
+        if (!can_rotate){
+            // alert("WK4");
+            can_rotate = !can_rotate;
+            can_rotate = !can_rotate;
+        }
 
         if (can_rotate) {
             setPiece({row : piece.row,
                 col : piece.col,
                 size : piece.size,
-                perm : rotated});
-            setGrid(cleaned_grid);
-        } else {
-            setPiece({row : piece.row,
-                col : piece.col,
-                size : piece.size,
+                orient : new_orient,
                 perm : piece.perm});
-            setGrid(grid);
-        };
+            setGrid(cleaned_grid);
+        }
     };
 
     // Pauses and unpauses game
@@ -349,7 +468,7 @@ function Tetris(port_to_backend) {
         var hit_bottom = false;
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
-                if (piece.perm[r][c] > 0) {
+                if (piece.perm[piece.orient][r][c] > 0) {
                     if (grid[piece.row + r + 1][piece.col + c] !== 0) {
                         hit_bottom = true;
                     };
@@ -410,7 +529,7 @@ function Tetris(port_to_backend) {
         var next_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (next_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                if (next_grid[i][j] !== 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
                     next_grid[i][j] = 0;
                 };
             };
@@ -418,7 +537,7 @@ function Tetris(port_to_backend) {
         for (let i = piece.row + 1; i < piece.row + piece.size + 1; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
                 if (next_grid[i][j] === 0) {
-                    next_grid[i][j] = piece.perm[i - piece.row - 1][j - piece.col];
+                    next_grid[i][j] = piece.perm[piece.orient][i - piece.row - 1][j - piece.col];
                 };
             };
         };
@@ -427,6 +546,7 @@ function Tetris(port_to_backend) {
             row : piece.row + 1,
             col : piece.col,
             size : piece.size,
+            orient : piece.orient,
             perm : piece.perm
         });
         setGrid(next_grid);
@@ -441,7 +561,7 @@ function Tetris(port_to_backend) {
         var hit_bottom = false;
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
-                if (piece.perm[r][c] > 0) {
+                if (piece.perm[piece.orient][r][c] > 0) {
                     if (grid[piece.row + r + 1][piece.col + c] !== 0) {
                         hit_bottom = true;
                     };
@@ -464,7 +584,7 @@ function Tetris(port_to_backend) {
         var hit_right = false;
         for (let r = 0; r < piece.size; r++) {
             for (let c = piece.size - 1; c > -1; c--){
-                if (piece.perm[r][c] > 0) {
+                if (piece.perm[piece.orient][r][c] > 0) {
                     if (piece.col + c === 9 || grid[piece.row + r][piece.col + c + 1] !== 0) {
                         hit_right = true;
                     };
@@ -480,7 +600,7 @@ function Tetris(port_to_backend) {
         var right_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (right_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                if (right_grid[i][j] !== 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
                     right_grid[i][j] = 0;
                 };
             };
@@ -488,7 +608,7 @@ function Tetris(port_to_backend) {
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col + 1; j < piece.col + piece.size + 1; j++) {
                 if (right_grid[i][j] === 0) {
-                    right_grid[i][j] = piece.perm[i - piece.row][j - piece.col - 1];
+                    right_grid[i][j] = piece.perm[piece.orient][i - piece.row][j - piece.col - 1];
                 };
             };
         };
@@ -497,6 +617,7 @@ function Tetris(port_to_backend) {
             row : piece.row,
             col : piece.col + 1,
             size : piece.size,
+            orient : piece.orient,
             perm : piece.perm
         });
         setGrid(right_grid);
@@ -511,7 +632,7 @@ function Tetris(port_to_backend) {
         var hit_left = false;
         for (let r = 0; r < piece.size; r++) {
             for (let c = 0; c < piece.size; c++){
-                if (piece.perm[r][c] > 0) {
+                if (piece.perm[piece.orient][r][c] > 0) {
                     if (piece.col + c === 0 || grid[piece.row + r][piece.col + c - 1] !== 0) {
                         hit_left = true;
                     };
@@ -527,7 +648,7 @@ function Tetris(port_to_backend) {
         var left_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (left_grid[i][j] !== 0 && piece.perm[i - piece.row][j - piece.col] !== 0) {
+                if (left_grid[i][j] !== 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
                     left_grid[i][j] = 0;
                 };
             };
@@ -535,7 +656,7 @@ function Tetris(port_to_backend) {
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col - 1; j < piece.col + piece.size - 1; j++) {
                 if (left_grid[i][j] === 0) {
-                    left_grid[i][j] = piece.perm[i - piece.row][j - piece.col + 1];
+                    left_grid[i][j] = piece.perm[piece.orient][i - piece.row][j - piece.col + 1];
                 };
             };
         };
@@ -544,6 +665,7 @@ function Tetris(port_to_backend) {
             row : piece.row,
             col : piece.col - 1,
             size : piece.size,
+            orient : piece.orient,
             perm : piece.perm
         });
         setGrid(left_grid);
@@ -663,7 +785,7 @@ function Tetris(port_to_backend) {
                         <td className="instructions-page">
                             <p>Seconds: {Math.floor(count/420)}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
-                            <p>HI {piece.perm}</p>
+                            <p>Current Orientation: {piece.orient}</p>
                         </td>
                         <td className="tetris-screen">
                             <table className="tetris-screen-display">
