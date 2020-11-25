@@ -1375,7 +1375,7 @@ function Tetris(port_to_backend) {
                         <td className="instructions-page">
                             <p>Time:    {Math.floor(time/200)}</p>
                             <p>Score:   {score}</p>
-                            <p>Level:   {difficulty % 5}</p>
+                            <p>Level:   {difficulty / 5}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
                             <p>Current Orientation: {piece.orient}</p>
                         </td>
