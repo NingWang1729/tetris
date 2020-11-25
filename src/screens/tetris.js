@@ -273,7 +273,17 @@ function Tetris(port_to_backend) {
             case 82: // R
             case 87: // W
                 if(play) {
-                    movequeue.push(3);//rotate();
+                    movequeue.push(3);//rotate_cw();
+                }
+                break;
+            case 67: // C
+                if(play) {
+                    movequeue.push(3);//rotate_cw();
+                }
+                break;
+            case 90: // Z
+                if(play) {
+                    movequeue.push(4);//rotate_ccw();
                 }
                 break;
             case 39: // Right
@@ -364,10 +374,10 @@ function Tetris(port_to_backend) {
         checkRows();
     };
 
-    // Rotates the current piece held
-    // TODO: Ensure the rotation does not cause collision
-    function rotate() {
+    // Rotates the current piece held clockwise
+    function rotate_cw() {
         // O piece cannot rotate
+        // Rotations cannot occur when paused
         if (piece.perm[0][1][1] === 1 || !play) {
             return(false);
         };
@@ -384,70 +394,377 @@ function Tetris(port_to_backend) {
         };
 
         // increasing orientation will move the permutation of the piece
-        let new_orient = (piece.orient + 1) % 4
+        var new_orient = (piece.orient + 1) % 4
 
         // test if each wall kick can allow a rotation
         // if can_rotate is ever true after a wallkick, others will never trigger
-        let can_rotate = true;
-        if (piece.col < 0) {
-            can_rotate = false;
-        } else if (piece.col + piece.size > 10) {
-            can_rotate = false;
-        } else {
+        function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[piece.row + i][piece.col + j] !== 0) {
-                        can_rotate = false;
+                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0) {
+                        return false;
                     };
                 };
             };
-            // time to change the grid...
-            if (can_rotate) {
-                for (let i = 0; i < piece.size; i++) {
-                    for (let j = 0; j < piece.size; j++) {
-                        if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[piece.row + i][piece.col + j] === 0) {
-                            cleaned_grid[piece.row + i][piece.col + j] = piece.perm[new_orient][i][j];
-                        };
+            return true;
+        };
+    
+        // Implement the rotation if it can be done
+        function do_rotation(row, col) {
+            for (let i = 0; i < piece.size; i++) {
+                for (let j = 0; j < piece.size; j++) {
+                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] === 0) {
+                        cleaned_grid[row + i][col + j] = piece.perm[new_orient][i][j];
                     };
                 };
-            }
-        };
-
-        // Wall kick 1
-        if (!can_rotate){
-            // alert("WK1");
-            can_rotate = !can_rotate;
-            can_rotate = !can_rotate;
-        }
-
-        // Wall kick 2
-        if (!can_rotate){
-            // alert("WK2");
-            can_rotate = !can_rotate;
-            can_rotate = !can_rotate;
-        }
-
-        // Wall kick 3
-        if (!can_rotate){
-            // alert("WK3");
-            can_rotate = !can_rotate;
-            can_rotate = !can_rotate;
-        }
-
-        // Wall kick 4
-        if (!can_rotate){
-            // alert("WK4");
-            can_rotate = !can_rotate;
-            can_rotate = !can_rotate;
-        }
-
-        if (can_rotate) {
-            setPiece({row : piece.row,
-                col : piece.col,
+            };
+            setPiece({row : row,
+                col : col,
                 size : piece.size,
                 orient : new_orient,
                 perm : piece.perm});
             setGrid(cleaned_grid);
+            return true;
+        };
+
+        // Start off with false.
+        var can_rotate = false;
+
+        // Wall kick 0
+        if (!can_rotate) {
+            can_rotate = try_rotation(piece.row, piece.col);
+            if (can_rotate) {
+                do_rotation(piece.row, piece.col);
+            };
+        };
+
+        // Wall kick 1
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col - 1);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col + 1);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col + 1);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col - 1);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+
+        // Wall kick 2
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row - 1, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 1, piece.col - 1);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row + 1, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 1, piece.col + 1);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row - 1, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 1, piece.col + 1);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row + 1, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 1, piece.col - 1);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+
+        // Wall kick 3
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row + 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row - 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row + 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row - 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+
+        // Wall kick 4
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row + 2, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col - 1);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row - 2, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col + 1);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row + 2, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col + 1);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row - 2, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col - 1);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+    };
+
+    // Rotates the current piece held counter-clockwise
+    function rotate_ccw() {
+        // O piece cannot rotate
+        // Rotations cannot occur when paused
+        if (piece.perm[0][1][1] === 1 || !play) {
+            return(false);
+        };
+
+        // Deletes old piece
+        // This should give grid minus the current piece.
+        var cleaned_grid = JSON.parse(JSON.stringify(grid));
+        for (let i = 0; i < piece.size; i++) {
+            for (let j = 0; j < piece.size; j++) {
+                if (piece.perm[piece.orient][i][j] !== 0) {
+                    cleaned_grid[piece.row + i][piece.col + j] = 0;
+                };
+            };
+        };
+
+        // increasing orientation will move the permutation of the piece
+        var new_orient = (piece.orient + 3) % 4
+
+        // test if each wall kick can allow a rotation
+        // if can_rotate is ever true after a wallkick, others will never trigger
+        function try_rotation(row, col) {
+            for (let i = 0; i < piece.size; i++) {
+                for (let j = 0; j < piece.size; j++) {
+                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0) {
+                        return false;
+                    };
+                };
+            };
+            return true;
+        };
+    
+        // Implement the rotation if it can be done
+        function do_rotation(row, col) {
+            for (let i = 0; i < piece.size; i++) {
+                for (let j = 0; j < piece.size; j++) {
+                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] === 0) {
+                        cleaned_grid[row + i][col + j] = piece.perm[new_orient][i][j];
+                    };
+                };
+            };
+            setPiece({row : row,
+                col : col,
+                size : piece.size,
+                orient : new_orient,
+                perm : piece.perm});
+            setGrid(cleaned_grid);
+            return true;
+        };
+
+        // Start off with false.
+        var can_rotate = false;
+
+        // Wall kick 0
+        if (!can_rotate) {
+            can_rotate = try_rotation(piece.row, piece.col);
+            if (can_rotate) {
+                do_rotation(piece.row, piece.col);
+            };
+        };
+
+        // Wall kick 1
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col + 1);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col + 1);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col - 1);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row, piece.col - 1);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+
+        // Wall kick 2
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row - 1, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 1, piece.col + 1);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row + 1, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 1, piece.col + 1);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row - 1, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 1, piece.col - 1);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row + 1, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 1, piece.col - 1);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+
+        // Wall kick 3
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row + 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row - 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row + 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row - 2, piece.col);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
+        }
+
+        // Wall kick 4
+        if (!can_rotate){
+            switch (piece.orient) {
+                case 0:
+                    can_rotate = try_rotation(piece.row + 2, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col + 1);
+                    };
+                    break;
+                case 1:
+                    can_rotate = try_rotation(piece.row - 2, piece.col + 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col + 1);
+                    };
+                    break;
+                case 2:
+                    can_rotate = try_rotation(piece.row + 2, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row + 2, piece.col - 1);
+                    };
+                    break;
+                case 3:
+                    can_rotate = try_rotation(piece.row - 2, piece.col - 1);
+                    if (can_rotate) {
+                        do_rotation(piece.row - 2, piece.col - 1);
+                    };
+                    break;
+                default:
+                    alert("Something went horribly wrong with the rotation!");
+                    break;
+            }
         }
     };
 
@@ -696,9 +1013,11 @@ function Tetris(port_to_backend) {
                         move_down();
                         break;
                     case 3:
-                        rotate();
+                        rotate_cw();
                         break;
-                    break;
+                    case 4:
+                        rotate_ccw();
+                        break;
                 }
             }
         }
@@ -820,7 +1139,7 @@ function Tetris(port_to_backend) {
                 <button onClick={move_left}>
                     Move Left
                 </button>
-                <button onClick={rotate}>
+                <button onClick={rotate_cw}>
                     Rotate
                 </button>
                 <button onClick={toggle_play}>
