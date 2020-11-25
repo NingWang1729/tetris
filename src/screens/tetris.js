@@ -21,6 +21,9 @@ function Tetris(port_to_backend) {
     }, []);
 
     var [moves, setMoves] = useState([]);
+    var [difficulty, setDifficulty] = useState(0);
+    var [score, setScore] = useState(0);
+    var [time, setTime] = useState(0);
     var [order, setOrder] = useState([1, 2, 3, 4, 5, 6, 7]);
     var [play, setPlay] = useState(false);  // Whether game is playing or paused
     var [count, setCount] = useState(0);    // Timer, 1 second per count
@@ -325,18 +328,28 @@ function Tetris(port_to_backend) {
 
     function checkRows() {
         var check_grid = grid;
+        var temp_score = score;
+        var temp_difficulty = difficulty;
+        var cleared_lines = 0;
         for (let r = 0; r < 23; r++) {
             let product = 1;
             for (let c = 0; c < 10; c++) {
                 product *= check_grid[r][c];
-            };
+            }
             if (product !== 0) {
                 check_grid.splice(r, 1);
                 check_grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-            };
-        };
+                temp_difficulty += 5;
+                cleared_lines++;
+            }
+        }
+        if(cleared_lines > 0) {
+            setScore(score + 100 + (cleared_lines > 1 ? 200 * (cleared_lines-1): 0)
+                              + (cleared_lines == 4 ? 100 : 0));
+        }
+        setDifficulty(Math.min(temp_difficulty, 160));
         setGrid(check_grid);
-    };
+    }
 
     // Randomly Generates the next piece to play
     // Runs once at very start
@@ -346,6 +359,7 @@ function Tetris(port_to_backend) {
         if (order.length === 0) {
             setOrder([1, 2, 3, 4, 5, 6, 7]);
         };
+        temp = 7;
         switch (temp) {
             case 1:
                 setPiece(Object.assign(O_piece));
@@ -408,7 +422,7 @@ function Tetris(port_to_backend) {
             };
             return true;
         };
-    
+
         // Implement the rotation if it can be done
         function do_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
@@ -733,7 +747,7 @@ function Tetris(port_to_backend) {
             };
             return true;
         };
-    
+
         // Implement the rotation if it can be done
         function do_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
@@ -1044,11 +1058,11 @@ function Tetris(port_to_backend) {
                 if (piece.perm[piece.orient][r][c] > 0) {
                     if (grid[piece.row + r + 1][piece.col + c] !== 0) {
                         hit_bottom = true;
-                    };
-                    break;
-                };
-            };
-        };
+                    }
+                  break;
+                }
+            }
+        }
         if (hit_bottom) {
             if (piece.row === 0) {
                 alert("GAME OVER!");
@@ -1081,6 +1095,9 @@ function Tetris(port_to_backend) {
                     [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], //Row 25 Serves To Act As Lower Bound
                     [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
                 ]);
+                setScore(0);
+                setDifficulty(0);
+                setTime(0);
                 setMoves([]);
                 toggle_play();
                 let sound = document.getElementById("tetris-theme");
@@ -1137,16 +1154,17 @@ function Tetris(port_to_backend) {
                 if (piece.perm[piece.orient][r][c] > 0) {
                     if (grid[piece.row + r + 1][piece.col + c] !== 0) {
                         hit_bottom = true;
-                    };
+                    }
                     break;
-                };
-            };
-        };
+                }
+            }
+        }
         if (!hit_bottom) {
+            setScore(score+1);
             move_down();
             fast_drop();
         }
-    };
+    }
 
     // Moves piece rightwards by one
     function move_right() {
@@ -1247,8 +1265,8 @@ function Tetris(port_to_backend) {
     // Counter for the game
     function counter() {
         if (play) {
-            if(count % 200 === 0) {
-                moves.push(2);
+            if(count % (200-difficulty) === 0) {
+                moves.push(5);
             }
             if(moves.length !== 0) {
                 switch(moves.shift()) {
@@ -1258,20 +1276,23 @@ function Tetris(port_to_backend) {
                     case 1:
                         move_right();
                         break;
-                    case 2:
-                        move_down();
-                        break;
                     case 3:
                         rotate_cw();
                         break;
                     case 4:
                         rotate_ccw();
                         break;
+                    case 2:
+                        setScore(score+1);
+                    case 5:
+                        move_down();
+                        break;
                     default:
                         alert("Invalid keyboard or command input.");
                         break;
                 }
             }
+            setTime(time+1);
         }
         updateColors();
         setCount(count + 1);
@@ -1352,7 +1373,9 @@ function Tetris(port_to_backend) {
                     </tr>
                     <tr>
                         <td className="instructions-page">
-                            <p>Seconds: {Math.floor(count/420)}</p>
+                            <p>Time:    {Math.floor(time/200)}</p>
+                            <p>Score:   {score}</p>
+                            <p>Level:   {difficulty % 5}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
                             <p>Current Orientation: {piece.orient}</p>
                         </td>
