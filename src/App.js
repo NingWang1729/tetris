@@ -1,12 +1,12 @@
 import React from 'react';
-import {BrowserRouter, NavLink, Route} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 import './App.css';
 import Home from './screens/home';
 import Tetris from './screens/tetris';
 import Forum from './screens/forum';
 
 // To be updated every 8 hours until a permanent backend port is found
-const BACKEND_PORT = "https://77a7ea569910.ngrok.io";
+const BACKEND_PORT = "https://a1470a954887.ngrok.io";
 
 function App() {
     return (
