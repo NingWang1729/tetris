@@ -326,6 +326,7 @@ function Tetris(port_to_backend) {
         setHold(temp);
     };
 
+    // TODO: Add points for T-spin, combos
     function checkRows() {
         var check_grid = grid;
         var temp_score = score;
@@ -358,8 +359,7 @@ function Tetris(port_to_backend) {
         let temp = order.splice(Math.floor(order.length * Math.random()), 1)[0];
         if (order.length === 0) {
             setOrder([1, 2, 3, 4, 5, 6, 7]);
-        };
-        temp = 7;
+        }
         switch (temp) {
             case 1:
                 setPiece(Object.assign(O_piece));
