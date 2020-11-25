@@ -1251,7 +1251,7 @@ function Tetris(port_to_backend) {
                 moves.push(2);
             }
             if(moves.length !== 0) {
-                switch(moves.shift()) { //0 - left, 1 - right, 2 - down, 3 - rotate
+                switch(moves.shift()) {
                     case 0:
                         move_left();
                         break;
@@ -1319,9 +1319,7 @@ function Tetris(port_to_backend) {
 
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
-        const timer = setTimeout(counter, 1);
-        // const timer = setInterval(counter, 5);
-        // return () => clearInterval(timer);
+        setTimeout(counter, 1);
     }, [count]);
 
     //componentDidMount piece, starts off with a random piece
