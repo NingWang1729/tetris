@@ -328,9 +328,9 @@ function Tetris(port_to_backend) {
 
     // TODO: Add points for T-spin, combos
     function checkRows() {
-        var check_grid = grid;
-        var temp_score = score;
-        var temp_difficulty = difficulty;
+        var check_grid = JSON.parse(JSON.stringify(grid));
+        var temp_score = JSON.parse(JSON.stringify(score));
+        var temp_difficulty = JSON.parse(JSON.stringify(difficulty));
         var cleared_lines = 0;
         for (let r = 0; r < 23; r++) {
             let product = 1;
@@ -340,15 +340,32 @@ function Tetris(port_to_backend) {
             if (product !== 0) {
                 check_grid.splice(r, 1);
                 check_grid.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-                temp_difficulty += 5;
                 cleared_lines++;
             }
         }
-        if(cleared_lines > 0) {
-            setScore(score + 100 + (cleared_lines > 1 ? 200 * (cleared_lines-1): 0)
-                              + (cleared_lines == 4 ? 100 : 0));
+        // Old Score calculator...
+        // if(cleared_lines > 0) {
+        //     setScore(score + 100 + (cleared_lines > 1 ? 200 * (cleared_lines-1): 0)
+        //                       + (cleared_lines == 4 ? 100 : 0));
+        // }
+        switch (cleared_lines) {
+            case 1:
+                setScore(temp_score + 40 * (Math.floor(temp_difficulty / 10) + 1))
+                break;
+            case 2:
+                setScore(temp_score + 100 * (Math.floor(temp_difficulty / 10) + 1))
+                break;
+            case 3:
+                setScore(temp_score + 300 * (Math.floor(temp_difficulty / 10) + 1))
+                break;
+            case 4:
+                setScore(temp_score + 1200 * (Math.floor(temp_difficulty / 10) + 1))
+                break;
+            default:
+                setScore(temp_score);
+                break;
         }
-        setDifficulty(Math.min(temp_difficulty, 160));
+        setDifficulty(Math.min(temp_difficulty + cleared_lines, 160));
         setGrid(check_grid);
     }
 
@@ -1066,6 +1083,7 @@ function Tetris(port_to_backend) {
         if (hit_bottom) {
             if (piece.row === 0) {
                 alert("GAME OVER!");
+                let final_score = JSON.parse(JSON.stringify(score));
                 setGrid([
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -1108,7 +1126,7 @@ function Tetris(port_to_backend) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ score : count })
+                    body: JSON.stringify({ score : final_score })
                 });
                 return(false);
             };
@@ -1375,7 +1393,7 @@ function Tetris(port_to_backend) {
                         <td className="instructions-page">
                             <p>Time:    {Math.floor(time/200)}</p>
                             <p>Score:   {score}</p>
-                            <p>Level:   {difficulty / 5}</p>
+                            <p>Level:   {Math.floor(difficulty / 10)}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
                             <p>Current Orientation: {piece.orient}</p>
                         </td>
