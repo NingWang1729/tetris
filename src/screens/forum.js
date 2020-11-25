@@ -43,7 +43,7 @@ function Forum(port_to_backend) {
         function handleSubmit(e, thread_name, thread_message) {
             e.preventDefault();
             props.createThread(name, message);
-            if (thread_name == '' || thread_message == '') {
+            if (thread_name === '' || thread_message === '') {
                 console.log("User attempted to post an empty thread...");
                 return false;
             } else {
@@ -214,12 +214,6 @@ function Forum(port_to_backend) {
             setLikes(likes + 1);
         };
 
-        const createdOn = props.createdOn;
-        let dateTimer = setInterval(tick, 1000);
-        function tick() {
-            setTime(howOld(createdOn));
-        }
-
         function addComment(name, message) {
             //make sure comment is not empty...
             if (name === '' || message === '') {
@@ -269,7 +263,6 @@ function Forum(port_to_backend) {
         const [likes, setLikes] = useState(props.likes);
         const [time, setTime] = useState('Loading...');
         const createdOn = props.createdOn;
-        let dateTimer = setInterval(tick, 1000);
         function tick() {
              setTime(howOld(createdOn));
         }
@@ -304,7 +297,7 @@ function Forum(port_to_backend) {
             //need to change this from 'Adam' to User_ID or something similar
             props.createComment('Anonymous', message);
             // start
-            if (comment_message == '') {
+            if (comment_message === '') {
                 console.log("User attempted to comment an empty comment...");
                 return false;
             } else {

@@ -401,7 +401,7 @@ function Tetris(port_to_backend) {
         function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0) {
+                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0)) {
                         return false;
                     };
                 };
@@ -469,7 +469,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -499,9 +499,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
 
         // Wall kick 2
         if (!can_rotate){
@@ -534,7 +534,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -564,9 +564,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
 
         // Wall kick 3
         if (!can_rotate){
@@ -599,7 +599,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -629,9 +629,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
 
         // Wall kick 4
         if (!can_rotate){
@@ -664,7 +664,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -694,9 +694,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
     };
 
     // Rotates the current piece held counter-clockwise
@@ -726,7 +726,7 @@ function Tetris(port_to_backend) {
         function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0) {
+                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0)) {
                         return false;
                     };
                 };
@@ -794,7 +794,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -824,9 +824,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
 
         // Wall kick 2
         if (!can_rotate){
@@ -859,7 +859,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -889,9 +889,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
 
         // Wall kick 3
         if (!can_rotate){
@@ -924,7 +924,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -954,10 +954,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-            
-        }
+                };
+            };
+        };
 
         // Wall kick 4
         if (!can_rotate){
@@ -990,7 +989,7 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
+                };
             } else {
                 switch (piece.orient) {
                     case 0:
@@ -1020,9 +1019,9 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                }
-            }
-        }
+                };
+            };
+        };
     };
 
     // Pauses and unpauses game
@@ -1095,7 +1094,7 @@ function Tetris(port_to_backend) {
                     body: JSON.stringify({ score : count })
                 });
                 return(false);
-            }
+            };
             nextPiece();
             return(false);
         };
@@ -1245,13 +1244,6 @@ function Tetris(port_to_backend) {
         setGrid(left_grid);
     };
 
-    // Moves piece
-    function move_piece() {
-        if (play === true) {
-            move_down();
-        }
-    };
-
     // Counter for the game
     function counter() {
         if (play) {
@@ -1274,6 +1266,9 @@ function Tetris(port_to_backend) {
                         break;
                     case 4:
                         rotate_ccw();
+                        break;
+                    default:
+                        alert("Invalid keyboard or command input.");
                         break;
                 }
             }

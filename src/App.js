@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, NavLink, Route} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 import './App.css';
 import Home from './screens/home';
 import Tetris from './screens/tetris';

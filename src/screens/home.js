@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 function Home(port_to_backend) {
     const BACKEND_PORT = port_to_backend;
