@@ -298,7 +298,7 @@ function Tetris(port_to_backend) {
             case 40: // Down
             case 83: // S
                 if(play) {
-                    movequeue.push(2);//fast_drop();
+                    movequeue.push(2);//fast_drop(); actually it's "soft drop"
                 }
                 break;
             case 32: // Space
@@ -1306,7 +1306,7 @@ function Tetris(port_to_backend) {
                         rotate_ccw();
                         break;
                     case 2:
-                        setScore(score+1);
+                        setScore(score+1); // Soft drop
                     case 5:
                         move_down();
                         break;
