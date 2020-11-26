@@ -204,7 +204,7 @@ function Forum(port_to_backend) {
         }, []);
 
         const createdOn = props.createdOn;
-        let dateTimer = setInterval(tick, 1000);
+        setTimeout(tick, 1000);
         function tick() {
             setTime(howOld(createdOn));
         }
