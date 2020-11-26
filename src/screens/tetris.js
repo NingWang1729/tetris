@@ -21,6 +21,7 @@ function Tetris(port_to_backend) {
     }, []);
 
     var [moves, setMoves] = useState([]);
+    var [tspin, setTspin] = useState(false);
     var [difficulty, setDifficulty] = useState(0);
     var [score, setScore] = useState(0);
     var [time, setTime] = useState(0);
@@ -348,23 +349,28 @@ function Tetris(port_to_backend) {
         //     setScore(score + 100 + (cleared_lines > 1 ? 200 * (cleared_lines-1): 0)
         //                       + (cleared_lines == 4 ? 100 : 0));
         // }
-        switch (cleared_lines) {
-            case 1:
-                setScore(temp_score + 40 * (Math.floor(temp_difficulty / 10) + 1))
-                break;
-            case 2:
-                setScore(temp_score + 100 * (Math.floor(temp_difficulty / 10) + 1))
-                break;
-            case 3:
-                setScore(temp_score + 300 * (Math.floor(temp_difficulty / 10) + 1))
-                break;
-            case 4:
-                setScore(temp_score + 1200 * (Math.floor(temp_difficulty / 10) + 1))
-                break;
-            default:
-                setScore(temp_score);
-                break;
+        if(tspin) {
+            setScore(temp_score+400 + 400*Math.min(cleared_lines, 3));
+        }else {
+            switch (cleared_lines) {
+                case 1:
+                    setScore(temp_score + 40 * (Math.floor(temp_difficulty / 10) + 1))
+                    break;
+                case 2:
+                    setScore(temp_score + 100 * (Math.floor(temp_difficulty / 10) + 1))
+                    break;
+                case 3:
+                    setScore(temp_score + 300 * (Math.floor(temp_difficulty / 10) + 1))
+                    break;
+                case 4:
+                    setScore(temp_score + 1200 * (Math.floor(temp_difficulty / 10) + 1))
+                    break;
+                default:
+                    setScore(temp_score);
+                    break;
+            }
         }
+
         setDifficulty(Math.min(temp_difficulty + cleared_lines, 160));
         setGrid(check_grid);
     }
@@ -412,8 +418,13 @@ function Tetris(port_to_backend) {
         // Rotations cannot occur when paused
         if (piece.perm[0][1][1] === 1 || !play) {
             return(false);
-        };
+        }
 
+        if (hit_bottom()) {
+            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] === 0) {
+                setTspin(true);
+            }
+        }
         // Deletes old piece
         // This should give grid minus the current piece.
         var cleaned_grid = JSON.parse(JSON.stringify(grid));
@@ -728,10 +739,24 @@ function Tetris(port_to_backend) {
                     default:
                         alert("Something went horribly wrong with the rotation!");
                         break;
-                };
-            };
-        };
-    };
+                }
+            }
+        }
+    }
+
+    function hit_bottom() {
+        for (let c = 0; c < piece.size; c++) {
+            for (let r = piece.size - 1; r > -1; r--){
+                if (piece.perm[piece.orient][r][c] > 0) {
+                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
+                        return true;
+                    }
+                  break;
+                }
+            }
+        }
+        return false;
+    }
 
     // Rotates the current piece held counter-clockwise
     function rotate_ccw() {
@@ -739,7 +764,13 @@ function Tetris(port_to_backend) {
         // Rotations cannot occur when paused
         if (piece.perm[0][1][1] === 1 || !play) {
             return(false);
-        };
+        }
+
+        if (hit_bottom()) {
+            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] === 0) {
+                setTspin(true);
+            }
+        }
 
         // Deletes old piece
         // This should give grid minus the current piece.
