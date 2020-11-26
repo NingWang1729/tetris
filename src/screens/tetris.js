@@ -60,6 +60,37 @@ function Tetris(port_to_backend) {
             [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
         ]);
 
+        var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
+            [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 5
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 10
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 15
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 7, 7, 7, 0, 0],
+                [0, 0, 0, 0, 0, 7, 0, 0, 0, 0], //Row 20
+                [0, 0, 0, 0, 0, 7, 7, 7, 7, 0],
+                [0, 0, 0, 0, 0, 7, 7, 7, 7, 7],
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8], //Row 25 Serves To Act As Lower Bound
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            ]);
+
     /*
     Row/Col are the top left coordinate of the "coords"
     Size is the side length of the coords's "square"
@@ -434,8 +465,8 @@ function Tetris(port_to_backend) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
                     if (piece.perm[new_orient][i][j] === 0) {
-                        break;
-                    } else if (row + i < 0 || row + i > 22 || col + j < 0 && col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
+                        continue;
+                    } else if (row + i < 0 || row + i > 22 || col + j < 0 || col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
                         return false;
                     };
                 };
@@ -761,8 +792,8 @@ function Tetris(port_to_backend) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
                     if (piece.perm[new_orient][i][j] === 0) {
-                        break;
-                    } else if (row + i < 0 || row + i > 22 || col + j < 0 && col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
+                        continue;
+                    } else if (row + i < 0 || row + i > 22 || col + j < 0 || col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
                         return false;
                     };
                 };
