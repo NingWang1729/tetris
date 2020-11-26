@@ -400,7 +400,8 @@ function Tetris(port_to_backend) {
                 setPiece(Object.assign(I_piece));
                 break;
             default:
-                setPiece(Object.assign(T_piece));
+                setPiece(Object.assign(I_piece));
+                break;
         };
         checkRows();
     };
@@ -432,7 +433,7 @@ function Tetris(port_to_backend) {
         function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0)) {
+                    if (row < 0 || row > 22 || col < 0 || col + j > 9 || (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0)) {
                         return false;
                     };
                 };
@@ -757,7 +758,7 @@ function Tetris(port_to_backend) {
         function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (row < 0 || row + i > 22 || col < 0 || col + j > 9 || (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0)) {
+                    if (row < 0 || row > 22 || col < 0 || col + j > 9 || (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] !== 0)) {
                         return false;
                     };
                 };
