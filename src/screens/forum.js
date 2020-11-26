@@ -203,6 +203,12 @@ function Forum(port_to_backend) {
                 });
         }, []);
 
+        const createdOn = props.createdOn;
+        let dateTimer = setInterval(tick, 1000);
+        function tick() {
+            setTime(howOld(createdOn));
+        }
+
         function addLike() {
             fetch(`${BACKEND_PORT}/post/${props.id}`, {
                 method: 'POST',
@@ -266,6 +272,7 @@ function Forum(port_to_backend) {
         function tick() {
              setTime(howOld(createdOn));
         }
+        setTimeout(tick, 1000);
         function addLike() {
             fetch(`${BACKEND_PORT}/comment/${props.id}`, {
                 method: 'POST',
