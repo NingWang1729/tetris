@@ -433,7 +433,9 @@ function Tetris(port_to_backend) {
         function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (piece.perm[new_orient][i][j] !== 0 && row + i > -1 && row + i < 23 && col + j > -1 && col + j < 10 && cleaned_grid[row + i][col + j] !== 0) {
+                    if (piece.perm[new_orient][i][j] === 0) {
+                        break;
+                    } else if (row + i < 0 || row + i > 22 || col + j < 0 && col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
                         return false;
                     };
                 };
@@ -758,7 +760,9 @@ function Tetris(port_to_backend) {
         function try_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (piece.perm[new_orient][i][j] !== 0 && row + i > -1 && row + i < 23 && col + j > -1 && col + j < 10 && cleaned_grid[row + i][col + j] !== 0) {
+                    if (piece.perm[new_orient][i][j] === 0) {
+                        break;
+                    } else if (row + i < 0 || row + i > 22 || col + j < 0 && col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
                         return false;
                     };
                 };
