@@ -300,11 +300,10 @@ function Forum(port_to_backend) {
     function CreateSubCommentForm(props) {
         //state to store message of the comment
         const [message, setMessage] = useState('');
+        const [name, setName] = useState('');
 
-        function handleSubmit(e, comment_message) {
+        function handleSubmit(e, comment_message, comment_name) {
             e.preventDefault();
-            //need to change this from 'Adam' to User_ID or something similar
-            props.createComment('Anonymous', message);
             // start
             if (comment_message === '') {
                 console.log("User attempted to comment an empty comment...");
@@ -312,8 +311,9 @@ function Forum(port_to_backend) {
             } else {
                 console.log("Comment is valid...");
             }
+            props.createComment(comment_name, comment_message);
             let data = {
-                comment_name: 'Anonymous',
+                comment_name: comment_name,
                 comment_message : comment_message,
                 post_id : props.post_id
             };
@@ -333,6 +333,12 @@ function Forum(port_to_backend) {
         return (
             <form>
                 <input
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    placeholder="Commenter Name"
+                    name="thread_name"
+                />
+                <input
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     placeholder="Comment Message"
@@ -341,7 +347,7 @@ function Forum(port_to_backend) {
                 <button
                     type="submit"
                     //className="*need comment-button class*"
-                    onClick={(e) => handleSubmit(e, message)}
+                    onClick={(e) => handleSubmit(e, message, name)}
                 >
                     Comment
                 </button>
