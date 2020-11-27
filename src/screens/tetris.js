@@ -277,6 +277,7 @@ function Tetris(port_to_backend) {
             case 82: // R
             case 87: // W
                 if(play) {
+                    e.preventDefault();
                     movequeue.push(3);//rotate_cw();
                 }
                 break;
@@ -299,11 +300,13 @@ function Tetris(port_to_backend) {
             case 40: // Down
             case 83: // S
                 if(play) {
+                    e.preventDefault();
                     movequeue.push(2);//fast_drop(); actually it's "soft drop"
                 }
                 break;
             case 32: // Space
             case 80: // P
+                e.preventDefault();
                 let sound = document.getElementById("tetris-theme");
                 if (play) {
                     sound.pause();
