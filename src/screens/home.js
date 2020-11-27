@@ -20,7 +20,11 @@ function Home(port_to_backend) {
                 <p> Games </p>
             </h2>
             <div class="row">
-                <p>TETRIS!!!</p>
+                <p>[ICON] TETRIS!!!</p>
+                <p>Tetris again because we dont have any other games oops</p>
+                <p>Tetris again because we dont have any other games oops</p>
+                <p>Tetris again because we dont have any other games oops</p>
+                <p>Tetris again because we dont have any other games oops</p>
                 <p>Tetris again because we dont have any other games oops</p>
             </div>
             <br></br>
