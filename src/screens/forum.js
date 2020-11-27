@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createRenderer } from 'react-dom/test-utils';
 import '../styles/forum.css';
 
 /* TO-DO (general ideas): 
@@ -205,6 +206,7 @@ function Forum(port_to_backend) {
 
         const createdOn = props.createdOn;
         setTimeout(tick, 1000);
+        //let clock = setInterval(tick, 1000);
         function tick() {
             setTime(howOld(createdOn));
         }
@@ -361,7 +363,10 @@ function Forum(port_to_backend) {
         const hour = min * 60;
         const day = hour * 24;
         const week = day * 7;
-        const max = week + day;
+        const week2 = week * 2;
+        const week3 = week * 3;
+        const week4 = week * 4;
+        const max = week * 5;
 
         // Handles created '[some time] ago' message
         const now = new Date();
@@ -380,11 +385,56 @@ function Forum(port_to_backend) {
             case diff < week:
                 message = Math.floor(diff/day) + ' days ago';
                 break;
-            case diff < max:
+            case diff < week2:
                 message = '1 week ago';
+            case diff < week3:
+                message = '2 weeks ago';
+            case diff < week4:
+                message = '3 weeks ago';
+            case diff < max:
+                message = '4 weeks ago';
                 break;
             default:
-                message = created.toString();
+                let month;
+                switch (created.getMonth()) {
+                    case 0:
+                        month = 'January';
+                        break;
+                    case 1:
+                        month = 'February';
+                        break;
+                    case 2:
+                        month = 'March';
+                        break;
+                    case 3:
+                        month = 'April'
+                        break;
+                    case 4:
+                        month = 'May'
+                        break;
+                    case 5:
+                        month = 'June'
+                        break;
+                    case 6:
+                        month = 'July'
+                        break;
+                    case 7:
+                        month = 'August'
+                        break;
+                    case 8:
+                        month = 'September'
+                        break;
+                    case 9:
+                        month = 'October'
+                        break;
+                    case 10:
+                        month = 'November'
+                        break;
+                    case 11:
+                        month = 'December'
+                        break;
+                }
+                message = month + ' ' + created.getDate() + ' ' + created.getFullYear();
                 break;
         }
         return(message);
