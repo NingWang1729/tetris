@@ -1477,7 +1477,7 @@ function Tetris(port_to_backend) {
                     Move Right
                 </button>
                 <br></br>
-                {/* fix function later @NING */}
+                {/* fix function later @everyone */}
                 <button onClick={rotate_cw}>
                     Hold
                 </button>
@@ -1487,7 +1487,7 @@ function Tetris(port_to_backend) {
                 <button onClick={rotate_ccw}>
                     Rotate CCW
                 </button>
-                {/* fix function later @NING */}
+                {/* fix function later @everyone */}
                 <button onClick={rotate_ccw}>
                     Hard Drop
                 </button>
