@@ -13,6 +13,17 @@
   color: white;
 }
 
+.app-footer {
+  background-color: #001234;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  font-size: 8pt;
+  font-weight: 800;
+  color: white;
+}
+
 .app-header nav {
   display: inline-block;
   color: white;

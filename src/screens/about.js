@@ -8,7 +8,6 @@ function About(port_to_backend) {
             <br/>
             <br/>
             <br/>
-            <br/>
             <div class="about-section">
                 <h1>About Us Page</h1>
                 <p>Our team consists of 3 Mega Brains and 1 Scrub.</p>

@@ -44,9 +44,9 @@ function App() {
                 <Route path="/forum" exact={true} component={Forum.bind(this, BACKEND_PORT)}/>
                 <Route path="/about" exact={true} component={About.bind(this, BACKEND_PORT)}/>
             </BrowserRouter>
-            <footer className="footer">
+            <footer className="app-footer">
                 <p>
-                    footer
+                    Made with ❤ by the<a href="/about" target="_blank">Gwabbitz Gang</a>
                 </p>
             </footer>
         </div>
