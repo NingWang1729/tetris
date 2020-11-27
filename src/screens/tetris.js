@@ -408,7 +408,7 @@ function Tetris(port_to_backend) {
             };
             return true;
         };
-    
+
         // Implement the rotation if it can be done
         function do_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
@@ -605,7 +605,7 @@ function Tetris(port_to_backend) {
             };
             return true;
         };
-    
+
         // Implement the rotation if it can be done
         function do_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
@@ -1091,7 +1091,7 @@ function Tetris(port_to_backend) {
                 <table className="tetris-page">
                     <tr>
                         <td className="">
-                        Instructions Page:
+                        Instructions Page
                         </td>
                         <td className="">
                         Tetris
@@ -1102,6 +1102,14 @@ function Tetris(port_to_backend) {
                     </tr>
                     <tr>
                         <td className="instructions-page">
+                            <p> Pieces will come down from the top of the screen.
+                            Rotate pieces and move them left and right with the arrow keys.
+                            If a row is filled with squares, it will disappear. When a piece
+                            reaches the top of the grid, the game is over. Try to get the highest
+                            score possible and good luck! </p>
+                            <br></br>
+                            <br></br>
+                            <br></br>
                             <p>Seconds: {Math.floor(count/420)}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
                             <p>Current Orientation: {piece.orient}</p>
