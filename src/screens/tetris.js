@@ -1417,17 +1417,7 @@ function Tetris(port_to_backend) {
                     Your browser does not support the audio element.
                 </audio>
                 <table className="tetris-page">
-                    <tr>
-                        <td className="">
-                        Instructions Page
-                        </td>
-                        <td className="">
-                        Tetris
-                        </td>
-                        <td className="">
-                        Next Pieces
-                        </td>
-                    </tr>
+                    <br></br>
                     <tr>
                         <td className="instructions-page">
                             <p> Pieces will come down from the top of the screen.
@@ -1485,6 +1475,21 @@ function Tetris(port_to_backend) {
                 </button>
                 <button onClick={move_right}>
                     Move Right
+                </button>
+                <br></br>
+                {/* fix function later @NING */}
+                <button onClick={rotate_cw}>
+                    Hold
+                </button>
+                <button onClick={rotate_cw}>
+                    Rotate CW
+                </button>
+                <button onClick={rotate_ccw}>
+                    Rotate CCW
+                </button>
+                {/* fix function later @NING */}
+                <button onClick={rotate_ccw}>
+                    Hard Drop
                 </button>
                 {/* <button onClick={start_game}>
                     Start Game
