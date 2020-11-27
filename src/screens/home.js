@@ -17,7 +17,6 @@ function Home(port_to_backend) {
                 <p>Please use the menu bar for navigation</p>
             </h2>
             <br></br>
-            <br></br>
             <h2>TOP REVIEWS</h2>
             <div class="row">
                 <div class="column">
@@ -90,6 +89,8 @@ function Home(port_to_backend) {
             </div>
             <p>Please use /tetris for tetris and /forum for forum in url</p>
             <p>Current backend port is: {BACKEND_PORT}</p>
+            <br></br>
+            <br></br>
 
         </React.Fragment>
     );
