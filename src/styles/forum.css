@@ -4,10 +4,12 @@
 
 .forum-page {
   width: 100%;
+  background-color: #c8d8e7;
 }
 
 .forum-manager {
-  background-color: #01379b;
+  background-color: #214a96;
+  padding: 5pt;
   position: fixed;
   top: 7%;
   width: 100%;
@@ -33,9 +35,12 @@
 }
 
 .thread {
-  margin: 5pt;
-  background-color: beige;
-  padding: 5pt 0 5pt 0;
+  width: 80%;
+  margin: 10pt auto;
+  border-radius: 3pt;
+  border: 1px solid #acb2b8;
+  background-color: #F8F9FA;
+  padding: 0 5pt 0 5pt;
   text-align: left;
 }
 .thread-name {
@@ -46,7 +51,11 @@
 }
 
 .comment {
-  margin: 2pt 0 0 10pt;
+  width: 90%;
+  border-left: 3pt solid #214a96;
+  border-radius: 0 5pt 5pt 0;
+  padding: 0 5pt 0 5pt;
+  margin: 5pt auto;
   background-color: white;
   text-align: left;
 }

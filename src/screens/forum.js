@@ -448,14 +448,17 @@ function Forum(port_to_backend) {
     // Returns Forum
     return (
         <React.Fragment>
-            {/* <br/> */}
-            <ForumManager createThread={addThread}/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            {/* <br/> */}
-            {threads}
+            <div className="forum-page">
+                {/* <br/> */}
+                <ForumManager createThread={addThread}/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                {/* <br/> */}
+                {threads}
+                <br/>
+            </div>
         </React.Fragment>
     );
 }
