@@ -68,19 +68,19 @@ function Forum(port_to_backend) {
         /* Returns 2 input fields where user can input information about thread
         and a button that calls method to create a thread */
         return (
-            <form className="forum-manager">
+            <div className="forum-manager">
                 <input 
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder="Thread Name"
-                    className="create-thread-input"
+                    className="create-thread-name-input"
                     name="thread_name"
                 />
-                <input
+                <textarea
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     placeholder="Thread Message"
-                    className="create-thread-input"
+                    className="create-thread-message-input"
                     name="thread_message"
                 />
                 <button
@@ -111,7 +111,7 @@ function Forum(port_to_backend) {
                 >
                     Dev Button
                 </button>
-            </form>
+            </div>
         );
     }
 
