@@ -13,25 +13,49 @@
   position: fixed;
   top: 7%;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.create-thread-name-input {
+  display: flexbox;
+  margin: 0;
+  width: 20%;
+  height: 25pt;
+}
+
+.create-thread-message-input {
+  display: flexbox;
+  margin: 0;
+  width: 20%;
+  height: 25pt;
+  resize: none;
+}
+
+.create-thread-message-input:focus {
+  height: 100pt;
 }
 
 .create-thread-btn {
+  display: flexbox;
+  height: 25pt;
   font-size: 15pt;
   font-weight: bold;
 }
 
 .sort-by-likes-btn {
+  display: flexbox;
+  height: 25pt;
   font-size: 15pt;
   font-weight: bold;
 }
 
 .sort-by-new-btn {
+  display: flexbox;
+  height: 25pt;
   font-size: 15pt;
   font-weight: bold;
-}
-
-.create-thread-input {
-  margin: 0 5pt 0 5pt;
 }
 
 .thread {
