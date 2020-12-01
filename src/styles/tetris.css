@@ -19,19 +19,21 @@
     width:70%;
 }
 
-.hold-piece-container {
-    width:30%;
-    align-content: initial;
-}
-
 .tetris-screen-display {
     width: 60%;
     margin-left: 30%;
-    /* margin-right: 30%; */
     line-height: 24px;
     border: 2px;
     border-style: solid;
     background-color: black;
+}
+
+.tetris-screen-display td {
+    width: 10%;
+}
+
+.hold-piece-container {
+    width:30%;
 }
 
 .hold-piece-descriptor {
@@ -45,6 +47,12 @@
     border: 2px;
     border-style: solid;
     background-color: black;
+    color: black;
+}
+
+.hold-piece-display td {
+    background-color: gray;
+    color: gray;
 }
 
 #gray {
