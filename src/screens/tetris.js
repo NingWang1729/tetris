@@ -71,6 +71,43 @@ function Tetris(port_to_backend) {
     - Grid display is 10 x 20
     - 3 hidden rows above grid
     */
+    const tetris_pieces = [
+        [
+            [0, 1, 1, 0],
+            [0, 1, 1, 0],
+            [0, 0, 0, 0]
+        ], 
+        [
+            [0, 2, 2, 0],
+            [2, 2, 0, 0],
+            [0, 0, 0, 0]
+        ], 
+        [
+            [3, 3, 0, 0],
+            [0, 3, 3, 0],
+            [0, 0, 0, 0]
+        ], 
+        [
+            [0, 4, 0, 0],
+            [4, 4, 4, 0],
+            [0, 0, 0, 0]
+        ], 
+        [
+            [0, 0, 5, 0],
+            [5, 5, 5, 0],
+            [0, 0, 0, 0]
+        ], 
+        [
+            [6, 0, 0, 0],
+            [6, 6, 6, 0],
+            [0, 0, 0, 0]
+        ], 
+        [
+            [0, 0, 0, 0],
+            [7, 7, 7, 7],
+            [0, 0, 0, 0]
+        ]
+    ];
     const O_piece = {
         color : "yellow",
         row : 0,
@@ -418,15 +455,17 @@ function Tetris(port_to_backend) {
         setGrid(check_grid);
     }
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
     // Randomly Generates the next piece to play
     // Runs once at very start
-    // TODO: Have a display of upcoming pieces
     function nextPiece() {
-        let temp = order.splice(Math.floor(order.length * Math.random()), 1)[0];
-        if (order.length === 0) {
-            setOrder([1, 2, 3, 4, 5, 6, 7]);
-        }
-        switch (temp) {
+        var new_order = JSON.parse(JSON.stringify(order));
+        switch (new_order.splice(0, 1)[0]) {
             case 1:
                 setPiece(Object.assign(O_piece));
                 break;
@@ -452,6 +491,17 @@ function Tetris(port_to_backend) {
                 setPiece(Object.assign(I_piece));
                 break;
         };
+        // Add more pieces if necessary.
+        if (new_order.length < 7) {
+            let new_set = [1, 2, 3, 4, 5, 6, 7];
+            for (let i = new_set.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [new_set[i], new_set[j]] = [new_set[j], new_set[i]];
+            };
+            new_order = new_order.concat(new_set);
+        }
+        setOrder(new_order);
+        updateNextPieces();
         checkRows();
     };
 
@@ -1153,6 +1203,9 @@ function Tetris(port_to_backend) {
             if (piece.row === 0) {
                 alert("GAME OVER!");
                 let final_score = JSON.parse(JSON.stringify(score));
+                setOrder([1, 2, 3, 4, 5, 6, 7]);
+                nextPiece();
+                updateNextPieces();
                 setGrid([
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -1376,6 +1429,7 @@ function Tetris(port_to_backend) {
             setTime(time+1);
         }
         updateColors();
+        updateNextPieces();
         setCount(count + 1);
     };
 
@@ -1458,6 +1512,47 @@ function Tetris(port_to_backend) {
         };
     };
 
+    function updateNextPieces() {
+        for (let k = 0; k < 4; k++) {
+            let next_piece = document.getElementsByClassName("next-piece-display").item(k).childNodes;
+            for (let i = 0; i < next_piece.length; i++) {
+                // Checks each row
+                let row = next_piece.item(i).childNodes;
+                for (let j = 0; j < row.length; j++) {
+                    let col = row.item(j);
+                    switch (tetris_pieces[document.getElementsByClassName("next-piece-display").item(k).id - 1][i][j]) {
+                        case 0:
+                            col.id = "gray";
+                            break;
+                        case 1:
+                            col.id = "yellow";
+                            break;
+                        case 2:
+                            col.id = "green";
+                            break;
+                        case 3:
+                            col.id = "red";
+                            break;
+                        case 4:
+                            col.id = "purple";
+                            break;
+                        case 5:
+                            col.id = "orange";
+                            break;
+                        case 6:
+                            col.id = "blue";
+                            break;
+                        case 7:
+                            col.id = "cyan";
+                            break;
+                        default:
+                            col.id = "gray";
+                    };
+                };
+            };
+        };
+    };
+
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
         setTimeout(counter, 1);
@@ -1524,6 +1619,18 @@ function Tetris(port_to_backend) {
                                                 </tr>
                                             )}
                                         </table>
+                                        <p className="next-piece-descriptor">Next Pieces:</p>
+                                        {order.slice(0, 4).map((piece_id)=>
+                                            <table id={piece_id} className="next-piece-display">
+                                                {tetris_pieces[piece_id - 1].map((row, row_index) =>
+                                                    <tr className="next-piece-row">
+                                                        {row.map((col, col_index) =>
+                                                            <td  id={`${col}`} className={`${row_index}-${col_index}`}>{col}</td>
+                                                        )}
+                                                    </tr>
+                                                )}
+                                            </table>)
+                                        }
                                     </td>
                                 </tr>
                             </table>

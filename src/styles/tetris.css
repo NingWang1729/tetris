@@ -26,6 +26,7 @@
     border: 2px;
     border-style: solid;
     background-color: black;
+    user-select: none;
 }
 
 .tetris-screen-display td {
@@ -38,19 +39,44 @@
 
 .hold-piece-descriptor {
     text-align: left;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .hold-piece-display {
-    width: 80%;
-    line-height: 40px;
-    table-layout: fixed;
-    border: 2px;
+    width: 50%;
+    line-height: 25px;
+    border: 1px;
     border-style: solid;
     background-color: black;
     color: black;
+    user-select: none;
 }
 
 .hold-piece-display td {
+    background-color: gray;
+    color: gray;
+}
+
+.next-piece-descriptor {
+    text-align: left;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.next-piece-display {
+    width: 50%;
+    line-height: 25px;
+    border: 1px;
+    border-bottom: 0.5px;
+    border-top: 0.5px;
+    border-style: solid;
+    background-color: black;
+    color: black;
+    user-select: none;
+}
+
+.next-piece-display td {
     background-color: gray;
     color: gray;
 }
