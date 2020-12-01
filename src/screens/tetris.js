@@ -1489,12 +1489,10 @@ function Tetris(port_to_backend) {
                             score possible and good luck! </p>
                             <br></br>
                             <br></br>
-                            <p>Seconds: {Math.floor(count/420)}</p>
-                            <p>Time:    {Math.floor(time/200)}</p>
+                            <p>Seconds: {Math.floor(count/1000)}</p>
                             <p>Score:   {score}</p>
                             <p>Level:   {Math.floor(difficulty / 10)}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
-                            <p>Current Orientation: {piece.orient}</p>
                         </td>
                         <td className="tetris-screen">
                             <table className="tetris-container">
