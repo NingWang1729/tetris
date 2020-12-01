@@ -26,6 +26,7 @@
     border: 2px;
     border-style: solid;
     background-color: black;
+    user-select: none;
 }
 
 .tetris-screen-display td {
@@ -48,6 +49,7 @@
     border-style: solid;
     background-color: black;
     color: black;
+    user-select: none;
 }
 
 .hold-piece-display td {
