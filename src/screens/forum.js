@@ -305,7 +305,7 @@ function Forum(port_to_backend) {
         function handleSubmit(e, comment_message, comment_name) {
             e.preventDefault();
             // start
-            if (comment_message === '') {
+            if (comment_name === '' || comment_message === '') {
                 console.log("User attempted to comment an empty comment...");
                 return false;
             } else {
