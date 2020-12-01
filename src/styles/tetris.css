@@ -11,17 +11,53 @@
     align-content: center;
 }
 
+.tetris-container {
+    width: 100%;
+}
+
+.tetris-game-container {
+    width:70%;
+}
+
+.hold-piece-container {
+    width:30%;
+    align-content: initial;
+}
+
 .tetris-screen-display {
-    width: 40%;
+    width: 60%;
     margin-left: 30%;
-    margin-right: 30%;
+    /* margin-right: 30%; */
     line-height: 24px;
     border: 2px;
     border-style: solid;
     background-color: black;
 }
 
+.hold-piece-descriptor {
+    text-align: left;
+}
+
+.hold-piece-display {
+    width: 80%;
+    line-height: 40px;
+    table-layout: fixed;
+    border: 2px;
+    border-style: solid;
+    background-color: black;
+}
+
 .tetris-screen-display td {
+    width: 30px;
+    border: 1px;
+    border-style: solid;
+    border-color: gray;
+    padding: 0;
+    background-color: gray;
+    color: gray;
+}
+
+.hold-piece-display td {
     width: 10%;
     border: 1px;
     border-style: solid;

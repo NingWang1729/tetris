@@ -29,7 +29,8 @@ function Tetris(port_to_backend) {
     var [play, setPlay] = useState(false);  // Whether game is playing or paused
     var [count, setCount] = useState(0);    // Timer, 1 second per count
     var [piece, setPiece] = useState({});   // Current piece being played
-    var [hold, setHold] = useState({});     // Current piece being held
+    var [canHold, setCanHold] = useState(true);
+    var [hold, setHold] = useState({color : 'hold', perm : [[[0, 0, 0], [0, 0, 0], [0, 0, 0]]]});     // Current piece being held
     var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
         [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
@@ -301,7 +302,14 @@ function Tetris(port_to_backend) {
             case 83: // S
                 if(play) {
                     e.preventDefault();
-                    movequeue.push(2);//fast_drop(); actually it's "soft drop"
+                    movequeue.push(2);// soft_drop(); // Move_Down();
+                }
+                break;
+            case 88:
+                if(play) {
+                    e.preventDefault();
+                    movequeue.push(6);//switchHold();
+                    movequeue.push(7);//updateHold();
                 }
                 break;
             case 32: // Space
@@ -325,8 +333,41 @@ function Tetris(port_to_backend) {
     // TODO: Start piece back at the top
     // TODO: Ensure one one switch is possible per placement
     function switchHold() {
-        let temp = Object.assign({}, piece);
-        setPiece(hold);
+        // Prevents repeatedly holding
+        let can_be_held = JSON.parse(JSON.stringify(canHold));
+        if (!can_be_held) {
+            return false;
+        }
+
+        // Remove piece from the grid
+        var current_piece = JSON.parse(JSON.stringify(piece));
+        var cleaned_grid = JSON.parse(JSON.stringify(grid));
+        for (let i = 0; i < current_piece.size; i++) {
+            for (let j = 0; j < current_piece.size; j++) {
+                if (current_piece.perm[current_piece.orient][i][j] !== 0) {
+                    cleaned_grid[current_piece.row + i][current_piece.col + j] = 0;
+                };
+            };
+        };
+
+        // Hold the piece temporarily
+        let temp = Object.assign({
+            color : current_piece.color,
+            row : 0,
+            col : 3,
+            size : current_piece.size,
+            orient : 0,
+            perm : current_piece.perm}
+        );
+        
+        // Switch the piece with the held piece
+        if (hold.color === 'hold') {
+            nextPiece();
+        } else {
+            setPiece(hold);
+            setCanHold(false);
+        }
+        setGrid(cleaned_grid);
         setHold(temp);
     };
 
@@ -373,7 +414,6 @@ function Tetris(port_to_backend) {
                     break;
             }
         }
-
         setDifficulty(Math.min(temp_difficulty + cleared_lines, 160));
         setGrid(check_grid);
     }
@@ -752,6 +792,7 @@ function Tetris(port_to_backend) {
             for (let r = piece.size - 1; r > -1; r--){
                 if (piece.perm[piece.orient][r][c] > 0) {
                     if (grid[piece.row + r + 1][piece.col + c] !== 0) {
+                        setCanHold(true);
                         return true;
                     }
                   break;
@@ -1108,18 +1149,7 @@ function Tetris(port_to_backend) {
     // Moves piece downwards by one
     function move_down() {
         // Checks if there is a block in the way
-        var hit_bottom = false;
-        for (let c = 0; c < piece.size; c++) {
-            for (let r = piece.size - 1; r > -1; r--){
-                if (piece.perm[piece.orient][r][c] > 0) {
-                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
-                        hit_bottom = true;
-                    }
-                  break;
-                }
-            }
-        }
-        if (hit_bottom) {
+        if (hit_bottom()) {
             if (piece.row === 0) {
                 alert("GAME OVER!");
                 let final_score = JSON.parse(JSON.stringify(score));
@@ -1200,26 +1230,14 @@ function Tetris(port_to_backend) {
         return(true);
     };
 
-    function fast_drop() {
+    function hard_drop() {
         if(!play){
           return;
         }
-
-        var hit_bottom = false;
-        for (let c = 0; c < piece.size; c++) {
-            for (let r = piece.size - 1; r > -1; r--){
-                if (piece.perm[piece.orient][r][c] > 0) {
-                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
-                        hit_bottom = true;
-                    }
-                    break;
-                }
-            }
-        }
-        if (!hit_bottom) {
+        if (!hit_bottom()) {
             setScore(score+1);
             move_down();
-            fast_drop();
+            hard_drop();
         }
     }
 
@@ -1340,9 +1358,15 @@ function Tetris(port_to_backend) {
                         rotate_ccw();
                         break;
                     case 2:
-                        setScore(score+1); // Soft drop
+                        setScore(score+1); // Soft drop uses move_down()
                     case 5:
                         move_down();
+                        break;
+                    case 6:
+                        switchHold();
+                        break;
+                    case 7:
+                        updateHold();
                         break;
                     default:
                         alert("Invalid keyboard or command input.");
@@ -1364,6 +1388,45 @@ function Tetris(port_to_backend) {
             for (let j = 0; j < row.length; j++) {
                 let col = row.item(j);
                 switch (grid[i + 3][j]) {
+                    case 0:
+                        col.id = "gray";
+                        break;
+                    case 1:
+                        col.id = "yellow";
+                        break;
+                    case 2:
+                        col.id = "green";
+                        break;
+                    case 3:
+                        col.id = "red";
+                        break;
+                    case 4:
+                        col.id = "purple";
+                        break;
+                    case 5:
+                        col.id = "orange";
+                        break;
+                    case 6:
+                        col.id = "blue";
+                        break;
+                    case 7:
+                        col.id = "cyan";
+                        break;
+                    default:
+                        col.id = "gray";
+                };
+            };
+        };
+    };
+
+    function updateHold() {
+        let hold_grid = document.getElementsByClassName("hold-piece-display").item(0).childNodes;
+        for (let i = 0; i < hold_grid.length; i++) {
+            // Checks each row
+            let row = hold_grid.item(i).childNodes;
+            for (let j = 0; j < row.length; j++) {
+                let col = row.item(j);
+                switch (hold.perm[0][i][j]) {
                     case 0:
                         col.id = "gray";
                         break;
@@ -1418,17 +1481,6 @@ function Tetris(port_to_backend) {
                 </audio>
                 <table className="tetris-page">
                     <tr>
-                        <td className="">
-                        Instructions Page
-                        </td>
-                        <td className="">
-                        Tetris
-                        </td>
-                        <td className="">
-                        Next Pieces
-                        </td>
-                    </tr>
-                    <tr>
                         <td className="instructions-page">
                             <p> Pieces will come down from the top of the screen.
                             Rotate pieces and move them left and right with the arrow keys.
@@ -1445,7 +1497,34 @@ function Tetris(port_to_backend) {
                             <p>Current Orientation: {piece.orient}</p>
                         </td>
                         <td className="tetris-screen">
-                            <table className="tetris-screen-display">
+                            <table className="tetris-container">
+                                <tr>
+                                    <td className="tetris-game-container">
+                                        <table className="tetris-screen-display">
+                                            {grid.slice(3,23).map((row, row_index) =>
+                                                <tr className="tetris-row">
+                                                    {row.map((col, col_index) =>
+                                                        <td  id={`${col}`} className={`${row_index + 3}-${col_index}`}>{col}</td>
+                                                    )}
+                                                </tr>
+                                            )}
+                                        </table>
+                                    </td>
+                                    <td className="hold-piece-container">
+                                        <p className="hold-piece-descriptor">Hold Piece:</p>
+                                        <table className="hold-piece-display">
+                                            {hold.perm[0].slice().map((row, row_index) =>
+                                                <tr className="tetris-row">
+                                                    {row.map((col, col_index) =>
+                                                        <td  id={`${col}`} className={`${row_index}-${col_index}`}>{col}</td>
+                                                    )}
+                                                </tr>
+                                            )}
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            {/* <table className="tetris-screen-display">
                                 {grid.slice(3,23).map((row, row_index) =>
                                     <tr className="tetris-row">
                                         {row.map((col, col_index) =>
@@ -1453,7 +1532,7 @@ function Tetris(port_to_backend) {
                                         )}
                                     </tr>
                                 )}
-                            </table>
+                            </table> */}
                         </td>
                         <td className="next-pieces">
                             <table className='tetris-leaderboard'>
