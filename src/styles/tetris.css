@@ -34,20 +34,21 @@
     background-color: black;
 }
 
+.hold-piece-descriptor {
+    text-align: left;
+}
+
 .hold-piece-display {
-    width: 50%;
-    line-height: 30px;
+    width: 80%;
+    line-height: 40px;
+    table-layout: fixed;
     border: 2px;
     border-style: solid;
     background-color: black;
 }
 
-.hold-piece-descriptor {
-    text-align: left;
-}
-
 .tetris-screen-display td {
-    width: 10%;
+    width: 30px;
     border: 1px;
     border-style: solid;
     border-color: gray;
