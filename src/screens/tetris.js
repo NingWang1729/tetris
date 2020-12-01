@@ -1483,14 +1483,14 @@ function Tetris(port_to_backend) {
                     <tr>
                         <td className="instructions-page">
                             <h1>Instructions:</h1>
+                            <br/>
                             <p> Pieces will come down from the top of the screen.
                             Rotate pieces and move them left and right with the arrow keys.
                             If a row is filled with squares, it will disappear. When a piece
                             reaches the top of the grid, the game is over. Try to get the highest
                             score possible and good luck! </p>
-                            <br></br>
-                            <br></br>
-                            <p>Seconds: {Math.floor(count/300)}</p>
+                            <br/>
+                            <br/>
                             <p>Score:   {score}</p>
                             <p>Level:   {Math.floor(difficulty / 10)}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
@@ -1523,15 +1523,6 @@ function Tetris(port_to_backend) {
                                     </td>
                                 </tr>
                             </table>
-                            {/* <table className="tetris-screen-display">
-                                {grid.slice(3,23).map((row, row_index) =>
-                                    <tr className="tetris-row">
-                                        {row.map((col, col_index) =>
-                                            <td  id={`${col}`} className={`${row_index + 3}-${col_index}`}>{col}</td>
-                                        )}
-                                    </tr>
-                                )}
-                            </table> */}
                         </td>
                         <td className="next-pieces">
                             <table className='tetris-leaderboard'>
@@ -1564,9 +1555,6 @@ function Tetris(port_to_backend) {
                 <button onClick={move_right}>
                     Move Right
                 </button>
-                {/* <button onClick={start_game}>
-                    Start Game
-                </button> */}
             </div>
         </React.Fragment>);
 };
