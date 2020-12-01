@@ -30,7 +30,7 @@ function Tetris(port_to_backend) {
     var [count, setCount] = useState(0);    // Timer, 1 second per count
     var [piece, setPiece] = useState({});   // Current piece being played
     var [canHold, setCanHold] = useState(true);
-    var [hold, setHold] = useState({color : 'hold', perm : [[[0, 0, 0], [0, 0, 0], [0, 0, 0]]]});     // Current piece being held
+    var [hold, setHold] = useState({color : 'hold', perm : [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]});     // Current piece being held
     var [grid, setGrid] = useState(         // 10 x 23 grid, 3 top rows are hidden
         [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], //Row 0 through Row 2 hide pieces before play
@@ -78,9 +78,9 @@ function Tetris(port_to_backend) {
         size : 3,
         orient : 0,
         perm : [[
-            [0, 1, 1],
-            [0, 1, 1],
-            [0, 0, 0]
+            [0, 1, 1, 0],
+            [0, 1, 1, 0],
+            [0, 0, 0, 0]
         ],
         [
             [0, 1, 1],
@@ -105,9 +105,9 @@ function Tetris(port_to_backend) {
         size : 3,
         orient : 0,
         perm : [[
-            [0, 2, 2],
-            [2, 2, 0],
-            [0, 0, 0]
+            [0, 2, 2, 0],
+            [2, 2, 0, 0],
+            [0, 0, 0, 0]
         ],
         [
             [0, 2, 0],
@@ -132,9 +132,9 @@ function Tetris(port_to_backend) {
         size : 3,
         orient : 0,
         perm : [[
-            [3, 3, 0],
-            [0, 3, 3],
-            [0, 0, 0]
+            [3, 3, 0, 0],
+            [0, 3, 3, 0],
+            [0, 0, 0, 0]
         ],
         [
             [0, 0, 3],
@@ -159,9 +159,9 @@ function Tetris(port_to_backend) {
         size : 3,
         orient : 0,
         perm : [[
-            [0, 4, 0],
-            [4, 4, 4],
-            [0, 0, 0]
+            [0, 4, 0, 0],
+            [4, 4, 4, 0],
+            [0, 0, 0, 0]
         ],
         [
             [0, 4, 0],
@@ -186,9 +186,9 @@ function Tetris(port_to_backend) {
         size : 3,
         orient : 0,
         perm : [[
-            [0, 0, 5],
-            [5, 5, 5],
-            [0, 0, 0]
+            [0, 0, 5, 0],
+            [5, 5, 5, 0],
+            [0, 0, 0, 0]
         ],
         [
             [0, 5, 0],
@@ -213,9 +213,9 @@ function Tetris(port_to_backend) {
         size : 3,
         orient : 0,
         perm : [[
-            [6, 0, 0],
-            [6, 6, 6],
-            [0, 0, 0]
+            [6, 0, 0, 0],
+            [6, 6, 6, 0],
+            [0, 0, 0, 0]
         ],
         [
             [0, 6, 6],
@@ -1482,6 +1482,7 @@ function Tetris(port_to_backend) {
                 <table className="tetris-page">
                     <tr>
                         <td className="instructions-page">
+                            <h1>Instructions:</h1>
                             <p> Pieces will come down from the top of the screen.
                             Rotate pieces and move them left and right with the arrow keys.
                             If a row is filled with squares, it will disappear. When a piece
@@ -1489,7 +1490,7 @@ function Tetris(port_to_backend) {
                             score possible and good luck! </p>
                             <br></br>
                             <br></br>
-                            <p>Seconds: {Math.floor(count/333)}</p>
+                            <p>Seconds: {Math.floor(count/300)}</p>
                             <p>Score:   {score}</p>
                             <p>Level:   {Math.floor(difficulty / 10)}</p>
                             <p>{play ? "Playing" : "Paused"}</p>
@@ -1511,8 +1512,8 @@ function Tetris(port_to_backend) {
                                     <td className="hold-piece-container">
                                         <p className="hold-piece-descriptor">Hold Piece:</p>
                                         <table className="hold-piece-display">
-                                            {hold.perm[0].slice().map((row, row_index) =>
-                                                <tr className="tetris-row">
+                                            {hold.perm[0].slice(0, 3).map((row, row_index) =>
+                                                <tr className="hold-piece-row">
                                                     {row.map((col, col_index) =>
                                                         <td  id={`${col}`} className={`${row_index}-${col_index}`}>{col}</td>
                                                     )}
