@@ -47,26 +47,6 @@
     background-color: black;
 }
 
-.tetris-screen-display td {
-    width: 30px;
-    border: 1px;
-    border-style: solid;
-    border-color: gray;
-    padding: 0;
-    background-color: gray;
-    color: gray;
-}
-
-.hold-piece-display td {
-    width: 10%;
-    border: 1px;
-    border-style: solid;
-    border-color: gray;
-    padding: 0;
-    background-color: gray;
-    color: gray;
-}
-
 #gray {
     background-color: gray;
     color: gray;

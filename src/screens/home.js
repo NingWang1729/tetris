@@ -88,9 +88,6 @@ function Home(port_to_backend) {
                     </div>
                 </div>
             </div>
-            <p>Please use /tetris for tetris and /forum for forum in url</p>
-            <p>Current backend port is: {BACKEND_PORT}</p>
-
         </React.Fragment>
     );
 };
