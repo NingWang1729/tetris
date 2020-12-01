@@ -1490,6 +1490,10 @@ function Tetris(port_to_backend) {
                             reaches the top of the grid, the game is over. Try to get the highest
                             score possible and good luck! </p>
                             <br/>
+                            <p>Z to rotate left, X to hold, C to rotate right</p>
+                            <p>A/D or Left/Right Arrows to move Left or Right</p>
+                            <p>W/S or Up/Down Arrows to rotate CW or Softdrop</p>
+                            <p>Spacebar or P to pause or unpause the game</p>
                             <br/>
                             <p>Score:   {score}</p>
                             <p>Level:   {Math.floor(difficulty / 10)}</p>
