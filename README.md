@@ -38,3 +38,7 @@ This requires knowledge of SQL and databases, so avoid running the site locally,
 
 This project backend server uses an ngrok.io port and mySQL server managed by Ning Wang.
 If the server is down, please contact ningwang1729@ucla.edu
+
+### Contributing
+
+If you would like to contribute to the project, clone the git repo and make a push request. Please contact Ning Wang at ningwang1729@ucla.edu for more information.
