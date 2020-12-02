@@ -81,6 +81,12 @@
     color: gray;
 }
 
+#ghost {
+    background-color: white;
+    color: white;
+    border-color: white;
+}
+
 #gray {
     background-color: gray;
     color: gray;
