@@ -32,7 +32,7 @@ Install the respective dependencies inside package.json (i.e. body-parser, cors,
 Use the command 'npm install *insert_dependency_name_here*' for each dependency.
 
 To run your own backend, you will need a mysql server. Download mySQL and create the appropriate databases and configurations based on server.js.
-This requires knowledge of SQL and databases, so avoid running the site locally, because it is live at https://gwabbitz-gaming-arcade.netlify.app/
+This requires knowledge of SQL and databases, so avoid running the site locally, because it is live at https://gwabbitz-gaming-arcade.netlify.app/ Instead, you can simply update the port according to the current port on this repository and listen to that backend port accordingly.
 
 ### Backend Server
 
