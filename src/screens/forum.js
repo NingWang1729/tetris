@@ -69,7 +69,7 @@ function Forum(port_to_backend) {
         and a button that calls method to create a thread */
         return (
             <div className="forum-manager">
-                <input 
+                <textarea 
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder="Thread Name"
