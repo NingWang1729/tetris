@@ -76,32 +76,32 @@ function Tetris(port_to_backend) {
             [0, 1, 1, 0],
             [0, 1, 1, 0],
             [0, 0, 0, 0]
-        ], 
+        ],
         [
             [0, 2, 2, 0],
             [2, 2, 0, 0],
             [0, 0, 0, 0]
-        ], 
+        ],
         [
             [3, 3, 0, 0],
             [0, 3, 3, 0],
             [0, 0, 0, 0]
-        ], 
+        ],
         [
             [0, 4, 0, 0],
             [4, 4, 4, 0],
             [0, 0, 0, 0]
-        ], 
+        ],
         [
             [0, 0, 5, 0],
             [5, 5, 5, 0],
             [0, 0, 0, 0]
-        ], 
+        ],
         [
             [6, 0, 0, 0],
             [6, 6, 6, 0],
             [0, 0, 0, 0]
-        ], 
+        ],
         [
             [0, 0, 0, 0],
             [7, 7, 7, 7],
@@ -349,6 +349,12 @@ function Tetris(port_to_backend) {
                     movequeue.push(7);//updateHold();
                 }
                 break;
+            case 70: //F
+                if(play) {
+                    e.preventDefault();
+                    movequeue.push(8);
+                }
+                break;
             case 32: // Space
             case 80: // P
                 e.preventDefault();
@@ -396,7 +402,7 @@ function Tetris(port_to_backend) {
             orient : 0,
             perm : current_piece.perm}
         );
-        
+
         // Switch the piece with the held piece
         if (hold.color === 'hold') {
             nextPiece();
@@ -514,7 +520,7 @@ function Tetris(port_to_backend) {
         }
 
         if (hit_bottom()) {
-            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] === 0) {
+            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] <= 0) {
                 setTspin(true);
             }
         }
@@ -539,7 +545,7 @@ function Tetris(port_to_backend) {
                 for (let j = 0; j < piece.size; j++) {
                     if (piece.perm[new_orient][i][j] === 0) {
                         continue;
-                    } else if (row + i < 0 || row + i > 22 || col + j < 0 || col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
+                    } else if (row + i < 0 || row + i > 22 || col + j < 0 || col + j > 9 || cleaned_grid[row + i][col + j] > 0) {
                         return false;
                     };
                 };
@@ -551,7 +557,7 @@ function Tetris(port_to_backend) {
         function do_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] === 0) {
+                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] <= 0) {
                         cleaned_grid[row + i][col + j] = piece.perm[new_orient][i][j];
                     };
                 };
@@ -841,7 +847,7 @@ function Tetris(port_to_backend) {
         for (let c = 0; c < piece.size; c++) {
             for (let r = piece.size - 1; r > -1; r--){
                 if (piece.perm[piece.orient][r][c] > 0) {
-                    if (grid[piece.row + r + 1][piece.col + c] !== 0) {
+                    if (grid[piece.row + r + 1][piece.col + c] > 0) {
                         setCanHold(true);
                         return true;
                     }
@@ -861,7 +867,7 @@ function Tetris(port_to_backend) {
         }
 
         if (hit_bottom()) {
-            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] === 0) {
+            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] <= 0) {
                 setTspin(true);
             }
         }
@@ -887,7 +893,7 @@ function Tetris(port_to_backend) {
                 for (let j = 0; j < piece.size; j++) {
                     if (piece.perm[new_orient][i][j] === 0) {
                         continue;
-                    } else if (row + i < 0 || row + i > 22 || col + j < 0 || col + j > 9 || cleaned_grid[row + i][col + j] !== 0) {
+                    } else if (row + i < 0 || row + i > 22 || col + j < 0 || col + j > 9 || cleaned_grid[row + i][col + j] > 0) {
                         return false;
                     };
                 };
@@ -899,7 +905,7 @@ function Tetris(port_to_backend) {
         function do_rotation(row, col) {
             for (let i = 0; i < piece.size; i++) {
                 for (let j = 0; j < piece.size; j++) {
-                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] === 0) {
+                    if (piece.perm[new_orient][i][j] !== 0 && cleaned_grid[row + i][col + j] <= 0) {
                         cleaned_grid[row + i][col + j] = piece.perm[new_orient][i][j];
                     };
                 };
@@ -1259,14 +1265,14 @@ function Tetris(port_to_backend) {
         var next_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (next_grid[i][j] !== 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
+                if (next_grid[i][j] > 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
                     next_grid[i][j] = 0;
                 };
             };
         };
         for (let i = piece.row + 1; i < piece.row + piece.size + 1; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (next_grid[i][j] === 0) {
+                if (next_grid[i][j] <= 0) {
                     next_grid[i][j] = piece.perm[piece.orient][i - piece.row - 1][j - piece.col];
                 };
             };
@@ -1287,11 +1293,71 @@ function Tetris(port_to_backend) {
         if(!play){
           return;
         }
-        if (!hit_bottom()) {
-            setScore(score+1);
-            move_down();
-            hard_drop();
+
+        var max = find_max();
+        if(max === 0) {
+            return;
         }
+        var drop_grid = grid;
+        for(let c = 0; c < piece.size; c++) {
+            for(let r = 0; r < piece.size; r++) {
+                if(piece.perm[piece.orient][r][c] !== 0) {
+                    drop_grid[r+piece.row+max][c + piece.col] = piece.perm[piece.orient][r][c];
+                    drop_grid[r+piece.row][c+piece.col] = 0;
+                }
+            }
+        }
+        setGrid(drop_grid);
+        setScore(score+2*max);
+        nextPiece();
+    }
+
+    function update_ghost() {
+        var max = find_max();
+        if(max === 0) {
+            return;
+        }
+
+        var update_grid = grid;
+
+        for(let c = 0; c < 10; c++) {
+            for(let r = 3; r < 23; r++) {
+                if(update_grid[r][c] == -1) {
+                    update_grid[r][c] = 0;
+                }
+            }
+        }
+
+        for(let c = 0; c < piece.size; c++) {
+            for(let r = 0; r < piece.size; r++) {
+                if(piece.perm[piece.orient][r][c] !== 0) {
+                    if(update_grid[r+piece.row+max][c+piece.col] <= 0) {
+                        update_grid[r+piece.row+max][c + piece.col] = -1;
+                    }
+                }
+            }
+        }
+        setGrid(update_grid);
+    }
+
+    function find_max() {
+        var max = 30;
+        for (let c = 0; c < piece.size; c++) {
+            for (let r = piece.size - 1; r > -1; r--){
+                if (piece.perm[piece.orient][r][c] > 0) {
+                    for(let r2 = r+1; r2 < grid.length; r2++) {
+                        if(grid[piece.row+r2][piece.col+c] > 0) {
+                            if(max > r2 - r - 1) {
+                                max = r2 - r - 1;
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return max;
     }
 
     // Moves piece rightwards by one
@@ -1304,7 +1370,7 @@ function Tetris(port_to_backend) {
         for (let r = 0; r < piece.size; r++) {
             for (let c = piece.size - 1; c > -1; c--){
                 if (piece.perm[piece.orient][r][c] > 0) {
-                    if (piece.col + c === 9 || grid[piece.row + r][piece.col + c + 1] !== 0) {
+                    if (piece.col + c === 9 || grid[piece.row + r][piece.col + c + 1] > 0) {
                         hit_right = true;
                     };
                     break;
@@ -1319,14 +1385,14 @@ function Tetris(port_to_backend) {
         var right_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (right_grid[i][j] !== 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
+                if (right_grid[i][j] > 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
                     right_grid[i][j] = 0;
                 };
             };
         };
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col + 1; j < piece.col + piece.size + 1; j++) {
-                if (right_grid[i][j] === 0) {
+                if (right_grid[i][j] <= 0) {
                     right_grid[i][j] = piece.perm[piece.orient][i - piece.row][j - piece.col - 1];
                 };
             };
@@ -1352,7 +1418,7 @@ function Tetris(port_to_backend) {
         for (let r = 0; r < piece.size; r++) {
             for (let c = 0; c < piece.size; c++){
                 if (piece.perm[piece.orient][r][c] > 0) {
-                    if (piece.col + c === 0 || grid[piece.row + r][piece.col + c - 1] !== 0) {
+                    if (piece.col + c === 0 || grid[piece.row + r][piece.col + c - 1] > 0) {
                         hit_left = true;
                     };
                     break;
@@ -1367,14 +1433,14 @@ function Tetris(port_to_backend) {
         var left_grid = grid;
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col; j < piece.col + piece.size; j++) {
-                if (left_grid[i][j] !== 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
+                if (left_grid[i][j] > 0 && piece.perm[piece.orient][i - piece.row][j - piece.col] !== 0) {
                     left_grid[i][j] = 0;
                 };
             };
         };
         for (let i = piece.row; i < piece.row + piece.size; i++) {
             for (let j = piece.col - 1; j < piece.col + piece.size - 1; j++) {
-                if (left_grid[i][j] === 0) {
+                if (left_grid[i][j] <= 0) {
                     left_grid[i][j] = piece.perm[piece.orient][i - piece.row][j - piece.col + 1];
                 };
             };
@@ -1421,6 +1487,9 @@ function Tetris(port_to_backend) {
                     case 7:
                         updateHold();
                         break;
+                    case 8:
+                        hard_drop();
+                        break;
                     default:
                         alert("Invalid keyboard or command input.");
                         break;
@@ -1431,7 +1500,7 @@ function Tetris(port_to_backend) {
         updateColors();
         updateNextPieces();
         setCount(count + 1);
-    };
+    }
 
     // Updates color on client-side using current state of grid
     function updateColors() {
@@ -1442,6 +1511,9 @@ function Tetris(port_to_backend) {
             for (let j = 0; j < row.length; j++) {
                 let col = row.item(j);
                 switch (grid[i + 3][j]) {
+                    case -1:
+                        col.id = "ghost";
+                        break;
                     case 0:
                         col.id = "gray";
                         break;
@@ -1588,6 +1660,7 @@ function Tetris(port_to_backend) {
                             <p>Z to rotate left, X to hold, C to rotate right</p>
                             <p>A/D or Left/Right Arrows to move Left or Right</p>
                             <p>W/S or Up/Down Arrows to rotate CW or Softdrop</p>
+                            <p>F to hard drop</p>
                             <p>Spacebar or P to pause or unpause the game</p>
                             <br/>
                             <p>Score:   {score}</p>
