@@ -455,12 +455,6 @@ function Tetris(port_to_backend) {
         setGrid(check_grid);
     }
 
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
     // Randomly Generates the next piece to play
     // Runs once at very start
     function nextPiece() {
@@ -1188,10 +1182,14 @@ function Tetris(port_to_backend) {
     // Pauses and unpauses game
     function toggle_play() {
         let sound = document.getElementById("tetris-theme");
+        document.querySelector('#tetris-theme').volume = 0;
+        sound.volume = 0;
         if (play) {
             sound.pause();
+            sound.volume = 0;
         } else {
             sound.play();
+            sound.volume = 0;
         };
         setPlay(!play);
     };
