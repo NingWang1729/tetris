@@ -16,6 +16,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  height: 35pt;
 }
 
 .create-thread-name-input {
@@ -23,6 +24,7 @@
   margin: 0;
   width: 20%;
   height: 25pt;
+  resize: none;
 }
 
 .create-thread-message-input {
@@ -63,7 +65,7 @@
   margin: 10pt auto;
   border-radius: 3pt;
   border: 1px solid #acb2b8;
-  background-color: #F8F9FA;
+  background-color: #f2f9ff;
   padding: 0 5pt 0 5pt;
   text-align: left;
 }
