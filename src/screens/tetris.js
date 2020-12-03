@@ -276,7 +276,8 @@ function Tetris(port_to_backend) {
         col : 3,
         size : 4,
         orient : 0,
-        perm : [[
+        perm : [
+        [
             [0, 0, 0, 0],
             [7, 7, 7, 7],
             [0, 0, 0, 0],
@@ -1286,26 +1287,34 @@ function Tetris(port_to_backend) {
 
     function hard_drop() {
         if(!play){
-          return;
+          return score;
         }
 
         var max = find_max();
-        if(max === 0) {
+        if(max === 0 || max === 30) {
             return score;
         }
-    
+
         var drop_grid = grid;
         for(let c = 0; c < piece.size; c++) {
             for(let r = 0; r < piece.size; r++) {
                 if(piece.perm[piece.orient][r][c] !== 0) {
-                    drop_grid[r+piece.row+max][c + piece.col] = piece.perm[piece.orient][r][c];
                     drop_grid[r+piece.row][c+piece.col] = 0;
                 }
             }
         }
-    
+
+        for(let c = 0; c < piece.size; c++) {
+            for(let r = 0; r < piece.size; r++) {
+                if(piece.perm[piece.orient][r][c] !== 0) {
+                    drop_grid[r+piece.row+max][c + piece.col] = piece.perm[piece.orient][r][c];
+                }
+            }
+        }
+
         setCanHold(true);
         setGrid(drop_grid);
+
         setPiece({
             color : piece.color,
             row : piece.row + max,
