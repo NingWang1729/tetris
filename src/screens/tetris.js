@@ -351,7 +351,7 @@ function Tetris(port_to_backend) {
             case 70: // F
                 if(play) {
                     e.preventDefault();
-                    movequeue.push(8);
+                    movequeue.push(8, 9);
                 }
                 break;
             case 80: // P
@@ -1314,7 +1314,6 @@ function Tetris(port_to_backend) {
 
         setCanHold(true);
         setGrid(drop_grid);
-
         setPiece({
             color : piece.color,
             row : piece.row + max,
@@ -1507,6 +1506,8 @@ function Tetris(port_to_backend) {
                         break;
                     case 8:
                         setScore(hard_drop());
+                        break;
+                    case 9:
                         nextPiece();
                         break;
                     default:
