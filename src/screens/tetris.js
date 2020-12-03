@@ -311,28 +311,24 @@ function Tetris(port_to_backend) {
                     movequeue.push(0);//move_left();
                 }
                 break;
+            case 39: // Right
+            case 68: // D
+                if(play) {
+                    movequeue.push(1);// = move_right();
+                }
+                break;
             case 38: // up
-            case 82: // R
             case 87: // W
+            case 67: // C
                 if(play) {
                     e.preventDefault();
                     movequeue.push(3);//rotate_cw();
                 }
                 break;
-            case 67: // C
-                if(play) {
-                    movequeue.push(3);//rotate_cw();
-                }
-                break;
+            case 81: // Q
             case 90: // Z
                 if(play) {
                     movequeue.push(4);//rotate_ccw();
-                }
-                break;
-            case 39: // Right
-            case 68: // D
-                if(play) {
-                    movequeue.push(1);// = move_right();
                 }
                 break;
             case 40: // Down
@@ -342,20 +338,21 @@ function Tetris(port_to_backend) {
                     movequeue.push(2);// soft_drop(); // Move_Down();
                 }
                 break;
-            case 88:
+            case 69: // E
+            case 88: // X
                 if(play) {
                     e.preventDefault();
                     movequeue.push(6);//switchHold();
                     movequeue.push(7);//updateHold();
                 }
                 break;
-            case 70: //F
+            case 32: // Space
+            case 70: // F
                 if(play) {
                     e.preventDefault();
                     movequeue.push(8);
                 }
                 break;
-            case 32: // Space
             case 80: // P
                 e.preventDefault();
                 let sound = document.getElementById("tetris-theme");
@@ -1294,8 +1291,9 @@ function Tetris(port_to_backend) {
 
         var max = find_max();
         if(max === 0) {
-            return;
+            return score;
         }
+    
         var drop_grid = grid;
         for(let c = 0; c < piece.size; c++) {
             for(let r = 0; r < piece.size; r++) {
@@ -1305,8 +1303,17 @@ function Tetris(port_to_backend) {
                 }
             }
         }
+    
+        setCanHold(true);
         setGrid(drop_grid);
-        nextPiece();
+        setPiece({
+            color : piece.color,
+            row : piece.row + max,
+            col : piece.col,
+            size : piece.size,
+            orient : piece.orient,
+            perm : piece.perm
+        });
         return score+2*max;
     }
 
@@ -1317,14 +1324,14 @@ function Tetris(port_to_backend) {
 
         for(let c = 0; c < 10; c++) {
             for(let r = 3; r < 23; r++) {
-                if(update_grid[r][c] == -1) {
+                if(update_grid[r][c] === -1) {
                     update_grid[r][c] = 0;
                 }
             }
         }
 
         if(max === 0) {
-            return;
+            return false;
         }
 
         for(let c = 0; c < piece.size; c++) {
@@ -1491,6 +1498,7 @@ function Tetris(port_to_backend) {
                         break;
                     case 8:
                         setScore(hard_drop());
+                        nextPiece();
                         break;
                     default:
                         alert("Invalid keyboard or command input.");
@@ -1642,7 +1650,6 @@ function Tetris(port_to_backend) {
         <React.Fragment>
             <br/>
             <br/>
-            <br/>
             <div className="tetris-screen-container">
                 <audio id="tetris-theme" autoPlay loop>
                     <source src="https://ia800504.us.archive.org/33/items/TetrisThemeMusic/Tetris.mp3" type="audio/mpeg"/>
@@ -1652,24 +1659,25 @@ function Tetris(port_to_backend) {
                     <tr>
                         <td className="instructions-page">
                             <h1>Instructions:</h1>
-                            <br/>
                             <p> Pieces will come down from the top of the screen.
                             Rotate pieces and move them left and right with the arrow keys.
                             If a row is filled with squares, it will disappear. When a piece
                             reaches the top of the grid, the game is over. Try to get the highest
                             score possible and good luck! </p>
                             <br/>
-                            <p>Z to rotate left, X to hold, C to rotate right</p>
-                            <p>A/D or Left/Right Arrows to move Left or Right</p>
-                            <p>W/S or Up/Down Arrows to rotate CW or Softdrop</p>
-                            <p>F to hard drop</p>
-                            <p>Spacebar or P to pause or unpause the game</p>
+                            <p>Press P to Play/Pause</p>
+                            <p>WASD or Arrow keys</p>
+                            <p>W/Up to Rotate CW</p>
+                            <p>Z/Q to Rotate CCW</p>
+                            <p>S/Down to Softdrop</p>
+                            <p>Space to Harddrop</p>
+                            <p>X/E to Switch Hold</p>
                             <br/>
                             <p>Score:   {score}</p>
                             <p>Level:   {Math.floor(difficulty / 10)}</p>
-                            <p>{play ? "Playing" : "Paused"}</p>
                         </td>
                         <td className="tetris-screen">
+                            <br/>
                             <table className="tetris-container">
                                 <tr>
                                     <td className="tetris-game-container">
@@ -1711,7 +1719,9 @@ function Tetris(port_to_backend) {
                             </table>
                         </td>
                         <td className="next-pieces">
+                        <br/>
                             <table className='tetris-leaderboard'>
+                            <br/>
                                 <tr className='leaderboard-heading-1'>
                                     <td colSpan={2}><b>Leaderboard</b></td>
                                 </tr>
