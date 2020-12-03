@@ -1322,7 +1322,7 @@ function Tetris(port_to_backend) {
                 }
             }
         }
-        
+
         if(max === 0) {
             return;
         }
@@ -1458,7 +1458,9 @@ function Tetris(port_to_backend) {
     // Counter for the game
     function counter() {
         if (play) {
-            update_ghost();
+            if(count % 5 === 0) {
+                update_ghost();
+            }
             if(count % (200-difficulty) === 0) {
                 moves.push(5);
             }
