@@ -514,7 +514,7 @@ function Tetris(port_to_backend) {
         }
 
         if (hit_bottom()) {
-            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] <= 0) {
+            if (piece.col > 0 && piece.perm[piece.orient][1][1] === 4 && piece.perm[piece.orient][1][0] === 0 && grid[piece.row + 1][piece.col] <= 0) {
                 setTspin(true);
             }
         }
@@ -861,7 +861,7 @@ function Tetris(port_to_backend) {
         }
 
         if (hit_bottom()) {
-            if (piece.col > 0 && piece.perm[1][1] === 4 && piece.perm[1][0] === 0 && grid[piece.row + 1][piece.col] <= 0) {
+            if (piece.col > 0 && piece.perm[piece.orient][1][1] === 4 && piece.perm[piece.orient][1][0] === 0 && grid[piece.row + 1][piece.col] <= 0) {
                 setTspin(true);
             }
         }
@@ -1306,15 +1306,12 @@ function Tetris(port_to_backend) {
             }
         }
         setGrid(drop_grid);
-        setScore(score+2*max);
         nextPiece();
+        return score+2*max;
     }
 
     function update_ghost() {
         var max = find_max();
-        if(max === 0) {
-            return;
-        }
 
         var update_grid = grid;
 
@@ -1324,6 +1321,10 @@ function Tetris(port_to_backend) {
                     update_grid[r][c] = 0;
                 }
             }
+        }
+
+        if(max === 0) {
+            return;
         }
 
         for(let c = 0; c < piece.size; c++) {
@@ -1457,6 +1458,9 @@ function Tetris(port_to_backend) {
     // Counter for the game
     function counter() {
         if (play) {
+            if(count % 5 === 0) {
+                update_ghost();
+            }
             if(count % (200-difficulty) === 0) {
                 moves.push(5);
             }
@@ -1486,7 +1490,7 @@ function Tetris(port_to_backend) {
                         updateHold();
                         break;
                     case 8:
-                        hard_drop();
+                        setScore(hard_drop());
                         break;
                     default:
                         alert("Invalid keyboard or command input.");
