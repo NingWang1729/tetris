@@ -1500,9 +1500,6 @@ function Tetris(port_to_backend) {
                         setScore(hard_drop());
                         nextPiece();
                         break;
-                    case 9:
-                        
-                        break;
                     default:
                         alert("Invalid keyboard or command input.");
                         break;
