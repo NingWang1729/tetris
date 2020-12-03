@@ -1312,9 +1312,6 @@ function Tetris(port_to_backend) {
 
     function update_ghost() {
         var max = find_max();
-        if(max === 0) {
-            return;
-        }
 
         var update_grid = grid;
 
@@ -1324,6 +1321,10 @@ function Tetris(port_to_backend) {
                     update_grid[r][c] = 0;
                 }
             }
+        }
+
+        if(max === 0) {
+            return;
         }
 
         for(let c = 0; c < piece.size; c++) {
