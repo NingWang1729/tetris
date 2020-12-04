@@ -361,7 +361,7 @@ function Tetris(port_to_backend) {
                     sound.pause();
                 } else {
                     sound.play();
-                };
+                }
                 setPlay(!play);
                 break;
             default: return; // exit this handler for other keys
@@ -1194,7 +1194,7 @@ function Tetris(port_to_backend) {
         } else {
             sound.play();
             sound.volume = 0;
-        };
+        }
         setPlay(!play);
     };
 
@@ -1518,6 +1518,7 @@ function Tetris(port_to_backend) {
             setTime(time+1);
         }
         updateColors();
+        updateHold();
         updateNextPieces();
         setCount(count + 1);
     }
@@ -1530,89 +1531,14 @@ function Tetris(port_to_backend) {
             let row = tetris_grid.item(i).childNodes;
             for (let j = 0; j < row.length; j++) {
                 let col = row.item(j);
-                switch (grid[i + 3][j]) {
-                    case -1:
-                        col.id = "ghost";
-                        break;
-                    case 0:
-                        col.id = "gray";
-                        break;
-                    case 1:
-                        col.id = "yellow";
-                        break;
-                    case 2:
-                        col.id = "green";
-                        break;
-                    case 3:
-                        col.id = "red";
-                        break;
-                    case 4:
-                        col.id = "purple";
-                        break;
-                    case 5:
-                        col.id = "orange";
-                        break;
-                    case 6:
-                        col.id = "blue";
-                        break;
-                    case 7:
-                        col.id = "cyan";
-                        break;
-                    default:
-                        col.id = "gray";
-                };
-            };
-        };
-    };
-
-    function updateHold() {
-        let hold_grid = document.getElementsByClassName("hold-piece-display").item(0).childNodes;
-        for (let i = 0; i < hold_grid.length; i++) {
-            // Checks each row
-            let row = hold_grid.item(i).childNodes;
-            for (let j = 0; j < row.length; j++) {
-                let col = row.item(j);
-                switch (hold.perm[0][i][j]) {
-                    case 0:
-                        col.id = "gray";
-                        break;
-                    case 1:
-                        col.id = "yellow";
-                        break;
-                    case 2:
-                        col.id = "green";
-                        break;
-                    case 3:
-                        col.id = "red";
-                        break;
-                    case 4:
-                        col.id = "purple";
-                        break;
-                    case 5:
-                        col.id = "orange";
-                        break;
-                    case 6:
-                        col.id = "blue";
-                        break;
-                    case 7:
-                        col.id = "cyan";
-                        break;
-                    default:
-                        col.id = "gray";
-                };
-            };
-        };
-    };
-
-    function updateNextPieces() {
-        for (let k = 0; k < 4; k++) {
-            let next_piece = document.getElementsByClassName("next-piece-display").item(k).childNodes;
-            for (let i = 0; i < next_piece.length; i++) {
-                // Checks each row
-                let row = next_piece.item(i).childNodes;
-                for (let j = 0; j < row.length; j++) {
-                    let col = row.item(j);
-                    switch (tetris_pieces[document.getElementsByClassName("next-piece-display").item(k).id - 1][i][j]) {
+                if(!play) {
+                    col.id = "gray";
+                }
+                else {
+                    switch (grid[i + 3][j]) {
+                        case -1:
+                            col.id = "ghost";
+                            break;
                         case 0:
                             col.id = "gray";
                             break;
@@ -1639,11 +1565,101 @@ function Tetris(port_to_backend) {
                             break;
                         default:
                             col.id = "gray";
-                    };
-                };
-            };
-        };
-    };
+                    }
+                }
+            }
+        }
+    }
+
+    function updateHold() {
+        let hold_grid = document.getElementsByClassName("hold-piece-display").item(0).childNodes;
+        for (let i = 0; i < hold_grid.length; i++) {
+            // Checks each row
+            let row = hold_grid.item(i).childNodes;
+            for (let j = 0; j < row.length; j++) {
+                let col = row.item(j);
+                if(!play) {
+                    col.id = "gray";
+                }
+                else {
+                    switch (hold.perm[0][i][j]) {
+                        case 0:
+                            col.id = "gray";
+                            break;
+                        case 1:
+                            col.id = "yellow";
+                            break;
+                        case 2:
+                            col.id = "green";
+                            break;
+                        case 3:
+                            col.id = "red";
+                            break;
+                        case 4:
+                            col.id = "purple";
+                            break;
+                        case 5:
+                            col.id = "orange";
+                            break;
+                        case 6:
+                            col.id = "blue";
+                            break;
+                        case 7:
+                            col.id = "cyan";
+                            break;
+                        default:
+                            col.id = "gray";
+                    }
+                }
+            }
+        }
+    }
+
+    function updateNextPieces() {
+        for (let k = 0; k < 4; k++) {
+            let next_piece = document.getElementsByClassName("next-piece-display").item(k).childNodes;
+            for (let i = 0; i < next_piece.length; i++) {
+                // Checks each row
+                let row = next_piece.item(i).childNodes;
+                for (let j = 0; j < row.length; j++) {
+                    let col = row.item(j);
+                    if(!play) {
+                        col.id = "gray";
+                    }
+                    else {
+                        switch (tetris_pieces[document.getElementsByClassName("next-piece-display").item(k).id - 1][i][j]) {
+                            case 0:
+                                col.id = "gray";
+                                break;
+                            case 1:
+                                col.id = "yellow";
+                                break;
+                            case 2:
+                                col.id = "green";
+                                break;
+                            case 3:
+                                col.id = "red";
+                                break;
+                            case 4:
+                                col.id = "purple";
+                                break;
+                            case 5:
+                                col.id = "orange";
+                                break;
+                            case 6:
+                                col.id = "blue";
+                                break;
+                            case 7:
+                                col.id = "cyan";
+                                break;
+                            default:
+                                col.id = "gray";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // Every second, componentDidUpdate counter, piece
     useEffect(() => {
@@ -1761,6 +1777,7 @@ function Tetris(port_to_backend) {
                 <button onClick={move_right}>
                     Move Right
                 </button>
+                <p>{!play ? "Paused" : ""}</p>
             </div>
         </React.Fragment>);
 };
