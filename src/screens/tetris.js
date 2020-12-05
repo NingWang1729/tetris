@@ -1682,6 +1682,7 @@ function Tetris(port_to_backend) {
                     Your browser does not support the audio element.
                 </audio>
                 <table className="tetris-page">
+                    <br></br>
                     <tr>
                         <td className="instructions-page">
                             <h1>Instructions:</h1>
@@ -1777,6 +1778,24 @@ function Tetris(port_to_backend) {
                 <button onClick={move_right}>
                     Move Right
                 </button>
+                <br></br>
+                {/* fix function later @everyone */}
+                <button onClick={switchHold}>
+                    Hold
+                </button>
+                <button onClick={rotate_cw}>
+                    Rotate CW
+                </button>
+                <button onClick={rotate_ccw}>
+                    Rotate CCW
+                </button>
+                {/* fix function later @everyone */}
+                <button onClick={hard_drop}>
+                    Hard Drop
+                </button>
+                {/* <button onClick={start_game}>
+                    Start Game
+                </button> */}
                 <p>{!play ? "Paused" : ""}</p>
             </div>
         </React.Fragment>);
