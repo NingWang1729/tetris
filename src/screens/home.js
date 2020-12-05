@@ -37,7 +37,54 @@ function Home(port_to_backend) {
                             </div>
                         </td>
                     </tr>
-                    
+                    <tr>
+                        <td><img src="../tetrisicon.png"></img></td>
+                        <h3>TETRIS</h3>
+                        <td>
+                            <div class="dropdown">
+                            <button class="dropbtn">⭐⭐⭐⭐</button>
+                            <div class="dropdown-content">
+                            <a href="#">⭐</a>
+                            <a href="#">⭐⭐</a>
+                            <a href="#">⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐⭐</a>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="../tetrisicon.png"></img></td>
+                        <h3>TETRIS</h3>
+                        <td>
+                            <div class="dropdown">
+                            <button class="dropbtn">⭐⭐⭐⭐</button>
+                            <div class="dropdown-content">
+                            <a href="#">⭐</a>
+                            <a href="#">⭐⭐</a>
+                            <a href="#">⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐⭐</a>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="../tetrisicon.png"></img></td>
+                        <h3>Mario</h3>
+                        <td>
+                            <div class="dropdown">
+                            <button class="dropbtn">⭐⭐⭐</button>
+                            <div class="dropdown-content">
+                            <a href="#">⭐</a>
+                            <a href="#">⭐⭐</a>
+                            <a href="#">⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐⭐</a>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
