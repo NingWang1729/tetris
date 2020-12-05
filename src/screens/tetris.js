@@ -1769,8 +1769,8 @@ function Tetris(port_to_backend) {
                 <button onClick={move_left}>
                     Move Left
                 </button>
-                <button onClick={rotate_cw}>
-                    Rotate
+                <button onClick={move_down}>
+                    Soft Drop
                 </button>
                 <button onClick={toggle_play}>
                     Play/Pause
