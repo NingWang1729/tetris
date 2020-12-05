@@ -499,6 +499,7 @@ function Tetris(port_to_backend) {
             new_order = new_order.concat(new_set);
         }
         setOrder(new_order);
+        setTspin(false);
         updateNextPieces();
         checkRows();
     };
