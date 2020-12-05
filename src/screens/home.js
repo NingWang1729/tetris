@@ -17,16 +17,30 @@ function Home(port_to_backend) {
             </h2>
             <br></br>
             <h2>
-                <p> Games </p>
+                <p>New Games!!</p>
             </h2>
-            <div class="row">
-                <p>[ICON] TETRIS!!!</p>
-                <p>Tetris again because we dont have any other games oops</p>
-                <p>Tetris again because we dont have any other games oops</p>
-                <p>Tetris again because we dont have any other games oops</p>
-                <p>Tetris again because we dont have any other games oops</p>
-                <p>Tetris again because we dont have any other games oops</p>
-            </div>
+            <table class="center">
+                <tbody>
+                    <tr>
+                        <td><img src="../tetrisicon.png"></img></td>
+                        <td><h3>Flappy Bird</h3></td>
+                        <td>
+                            <div class="dropdown">
+                            <button class="dropbtn">⭐⭐</button>
+                            <div class="dropdown-content">
+                            <a href="#">⭐</a>
+                            <a href="#">⭐⭐</a>
+                            <a href="#">⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐</a>
+                            <a href="#">⭐⭐⭐⭐⭐</a>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+
             <br></br>
             <h2>TOP ARCADE REVIEWS</h2>
             <div class="row">
