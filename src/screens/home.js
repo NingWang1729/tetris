@@ -21,7 +21,7 @@ function Home(port_to_backend) {
             </h2>
             <table class="center">
                 <tbody>
-                    <tr>
+                    <tr class="center">
                         <td><img src="../tetrisicon.png"></img></td>
                         <td><h3>Flappy Bird</h3></td>
                         <td>
@@ -36,8 +36,11 @@ function Home(port_to_backend) {
                             </div>
                             </div>
                         </td>
+                        <td>
+                            really good game
+                        </td>
                     </tr>
-                    <tr>
+                    <tr class="center">
                         <td><img src="../tetrisicon.png"></img></td>
                         <h3>TETRIS</h3>
                         <td>
@@ -52,8 +55,11 @@ function Home(port_to_backend) {
                             </div>
                             </div>
                         </td>
+                        <td>
+                            really good game
+                        </td>
                     </tr>
-                    <tr>
+                    <tr class="center">
                         <td><img src="../tetrisicon.png"></img></td>
                         <h3>TETRIS</h3>
                         <td>
@@ -68,8 +74,11 @@ function Home(port_to_backend) {
                             </div>
                             </div>
                         </td>
+                        <td>
+                            really good game
+                        </td>
                     </tr>
-                    <tr>
+                    <tr class="center">
                         <td><img src="../tetrisicon.png"></img></td>
                         <h3>Mario</h3>
                         <td>
@@ -83,6 +92,9 @@ function Home(port_to_backend) {
                             <a href="#">⭐⭐⭐⭐⭐</a>
                             </div>
                             </div>
+                        </td>
+                        <td>
+                            really good game
                         </td>
                     </tr>
                 </tbody>
