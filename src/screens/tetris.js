@@ -359,8 +359,10 @@ function Tetris(port_to_backend) {
                 let sound = document.getElementById("tetris-theme");
                 if (play) {
                     sound.pause();
+                    sound.volume = 0;
                 } else {
                     sound.play();
+                    sound.volume = 0.5;
                 }
                 setPlay(!play);
                 break;
@@ -1194,7 +1196,7 @@ function Tetris(port_to_backend) {
             sound.volume = 0;
         } else {
             sound.play();
-            sound.volume = 0;
+            sound.volume = 0.5;
         }
         setPlay(!play);
     };
@@ -1678,7 +1680,7 @@ function Tetris(port_to_backend) {
             <br/>
             <br/>
             <div className="tetris-screen-container">
-                <audio id="tetris-theme" autoPlay loop>
+                <audio id="tetris-theme" loop>
                     <source src="https://ia800504.us.archive.org/33/items/TetrisThemeMusic/Tetris.mp3" type="audio/mpeg"/>
                     Your browser does not support the audio element.
                 </audio>
