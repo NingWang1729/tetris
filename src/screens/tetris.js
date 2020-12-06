@@ -1678,7 +1678,6 @@ function Tetris(port_to_backend) {
     return (
         <React.Fragment>
             <br/>
-            <br/>
             <div className="tetris-screen-container">
                 <audio id="tetris-theme" loop>
                     <source src="https://ia800504.us.archive.org/33/items/TetrisThemeMusic/Tetris.mp3" type="audio/mpeg"/>
@@ -1782,7 +1781,6 @@ function Tetris(port_to_backend) {
                     Move Right
                 </button>
                 <br></br>
-                {/* fix function later @everyone */}
                 <button onClick={switchHold}>
                     Hold
                 </button>
@@ -1792,14 +1790,9 @@ function Tetris(port_to_backend) {
                 <button onClick={rotate_ccw}>
                     Rotate CCW
                 </button>
-                {/* fix function later @everyone */}
                 <button onClick={hard_drop}>
                     Hard Drop
                 </button>
-                {/* <button onClick={start_game}>
-                    Start Game
-                </button> */}
-                <p>{!play ? "Paused" : ""}</p>
             </div>
         </React.Fragment>);
 };
