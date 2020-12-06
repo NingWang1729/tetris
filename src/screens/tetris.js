@@ -25,7 +25,7 @@ function Tetris(port_to_backend) {
     var [difficulty, setDifficulty] = useState(0);
     var [score, setScore] = useState(0);
     var [time, setTime] = useState(0);
-    var [order, setOrder] = useState([1, 2, 3, 4, 5, 6, 7]);
+    var [order, setOrder] = useState([1, 2, 3, 4, 5, 6, 7, 5, 6, 1, 2, 4, 3, 7]);
     var [play, setPlay] = useState(false);  // Whether game is playing or paused
     var [count, setCount] = useState(0);    // Timer, 1 second per count
     var [piece, setPiece] = useState({});   // Current piece being played
