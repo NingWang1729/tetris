@@ -7,7 +7,7 @@ import Forum from './screens/forum';
 import About from './screens/about';
 
 // To be updated every 8 hours until a permanent backend port is found
-const BACKEND_PORT = "https://65a31b548131.ngrok.io";
+const BACKEND_PORT = "https://db6c4c8c19e6.ngrok.io";
 
 function App() {
     return (
