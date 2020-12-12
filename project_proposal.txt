@@ -1,0 +1,36 @@
+Ning Wang
+Adam Muzzarelli
+Nevin Liang
+Henry Li
+
+Project Proposal for UCLA Computer Science 97: Online Arcade
+
+Features
+
+Multiple classic arcade games: 
+Allows users to dynamically interact with client side to play games
+Stores all user’s highscore data on server side along with top high score among all users
+Leaderboard will be dynamically received to and from the backend database
+Promotes interaction between users via competitive play
+Current games include: Tetris and other classic arcade games.
+
+Discussion forum:
+Allows users to create comment sections to discuss games and other topics
+Can also create comment threads 
+Involves meaningful storing of user data (their comments) and retrieval (when displaying other’s comments to a user)
+Shows username, upvotes, awards, time-stamp, possibly even time-zone
+
+Search feature: (Search bar on forum and on page with game ratings)
+Sort by tags (e.g. which game the post is about)
+Search by username
+Search by time posted
+Search by popularity
+
+Rating system:
+Gives a means for users to provide feedback
+Have a star rating displayed out of 5 starts
+Has a redirect to play respective game
+
+Technology
+
+We plan on using a Node.js and React stack (with mySQL) to develop our website. We will use CSS to improve the design of the website and host it on a domain later on. We will use github for version control with branches at the repository https://github.com/NingWang1729/tetris.
