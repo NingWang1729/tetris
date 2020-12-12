@@ -1,0 +1,88 @@
+Please submit the project demo/presentation video, in .mp4 format. Please use Zoom to get every team member in a meeting and then record this video. Try to keep the video length not more than 10-12 mins. We recommend that the video covers: project demo, some tech stack walk through, and some source code walk through.
+
+Demo:
+Tetris game demo with buttons and keyboard
+Refresh page to show updated leaderboard
+Forum posts with comments/likes
+Source code:
+Server Side:
+SQL database structure
+App.js
+Home
+Tetris
+Forum
+
+Tech stack:
+Frontend: React app
+Backend: Node/Express/mySQL
+Netlify/ngrok.io for hosting
+
+Script: 
+
+(Introduction: *starts on homepage*)
+Ning: For our project, we decided to reject modernity and embrace tradition with an online gaming arcade. This project would create an online forum for fellow gamers to play classic games such as tetris while also being able to voice their opinions and rate these games.
+
+Nevin: Here is our homepage. At the top we have a menu bar, where we have links in the form of buttons to other pages in our website. For example, we have links to the about page, a description of us and contact links, as well as our main game page, Tetris. We also have a forum showcasing the ability to post and reply. Our homepage consists of multiple reviews, and a header and footer that is static throughout the site. We chose to go with a simple layout to resemble traditional arcade websites and keep the focus on the main content of our project, the tetris game.
+
+Each page has a corresponding js file and css file. The homepage and about page are just static web pages coded with simple html and css. We decided to use cards and sections in our static sites for a simple, but easy to understand layout, as well as a soft blue nord color palette to make spending time on the page easier on the eyes.
+
+(*switch page to Tetris*)
+Henry: describes game, one person plays the game while the other narrates
+*describes game page*
+
+
+Here is our game page, which lists the directions to play tetris, displays the tetris screen and shows the leaderboard.
+First, we’ll go over the keyboard commands, starting with pressing p to pause or unpause. 
+As you can see, the O piece’s position is shown with a ghost piece if harddrop is used.
+Next, let's rotate the S piece and move it to the right, using WASD or arrow keys.
+Here, we don’t have a nice spot to put the Z piece so let's hold it.
+This I piece has been moved to the bottom, but we want it to be vertical. This triggers a rotation which collides with the rest of the pieces. Tetris uses a wall kick to force the I piece into place.
+Now, it looks like we have some unfortunate gaps. 
+Let’s fix this by bringing back the Z piece and squeezing it in with a wall kick.
+Now, we have a T piece and a conveniently shaped gap. Let’s try a T spin. As shown, there are more points scored for tricks such as T-spins or clearing more lines in one go.
+Clearing 4 lines at once is called a tetris, and is worth a lot of points.
+As we see, at level one, the pieces start to fall a little faster than at level 0.
+You also score more points depending on the difficulty level you are in.
+Let’s pause the game for now. As shown, the game hides the grid when you are paused.
+Let’s unpause and finish the game and refresh the page. 
+As seen, our score is added to the leaderboard if our score is in the top 20 scores. Now, let's check out the forum.
+
+(*switch page to Forum*) 
+Adam: 
+    “Here is our forum page, where visitors of the site can create threads to talk about anything, mainly to discuss and rate games on the website, present new ideas for future games, or just chat with friends”
+
+Forum manager
+Talk about how to create threads
+Talk about sorting buttons
+Threads themselves
+Thread name, thread content
+Like btn
+Reply btn
+subcomments
+Time stamp of creation
+Subcomment
+Also has name, message
+Like btn
+
+(Forum : Adam)
+-tree hierarchy: forum page → thread manager and threads. Each thread → subcomment manager & subcomments
+-manager controls creating new children and initial state of child
+-children control updating selfs state : ie getting liked or thread getting new comment
+-external function for formatting timestamp
+    -inputs a JS date object → outputs string that displays relative time
+-for loading server side data
+    -useEffect() : gets called on component initialization. Sends requests to the server for children data. On response, creates children w/ given data
+-for sending server side data
+    -on creation of new child, client gets updated locally
+    -also sends req to server to store new data, so on next visit, useEffect loads the new data and its included
+
+
+(Source code walkthrough: *switch screen sharing to VScode*)
+Ning: goes through source code.
+
+The frontend uses React functional components.  These are rendered through react routers, which makes switching pages easy. The tetris functional component has many functions within it to handle the game logic, relying on a recursive useEffect statement to update the page. The display is done by mapping arrays into html elements. 
+
+The forum also uses functional components to render itself. The forum posts and comments, as well as the tetris leaderboard are connected to the backend, which uses Node.js, Express, and mySQL for the database. Get and Post requests allow communication between the front and backend. The backend relies on ngrok.io ports to map https to localhost:5000 and runs locally. The frontend application is hosted via netlify and can be publicly accessed.
+
+Nevin: Alright guys so that's a complete walkthrough of our website. Feel free to hop on and test your skills at playing tetris, or discuss any topic of your choice on our forum. Have fun!
+
