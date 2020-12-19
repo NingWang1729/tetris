@@ -25,13 +25,37 @@ git clone https://github.com/NingWang1729/tetris.git
 Make sure node package manager is installed. https://nodejs.org/en/download/package-manager/
 Install the respective node packages inside package.json (e.g. react, react-router-dom, dateformat).
 Use the command 'npm install *insert_dependency_name_here*' for each dependency.
+
+For example, you should run the following commands:
+npm install dateformat
+npm install react
+npm install react-dom
+npm install react-router-dom
+
 This would install the node modules for the frontend react app.
-To run the frontend, use 'npm start'.
+To run the frontend, use:
+
+npm start
 
 Next, run the command 'cd backend' in your terminal to change directory to the backend app.
 Install the respective dependencies inside package.json (e.g. body-parser, cors, express, mysql, nodemon).
 Use the command 'npm install *insert_dependency_name_here*' for each dependency.
-To run the backend, make sure your current directory is ~/backend and use 'npm run dev'.
+
+For example, use the commands:
+
+npm install body-parser
+npm install cors
+npm install express
+npm install mysql
+npm install nodemon
+
+Inside package.json, add the following to the scripts JSON Object:
+
+"dev": "nodemon server.js"
+
+To run the backend, make sure your current directory is ~/backend and use: 
+
+npm run dev
 
 To run your own backend, you will need a mysql server. Download mySQL and create the appropriate databases and configurations based on server.js.
 This involves setting up the tables inside the database, the details of which can be found in the comments of setup.js. Create the tables according
